@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Facebook Messenger client}
   spec.description   = %q{Facebook Messenger client}
-  spec.homepage      = "https://github.com/jgorset/facebook-messenger"
+  spec.homepage      = "https://github.com/hyperoslo/facebook-messenger"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
