@@ -2,10 +2,6 @@
   <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/logo.png">
 </p>
 
-# Facebook Messenger
-
-Facebook Messenger client for Ruby.
-
 ## Installation
 
 Add this line to your application's Gemfile:
