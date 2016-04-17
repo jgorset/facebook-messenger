@@ -26,7 +26,7 @@ Once you've created an Application on Facebook, select the Facebook Page you wan
 install it on and use the corresponding Page Access Token to subscribe it:
 
 ```ruby
-Facebook::Messenger.subscribe('<token>')
+Facebook::Messenger::Subscriptions.subscribe('<token>')
 ```
 
 *This is a work in progress; more features and documentation to follow.*
