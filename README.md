@@ -20,13 +20,39 @@ Or install it yourself as:
 
 ## Usage
 
-### Subscribe your Application (bot) to a Page
+### Subscribe your bot to a Page
 
-Once you've created an Application on Facebook, select the Facebook Page you want to
-install it on and use the corresponding Page Access Token to subscribe it:
+Once you've created an Application on Facebook, select the Facebook Page
+you want to install it on and use the corresponding Page Access Token
+to subscribe it:
 
 ```ruby
 Facebook::Messenger::Subscriptions.subscribe('<token>')
+```
+
+### Receiving messages
+
+Facebook sends messages received by your bot to a HTTP URL of your choosing
+(e.g. a "webhook"). This library does not intend to be a web server, but works
+with some popular web application frameworks.
+
+For example, to receive messages with [Ruby on Rails]:
+
+```ruby
+# config/routes.rb
+require 'facebook/messenger/rails'
+
+mount Facebook::Messenger::Rails::Engine, at: '/webhook'
+```
+
+```ruby
+Facebook::Messenger.on :message do |sender, recipient, message|
+  # Do your thing
+end
+
+Facebook::Messenger.on :postback do |sender, recipient, payload|
+  # Do your thing
+end
 ```
 
 *This is a work in progress; more features and documentation to follow.*
@@ -59,3 +85,4 @@ If you're using Facebook Messenger, we probably want to [hire you].
 [hire you]: http://www.hyper.no/jobs/engineers
 [MIT License]: http://opensource.org/licenses/MIT
 [rubygems.org]: https://rubygems.org
+[Ruby on Rails]: http://rubyonrails.org
