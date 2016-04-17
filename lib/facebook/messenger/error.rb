@@ -1,5 +1,5 @@
 module Facebook
   module Messenger
-    VERSION = '0.1.0'.freeze
+    class Error < StandardError; end
   end
 end

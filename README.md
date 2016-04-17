@@ -20,12 +20,23 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Subscribe your Application (bot) to a Page
+
+Once you've created an Application on Facebook, select the Facebook Page you want to
+install it on and use the corresponding Page Access Token to subscribe it:
+
+```ruby
+Facebook::Messenger.subscribe('<token>')
+```
+
+*This is a work in progress; more features and documentation to follow.*
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run
 `bin/console` for an interactive prompt that will allow you to experiment.
+
+Run `rspec` to run the tests, `rubocop` to lint, or `rake` to do both.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To
 release a new version, update the version number in `version.rb`, and then run
