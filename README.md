@@ -40,7 +40,7 @@ Bot.message(
     id: '45123'
   },
   message: {
-    text: 'Hello, human!'
+    text: 'Human?'
   }
 )
 ```
