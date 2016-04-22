@@ -1,15 +1,64 @@
 require 'spec_helper'
 
 describe Facebook::Messenger::Bot do
-  let(:messages_url) do
-    Facebook::Messenger::Subscriptions.base_uri + '/messages'
-  end
-
   let(:access_token) { '<access token>' }
 
-  subject { Facebook::Messenger::Bot.new(access_token) }
+  before do
+    Facebook::Messenger.config do |config|
+      config.access_token = access_token
+    end
+  end
+
+  subject { Facebook::Messenger::Bot }
+
+  describe '.on' do
+    let(:hook) { proc { |args| } }
+
+    context 'with a valid event' do
+      before { subject.on :message, &hook }
+
+      it 'registers a hook' do
+        expect(subject.hooks[:message]).to eq(hook)
+      end
+    end
+
+    context 'with an invalid event' do
+      it 'raises ArgumentError' do
+        expect { subject.on :foo, &hook }.to raise_error(
+          ArgumentError, /foo is not a valid event/
+        )
+      end
+    end
+  end
+
+  describe '.trigger' do
+    let(:hook) { proc { |args| args } }
+
+    context 'with a registered event' do
+      before { subject.on :message, &hook }
+
+      it 'runs the hook' do
+        expect(subject.trigger(:message, 'foo')).to eq('foo')
+      end
+    end
+
+    context 'with an unregistered event' do
+      before { subject.unhook }
+
+      it 'raises UnregisteredEvent' do
+        expect { subject.trigger(:message) }.to raise_error(
+          Facebook::Messenger::Bot::UnregisteredEvent,
+          'The message event is not registered'
+        )
+      end
+    end
+  end
 
   describe '.message' do
+    let(:messages_url) do
+      Facebook::Messenger::Subscriptions.base_uri + '/messages'
+    end
+
     let(:payload) do
       {
         recipient: {

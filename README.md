@@ -29,11 +29,39 @@ install it on and use the corresponding Page Access Token to subscribe it:
 Facebook::Messenger::Subscriptions.subscribe('token')
 ```
 
-### Send messages
+### Sending and receiving messages
+
+When your Page receives messages on Messenger, Facebook sends them to your
+Application's Messenger webhook:
+
+![Application settings](https://scontent-amt2-1.xx.fbcdn.net/hphotos-xfp1/t39.2178-6/12057143_211110782612505_894181129_n.png)
+
+You can reply to messages:
 
 ```ruby
-bot = Facebook::Messenger::Bot.new('token')
-bot.message(
+include Facebook::Messenger
+
+Bot.on :message do |message|
+  message.id      # => 'mid.1457764197618:41d102a3e1ae206a38'
+  message.sender  # => { id: '1008372609250235' }
+  message.seq     # => 73
+  message.sent_at # => 2016-04-22 21:30:36 +0200
+  message.text    # => 'Hello, bot!'
+
+  Bot.message(
+    recipient: message.sender,
+    message: {
+      text: 'Hello, human!'
+    }
+  )
+end
+```
+
+Or even send messages out of the blue:
+
+```ruby
+
+Bot.message(
   recipient: {
     id: '45123'
   },
@@ -43,9 +71,31 @@ bot.message(
 )
 ```
 
-You can send messages that are just text, text with images or even text with
-images and options. See Facebook's [documentation][message-documentation] for
-an exhaustive reference.
+Messages can be just text, text with images or even text with images and
+options. See Facebook's [documentation][message-documentation] for an
+exhaustive reference.
+
+### Receive messages
+
+When your Page receives messages on Messenger, Facebook sends them to your
+Application's Messenger webhook:
+
+![Application settings](https://scontent-amt2-1.xx.fbcdn.net/hphotos-xfp1/t39.2178-6/12057143_211110782612505_894181129_n.png)
+
+```ruby
+Bot.on :message do |message|
+  message.id     # => 'mid.1457764197618:41d102a3e1ae206a38'
+  message.sender # => { id: '1008372609250235' }
+  message.text   # => 'Hello, bot!'
+
+  Bot.message(
+    recipient: message.sender,
+    message: {
+      text: 'Hello, human!'
+    }
+  )
+end
+```
 
 *This is a work in progress; more features and documentation to follow.*
 
@@ -78,3 +128,4 @@ If you're using Facebook Messenger, we probably want to [hire you].
 [MIT License]: http://opensource.org/licenses/MIT
 [rubygems.org]: https://rubygems.org
 [message-documentation]: https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
+[cuba]: https://github.com/soveran/cuba
