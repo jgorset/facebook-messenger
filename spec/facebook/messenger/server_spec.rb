@@ -34,7 +34,7 @@ describe Facebook::Messenger::Server do
                  'hub.challenge' => challenge
 
         expect(last_response.status).to eq(200)
-        expect(last_response.body).to eq('Error; wrong validation token')
+        expect(last_response.body).to eq('Error; wrong verify token')
       end
     end
   end
