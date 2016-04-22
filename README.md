@@ -26,8 +26,26 @@ Once you've created an Application on Facebook, select the Facebook Page you wan
 install it on and use the corresponding Page Access Token to subscribe it:
 
 ```ruby
-Facebook::Messenger::Subscriptions.subscribe('<token>')
+Facebook::Messenger::Subscriptions.subscribe('token')
 ```
+
+### Send messages
+
+```ruby
+bot = Facebook::Messenger::Bot.new('token')
+bot.message(
+  recipient: {
+    id: '45123'
+  },
+  message: {
+    text: 'Hello, human!'
+  }
+)
+```
+
+You can send messages that are just text, text with images or even text with
+images and options. See Facebook's [documentation][message-documentation] for
+an exhaustive reference.
 
 *This is a work in progress; more features and documentation to follow.*
 
@@ -59,3 +77,4 @@ If you're using Facebook Messenger, we probably want to [hire you].
 [hire you]: http://www.hyper.no/jobs/engineers
 [MIT License]: http://opensource.org/licenses/MIT
 [rubygems.org]: https://rubygems.org
+[message-documentation]: https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
