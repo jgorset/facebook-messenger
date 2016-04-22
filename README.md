@@ -39,16 +39,16 @@ Application's Messenger webhook:
 You can reply to messages:
 
 ```ruby
-bot = Facebook::Messenger::Bot.new('token')
+include Facebook::Messenger
 
-bot.on :message do |message|
+Bot.on :message do |message|
   message.id      # => 'mid.1457764197618:41d102a3e1ae206a38'
   message.sender  # => { id: '1008372609250235' }
   message.seq     # => 73
   message.sent_at # => 2016-04-22 21:30:36 +0200
   message.text    # => 'Hello, bot!'
 
-  bot.message(
+  Bot.message(
     recipient: message.sender,
     message: {
       text: 'Hello, human!'
@@ -60,8 +60,8 @@ end
 Or even send messages out of the blue:
 
 ```ruby
-bot = Facebook::Messenger::Bot.new('token')
-bot.message(
+
+Bot.message(
   recipient: {
     id: '45123'
   },
@@ -83,14 +83,12 @@ Application's Messenger webhook:
 ![Application settings](https://scontent-amt2-1.xx.fbcdn.net/hphotos-xfp1/t39.2178-6/12057143_211110782612505_894181129_n.png)
 
 ```ruby
-bot = Facebook::Messenger::Bot.new('token')
-
-bot.on :message do |message|
+Bot.on :message do |message|
   message.id     # => 'mid.1457764197618:41d102a3e1ae206a38'
   message.sender # => { id: '1008372609250235' }
   message.text   # => 'Hello, bot!'
 
-  bot.message(
+  Bot.message(
     recipient: message.sender,
     message: {
       text: 'Hello, human!'
