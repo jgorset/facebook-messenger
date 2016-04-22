@@ -12,7 +12,7 @@ describe Facebook::Messenger::Server do
   end
 
   before do
-    Facebook::Messenger.config do |config|
+    Facebook::Messenger.configure do |config|
       config.verify_token = verify_token
     end
   end

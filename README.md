@@ -64,7 +64,7 @@ token of your choosing.
 Use the generated access token and your verify token to configure your bot:
 
 ```ruby
-Facebook::Messenger.config do |config|
+Facebook::Messenger.configure do |config|
   config.access_token = 'EAAG6WgW...'
   config.verify_token = 'my_voice_is_my_password_verify_me'
 end

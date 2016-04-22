@@ -4,7 +4,7 @@ describe Facebook::Messenger::Bot do
   let(:access_token) { '<access token>' }
 
   before do
-    Facebook::Messenger.config do |config|
+    Facebook::Messenger.configure do |config|
       config.access_token = access_token
     end
   end

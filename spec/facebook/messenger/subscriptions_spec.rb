@@ -8,7 +8,7 @@ describe Facebook::Messenger::Subscriptions do
   end
 
   before do
-    Facebook::Messenger.config do |config|
+    Facebook::Messenger.configure do |config|
       config.access_token = access_token
     end
   end
