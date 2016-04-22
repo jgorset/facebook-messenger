@@ -1,13 +1,19 @@
 require 'spec_helper'
 
 describe Facebook::Messenger::Subscriptions do
+  let(:access_token) { '<access token>' }
+
   let(:subscribed_apps_url) do
     Facebook::Messenger::Subscriptions.base_uri + '/subscribed_apps'
   end
 
-  describe '.subscribe' do
-    let(:access_token) { '<access token>' }
+  before do
+    Facebook::Messenger.config do |config|
+      config.access_token = access_token
+    end
+  end
 
+  describe '.subscribe' do
     context 'with a successful response' do
       before do
         stub_request(:post, subscribed_apps_url)
@@ -20,7 +26,7 @@ describe Facebook::Messenger::Subscriptions do
       end
 
       it 'returns true' do
-        expect(subject.subscribe(access_token)).to be true
+        expect(subject.subscribe).to be true
       end
     end
 
@@ -45,7 +51,7 @@ describe Facebook::Messenger::Subscriptions do
       end
 
       it 'raises an error' do
-        expect { subject.subscribe(access_token) }.to raise_error(
+        expect { subject.subscribe }.to raise_error(
           Facebook::Messenger::Subscriptions::Error, error_message
         )
       end
@@ -67,7 +73,7 @@ describe Facebook::Messenger::Subscriptions do
       end
 
       it 'returns true' do
-        expect(subject.unsubscribe(access_token)).to be true
+        expect(subject.unsubscribe).to be true
       end
     end
 
@@ -92,7 +98,7 @@ describe Facebook::Messenger::Subscriptions do
       end
 
       it 'raises an error' do
-        expect { subject.unsubscribe(access_token) }.to raise_error(
+        expect { subject.unsubscribe }.to raise_error(
           Facebook::Messenger::Subscriptions::Error, error_message
         )
       end

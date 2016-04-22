@@ -8,9 +8,9 @@ module Facebook
 
       base_uri 'https://graph.facebook.com/v2.6/me'
 
-      def self.subscribe(access_token)
+      def self.subscribe
         response = post '/subscribed_apps', query: {
-          access_token: access_token
+          access_token: Facebook::Messenger.config.access_token
         }
 
         raise_errors(response)
@@ -18,9 +18,9 @@ module Facebook
         true
       end
 
-      def self.unsubscribe(access_token)
+      def self.unsubscribe
         response = delete '/subscribed_apps', query: {
-          access_token: access_token
+          access_token: Facebook::Messenger.config.access_token
         }
 
         raise_errors(response)
