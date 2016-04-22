@@ -4,30 +4,9 @@
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'facebook-messenger'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
     $ gem install facebook-messenger
 
 ## Usage
-
-### Subscribe your Application (bot) to a Page
-
-Once you've created an Application on Facebook, select the Facebook Page you want to
-install it on and use the corresponding Page Access Token to subscribe it:
-
-```ruby
-Facebook::Messenger::Subscriptions.subscribe('token')
-```
 
 ### Sending and receiving messages
 
@@ -75,26 +54,13 @@ Messages can be just text, text with images or even text with images and
 options. See Facebook's [documentation][message-documentation] for an
 exhaustive reference.
 
-### Receive messages
+### Subscribe your Application (bot) to a Page
 
-When your Page receives messages on Messenger, Facebook sends them to your
-Application's Messenger webhook:
-
-![Application settings](https://scontent-amt2-1.xx.fbcdn.net/hphotos-xfp1/t39.2178-6/12057143_211110782612505_894181129_n.png)
+Once you've created an Application on Facebook, select the Facebook Page you want to
+install it on and use the corresponding Page Access Token to subscribe it:
 
 ```ruby
-Bot.on :message do |message|
-  message.id     # => 'mid.1457764197618:41d102a3e1ae206a38'
-  message.sender # => { id: '1008372609250235' }
-  message.text   # => 'Hello, bot!'
-
-  Bot.message(
-    recipient: message.sender,
-    message: {
-      text: 'Hello, human!'
-    }
-  )
-end
+Facebook::Messenger::Subscriptions.subscribe('token')
 ```
 
 *This is a work in progress; more features and documentation to follow.*
