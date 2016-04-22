@@ -41,17 +41,6 @@ describe Facebook::Messenger::Bot do
         expect(subject.trigger(:message, 'foo')).to eq('foo')
       end
     end
-
-    context 'with an unregistered event' do
-      before { subject.unhook }
-
-      it 'raises UnregisteredEvent' do
-        expect { subject.trigger(:message) }.to raise_error(
-          Facebook::Messenger::Bot::UnregisteredEvent,
-          'The message event is not registered'
-        )
-      end
-    end
   end
 
   describe '.message' do

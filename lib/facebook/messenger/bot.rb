@@ -54,7 +54,7 @@ module Facebook
         def trigger(event, *args)
           @hooks.fetch(event).call(*args)
         rescue KeyError
-          raise UnregisteredEvent, "The #{event} event is not registered"
+          $stderr.puts "Ignoring #{event} (no hook registered)"
         end
 
         # Parse the message from Facebook.
@@ -86,7 +86,10 @@ module Facebook
         # payload - A Hash describing a payload from Facebook.
         def event_from_payload(payload)
           {
-            'message' => :message
+            'message' => :message,
+            'delivery' => :delivery,
+            'postback' => :postback,
+            'optin' => :optin
           }.each do |key, event|
             return event if payload.key? key
           end
