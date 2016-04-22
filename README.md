@@ -8,16 +8,11 @@
 
 ## Usage
 
-### Sending and receiving messages
-
-When your Page receives messages on Messenger, Facebook sends them to your
-Application's Messenger webhook:
-
-![Application settings](https://scontent-amt2-1.xx.fbcdn.net/hphotos-xfp1/t39.2178-6/12057143_211110782612505_894181129_n.png)
-
 You can reply to messages:
 
 ```ruby
+require 'facebook/messenger'
+
 include Facebook::Messenger
 
 Bot.on :message do |message|
@@ -54,16 +49,35 @@ Messages can be just text, text with images or even text with images and
 options. See Facebook's [documentation][message-documentation] for an
 exhaustive reference.
 
-### Subscribe your Application (bot) to a Page
+## Configuration
 
-Once you've created an Application on Facebook, select the Facebook Page you want to
-install it on and use the corresponding Page Access Token to subscribe it:
+### Create an Application on Facebook
+
+Create an Application on [developers.facebook.com][facebook-developers] and go
+to the Messenger tab. Select the Page you want to install your bot on.
+
+Create a new webhook, enter the domain your bot is connected to and a verify
+token of your choosing.
+
+![Application settings](https://scontent-amt2-1.xx.fbcdn.net/hphotos-xfp1/t39.2178-6/12057143_211110782612505_894181129_n.png)
+
+Use the generated access token and your verify token to configure your bot:
 
 ```ruby
-Facebook::Messenger::Subscriptions.subscribe('token')
+Facebook::Messenger.config do |config|
+  config.access_token = 'EAAG6WgW...'
+  config.verify_token = 'my_voice_is_my_password_verify_me'
+end
 ```
 
-*This is a work in progress; more features and documentation to follow.*
+### Subscribe your Application to a Page
+
+Once you've configured your bot, subscribe it to the Page to get messages
+from Facebook:
+
+```ruby
+Facebook::Messenger::Subscriptions.subscribe
+```
 
 ## Development
 
@@ -94,4 +108,4 @@ If you're using Facebook Messenger, we probably want to [hire you].
 [MIT License]: http://opensource.org/licenses/MIT
 [rubygems.org]: https://rubygems.org
 [message-documentation]: https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
-[cuba]: https://github.com/soveran/cuba
+[facebook-developers]: https://developers.facebook.com
