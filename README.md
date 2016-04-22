@@ -11,6 +11,7 @@
 You can reply to messages:
 
 ```ruby
+# bot.rb
 require 'facebook/messenger'
 
 include Facebook::Messenger
@@ -34,7 +35,6 @@ end
 Or even send messages out of the blue:
 
 ```ruby
-
 Bot.message(
   recipient: {
     id: '45123'
