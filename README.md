@@ -49,6 +49,21 @@ Messages can be just text, text with images or even text with images and
 options. See Facebook's [documentation][message-documentation] for an
 exhaustive reference.
 
+The bot runs on [Rack][rack], so you hook it up like you would an ordinary
+web application:
+
+```ruby
+# config.ru
+require 'facebook/messenger'
+require_relative 'bot'
+
+run Facebook::Messenger::Server
+```
+
+```
+$ rackup
+```
+
 ## Configuration
 
 ### Create an Application on Facebook
@@ -109,3 +124,4 @@ If you're using Facebook Messenger, we probably want to [hire you].
 [rubygems.org]: https://rubygems.org
 [message-documentation]: https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
 [facebook-developers]: https://developers.facebook.com
+[rack]: https://github.com/rack/rack
