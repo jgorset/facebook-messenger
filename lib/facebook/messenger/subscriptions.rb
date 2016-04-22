@@ -4,10 +4,12 @@ module Facebook
   module Messenger
     # This module handles subscribing and unsubscribing Applications to Pages.
     module Subscriptions
+      include HTTParty
+
       URL = 'https://graph.facebook.com/v2.6/me/subscribed_apps'.freeze
 
       def self.subscribe(access_token)
-        response = HTTParty.post URL, query: { access_token: access_token }
+        response = post URL, query: { access_token: access_token }
 
         raise_errors(response)
 
@@ -15,7 +17,7 @@ module Facebook
       end
 
       def self.unsubscribe(access_token)
-        response = HTTParty.delete URL, query: { access_token: access_token }
+        response = delete URL, query: { access_token: access_token }
 
         raise_errors(response)
 
