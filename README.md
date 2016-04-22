@@ -49,6 +49,10 @@ Messages can be just text, text with images or even text with images and
 options. See Facebook's [documentation][message-documentation] for an
 exhaustive reference.
 
+<p align="center">
+  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/example_conversation.png">
+</p>
+
 The bot runs on [Rack][rack], so you hook it up like you would an ordinary
 web application:
 
