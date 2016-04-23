@@ -127,21 +127,6 @@ Bot.on :delivery do |delivery|
 end
 ```
 
-The bot runs on [Rack][rack], so you hook it up like you would an ordinary
-web application:
-
-```ruby
-# config.ru
-require 'facebook/messenger'
-require_relative 'bot'
-
-run Facebook::Messenger::Server
-```
-
-```
-$ rackup
-```
-
 ## Configuration
 
 ### Create an Application on Facebook
@@ -171,6 +156,22 @@ from Facebook:
 ```ruby
 Facebook::Messenger::Subscriptions.subscribe
 ```
+
+The bot runs on [Rack][rack], so you hook it up like you would an ordinary
+web application:
+
+```ruby
+# config.ru
+require 'facebook/messenger'
+require_relative 'bot'
+
+run Facebook::Messenger::Server
+```
+
+```
+$ rackup
+```
+
 
 ## Development
 
