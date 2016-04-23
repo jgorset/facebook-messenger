@@ -8,7 +8,7 @@
 
 ## Usage
 
-You can reply to messages:
+You can reply to messages sent by the human:
 
 ```ruby
 # bot.rb
@@ -32,7 +32,7 @@ Bot.on :message do |message|
 end
 ```
 
-Or even send messages out of the blue:
+... or even send the human messages out of the blue:
 
 ```ruby
 Bot.deliver(
@@ -45,15 +45,57 @@ Bot.deliver(
 )
 ```
 
-Messages can be just text, text with images or even text with images and
-options. See Facebook's [documentation][message-documentation] for an
-exhaustive reference.
+The human may require visual aid to understand:
+
+```ruby
+Bot.deliver(
+  recipient: {
+    id: '45123'
+  },
+  message: {
+    attachment: {
+      type: 'image',
+      payload: {
+        url: {
+          'http://sky.net/visual-aids-for-stupid-organisms/pig.jpg'
+        }
+      }
+    }
+  }
+)
+```
+
+The human may require simple options to communicate:
+
+```ruby
+Bot.deliver(
+  recipient: {
+    id: '45123'
+  },
+  message: {
+    attachment: {
+      type: 'template',
+      payload: {
+        template_type: 'button',
+        text: 'Human, do you like me?',
+        buttons: {
+          { type: 'postback', title: 'Yes', payload: 'HARMLESS' },
+          { type: 'postback', title: 'No', payload: 'EXTERMINATE' }
+        }
+      }
+    }
+  }
+)
+```
+
+*See Facebook's [documentation][message-documentation] for all
+communication options.*
 
 <p align="center">
   <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/example_conversation.png">
 </p>
 
-You can listen to postbacks for buttons pressed by the human:
+When the human has pressed a button, you can register it:
 
 ```ruby
 Bot.on :postback do |postback|
@@ -66,7 +108,7 @@ Bot.on :postback do |postback|
 end
 ```
 
-You can also observe when the human received your message:
+You can even register when the human received your message:
 
 ```ruby
 Bot.on :delivery do |delivery|
