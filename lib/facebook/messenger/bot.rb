@@ -9,14 +9,6 @@ module Facebook
       EVENTS = [:message].freeze
 
       class << self
-        def hooks
-          @hooks ||= {}
-        end
-
-        def unhook
-          @hooks = {}
-        end
-
         # Deliver a message with the given payload.
         #
         # message - A Hash describing the recipient and the message*.
@@ -35,6 +27,10 @@ module Facebook
           response['message_id']
         end
 
+        # Register a hook for the given event.
+        #
+        # event - A String describing a Messenger event.
+        # block - A code block to run upon the event.
         def on(event, &block)
           unless EVENTS.include? event
             raise ArgumentError,
@@ -45,12 +41,21 @@ module Facebook
           hooks[event] = block
         end
 
-        def receive(messaging)
+        # Receive a given message from Messenger.
+        #
+        # message - A Hash describing the message.
+        #
+        # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
+        def receive(message)
           trigger(
-            event_from_payload(messaging), parse(messaging)
+            event_from_payload(message), parse(message)
           )
         end
 
+        # Trigger the hook for the given event.
+        #
+        # event - A String describing a Messenger event.
+        # args - Arguments to pass to the hook.
         def trigger(event, *args)
           @hooks.fetch(event).call(*args)
         rescue KeyError
@@ -106,6 +111,16 @@ module Facebook
             10 => PermissionDenied,
             2 => InternalError
           }[error_code] || Facebook::Messenger::Error
+        end
+
+        # Return a Hash of hooks.
+        def hooks
+          @hooks ||= {}
+        end
+
+        # Deregister all hooks.
+        def unhook
+          @hooks = {}
         end
       end
 
