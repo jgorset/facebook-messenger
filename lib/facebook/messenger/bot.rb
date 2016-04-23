@@ -18,14 +18,7 @@ module Facebook
         # Returns a String describing the message ID if the message was sent,
         # or raises an exception if it was not.
         def deliver(message)
-          response = post '/messages',
-            query: {
-              access_token: Facebook::Messenger.config.access_token
-            },
-            body: JSON.dump(message),
-            headers: {
-              'Content-Type' => 'application/json'
-            }
+          response = post '/messages', body: JSON.dump(message)
 
           raise_errors_from(response)
 
@@ -107,6 +100,18 @@ module Facebook
         # Deregister all hooks.
         def unhook
           @hooks = {}
+        end
+
+        # Default HTTParty options.
+        def default_options
+          super.merge(
+            query: {
+              access_token: Facebook::Messenger.config.access_token
+            },
+            headers: {
+              'Content-Type' => 'application/json'
+            }
+          )
         end
       end
 

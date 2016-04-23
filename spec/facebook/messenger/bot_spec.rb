@@ -107,11 +107,11 @@ describe Facebook::Messenger::Bot do
       stub_request(:post, messages_url)
         .with(
           query: { access_token: access_token },
-          body: payload
+          body: payload,
+          headers: { 'Content-Type' => 'application/json' }
         )
         .to_return(
           body: JSON.dump(hash),
-          status: 200,
           headers: default_graph_api_response_headers
         )
     end
