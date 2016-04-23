@@ -20,7 +20,7 @@ module Facebook
         end
 
         def sent_at
-          Time.at @payload['timestamp']
+          Time.at(@payload['timestamp'] / 1000)
         end
 
         def text

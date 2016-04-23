@@ -11,8 +11,8 @@ module Facebook
           @payload['delivery']['mids']
         end
 
-        def watermark
-          @payload['delivery']['watermark']
+        def last_message_delivered_at
+          Time.at(@payload['delivery']['watermark'] / 1000)
         end
 
         def seq

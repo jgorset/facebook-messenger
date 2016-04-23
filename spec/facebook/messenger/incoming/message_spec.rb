@@ -40,7 +40,7 @@ describe Facebook::Messenger::Incoming::Message do
 
   describe '.sent_at' do
     it 'returns when the message was sent' do
-      expect(subject.sent_at).to eq(Time.at(payload['timestamp']))
+      expect(subject.sent_at).to eq(Time.at(payload['timestamp'] / 1000))
     end
   end
 
