@@ -1,7 +1,7 @@
 module Facebook
   module Messenger
-    # This module sends and receives messages.
-    class Bot
+    # The Bot module sends and receives messages.
+    module Bot
       include HTTParty
 
       base_uri 'https://graph.facebook.com/v2.6/me'
