@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Facebook::Messenger::Message do
-  let :messaging do
+describe Facebook::Messenger::Incoming::Message do
+  let :payload do
     {
       'sender' => {
         'id' => '3'
@@ -18,35 +18,35 @@ describe Facebook::Messenger::Message do
     }
   end
 
-  subject { Facebook::Messenger::Message.new(messaging) }
+  subject { Facebook::Messenger::Incoming::Message.new(payload) }
 
   describe '.id' do
     it 'returns the message id' do
-      expect(subject.id).to eq(messaging['message']['mid'])
+      expect(subject.id).to eq(payload['message']['mid'])
     end
   end
 
   describe '.sender' do
     it 'returns the sender' do
-      expect(subject.sender).to eq(messaging['sender'])
+      expect(subject.sender).to eq(payload['sender'])
     end
   end
 
   describe '.seq' do
     it 'returns the message sequence number' do
-      expect(subject.seq).to eq(messaging['message']['seq'])
+      expect(subject.seq).to eq(payload['message']['seq'])
     end
   end
 
   describe '.sent_at' do
     it 'returns when the message was sent' do
-      expect(subject.sent_at).to eq(Time.at(messaging['timestamp']))
+      expect(subject.sent_at).to eq(Time.at(payload['timestamp']))
     end
   end
 
   describe '.text' do
     it 'returns the text of the message' do
-      expect(subject.text).to eq(messaging['message']['text'])
+      expect(subject.text).to eq(payload['message']['text'])
     end
   end
 end

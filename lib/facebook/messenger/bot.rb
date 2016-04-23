@@ -6,7 +6,7 @@ module Facebook
 
       base_uri 'https://graph.facebook.com/v2.6/me'
 
-      EVENTS = [:message].freeze
+      EVENTS = [:message, :delivery].freeze
 
       class << self
         # Deliver a message with the given payload.
@@ -43,13 +43,15 @@ module Facebook
 
         # Receive a given message from Messenger.
         #
-        # message - A Hash describing the message.
+        # payload - A Hash describing the message.
         #
         # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
-        def receive(message)
-          trigger(
-            event_from_payload(message), parse(message)
-          )
+        def receive(payload)
+          klass = Facebook::Messenger::Incoming.parse(payload)
+
+          case klass
+          when Incoming::Message then trigger(:message, klass)
+          end
         end
 
         # Trigger the hook for the given event.
@@ -60,15 +62,6 @@ module Facebook
           @hooks.fetch(event).call(*args)
         rescue KeyError
           $stderr.puts "Ignoring #{event} (no hook registered)"
-        end
-
-        # Parse the message from Facebook.
-        #
-        # messaging - A Hash describing a payload from Facebook.
-        #
-        # Returns a Facebook::Messenger::Message instance.
-        def parse(messaging)
-          Facebook::Messenger::Message.new(messaging)
         end
 
         # Raise any errors in the given response.
@@ -84,20 +77,6 @@ module Facebook
             error_class_from_error_code(error['code']),
             (error['error_data'] || error['message'])
           )
-        end
-
-        # Find the appropriate event for the given payload.
-        #
-        # payload - A Hash describing a payload from Facebook.
-        def event_from_payload(payload)
-          {
-            'message' => :message,
-            'delivery' => :delivery,
-            'postback' => :postback,
-            'optin' => :optin
-          }.each do |key, event|
-            return event if payload.key? key
-          end
         end
 
         # Find the appropriate error class for the given error code.
@@ -127,7 +106,6 @@ module Facebook
       class RecipientNotFound < Facebook::Messenger::Error; end
       class PermissionDenied < Facebook::Messenger::Error; end
       class InternalError < Facebook::Messenger::Error; end
-      class UnregisteredEvent < Facebook::Messenger::Error; end
     end
   end
 end

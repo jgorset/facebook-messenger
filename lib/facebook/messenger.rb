@@ -4,7 +4,7 @@ require 'facebook/messenger/subscriptions'
 require 'facebook/messenger/bot'
 require 'facebook/messenger/server'
 require 'facebook/messenger/configuration'
-require 'facebook/messenger/message'
+require 'facebook/messenger/incoming'
 
 module Facebook
   # All the code for this gem resides in this module.
