@@ -123,7 +123,7 @@ Bot.on :delivery do |delivery|
   delivery.at        # => 2016-04-22 21:30:36 +0200
   delivery.seq       # => 37
 
-  puts "Human received messages before #{delivery.at}"
+  puts "Human was online at #{delivery.at}"
 end
 ```
 
