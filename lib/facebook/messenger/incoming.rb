@@ -1,5 +1,6 @@
 require 'facebook/messenger/incoming/message'
 require 'facebook/messenger/incoming/delivery'
+require 'facebook/messenger/incoming/postback'
 
 module Facebook
   module Messenger
@@ -14,7 +15,8 @@ module Facebook
       def self.parse(payload)
         {
           'message' => Message,
-          'delivery' => Delivery
+          'delivery' => Delivery,
+          'postback' => Postback
         }.each do |key, klass|
           return klass.new(payload) if payload.key? key
         end

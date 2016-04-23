@@ -67,5 +67,28 @@ describe Facebook::Messenger::Incoming do
         )
       end
     end
+
+    context 'when the payload is a postback' do
+      let :payload do
+        {
+          'sender' => {
+            'id' => '3'
+          },
+          'recipient' => {
+            'id' => '3'
+          },
+          'timestamp' => 145_776_419_762_7,
+          'postback' => {
+            'payload' => 'USER_DEFINED_PAYLOAD'
+          }
+        }
+      end
+
+      it 'returns an Incoming::Postback' do
+        expect(subject.parse(payload)).to be_a(
+          Facebook::Messenger::Incoming::Postback
+        )
+      end
+    end
   end
 end

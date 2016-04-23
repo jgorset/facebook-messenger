@@ -53,15 +53,28 @@ exhaustive reference.
   <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/example_conversation.png">
 </p>
 
+You can listen to postbacks for buttons pressed by the human:
+
+```ruby
+Bot.on :postback do |postback|
+  postback.sender    # => { id: '1008372609250235' }
+  postback.recipient # => { id: '2015573629214912' }
+  postback.sent_at   # => 2016-04-22 21:30:36 +0200
+  message.payload    # => 'EXTERMINATE'
+
+  puts "Human #{recipient} marked for extermination"
+end
+```
+
 You can also observe when the human received your message:
 
 ```ruby
 Bot.on :delivery do |delivery|
-  message.ids       # => 'mid.1457764197618:41d102a3e1ae206a38'
-  message.sender    # => { id: '1008372609250235' }
-  message.recipient # => { id: '2015573629214912' }
-  message.at        # => 2016-04-22 21:30:36 +0200
-  message.seq       # => 37
+  delivery.ids       # => 'mid.1457764197618:41d102a3e1ae206a38'
+  delivery.sender    # => { id: '1008372609250235' }
+  delivery.recipient # => { id: '2015573629214912' }
+  delivery.at        # => 2016-04-22 21:30:36 +0200
+  delivery.seq       # => 37
 
   puts "Human received messages before #{delivery.at}"
 end

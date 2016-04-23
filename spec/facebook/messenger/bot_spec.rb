@@ -59,6 +59,20 @@ describe Facebook::Messenger::Bot do
         subject.receive({})
       end
     end
+
+    context 'with a postback' do
+      let(:postback) { Facebook::Messenger::Incoming::Postback.new({}) }
+
+      it 'triggers a :delivery' do
+        expect(Facebook::Messenger::Incoming).to receive(:parse)
+          .and_return(postback)
+
+        expect(Facebook::Messenger::Bot).to receive(:trigger)
+          .with(:postback, postback)
+
+        subject.receive({})
+      end
+    end
   end
 
   describe '.trigger' do
