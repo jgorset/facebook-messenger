@@ -46,9 +46,9 @@ describe Facebook::Messenger::Incoming::Delivery do
     end
   end
 
-  describe '.last_message_delivered_at' do
+  describe '.at' do
     it 'returns a Time' do
-      expect(subject.last_message_delivered_at).to eq(
+      expect(subject.at).to eq(
         Time.at(payload['delivery']['watermark'] / 1000)
       )
     end

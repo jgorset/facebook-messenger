@@ -51,6 +51,7 @@ module Facebook
 
           case klass
           when Incoming::Message then trigger(:message, klass)
+          when Incoming::Delivery then trigger(:delivery, klass)
           end
         end
 

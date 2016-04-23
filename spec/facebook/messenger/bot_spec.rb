@@ -31,6 +31,36 @@ describe Facebook::Messenger::Bot do
     end
   end
 
+  describe '.receive' do
+    context 'with a message' do
+      let(:message) { Facebook::Messenger::Incoming::Message.new({}) }
+
+      it 'triggers a :message' do
+        expect(Facebook::Messenger::Incoming).to receive(:parse)
+          .and_return(message)
+
+        expect(Facebook::Messenger::Bot).to receive(:trigger)
+          .with(:message, message)
+
+        subject.receive({})
+      end
+    end
+
+    context 'with a delivery' do
+      let(:delivery) { Facebook::Messenger::Incoming::Delivery.new({}) }
+
+      it 'triggers a :delivery' do
+        expect(Facebook::Messenger::Incoming).to receive(:parse)
+          .and_return(delivery)
+
+        expect(Facebook::Messenger::Bot).to receive(:trigger)
+          .with(:delivery, delivery)
+
+        subject.receive({})
+      end
+    end
+  end
+
   describe '.trigger' do
     let(:hook) { proc { |args| args } }
 

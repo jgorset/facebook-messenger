@@ -53,6 +53,20 @@ exhaustive reference.
   <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/example_conversation.png">
 </p>
 
+You can also observe when the human received your message:
+
+```ruby
+Bot.on :delivery do |delivery|
+  message.ids       # => 'mid.1457764197618:41d102a3e1ae206a38'
+  message.sender    # => { id: '1008372609250235' }
+  message.recipient # => { id: '2015573629214912' }
+  message.at        # => 2016-04-22 21:30:36 +0200
+  message.seq       # => 37
+
+  puts "Human received messages before #{delivery.at}"
+end
+```
+
 The bot runs on [Rack][rack], so you hook it up like you would an ordinary
 web application:
 
