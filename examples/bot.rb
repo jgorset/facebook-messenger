@@ -8,10 +8,16 @@ end
 include Facebook::Messenger
 
 Bot.on :message do |message|
-  Bot.message(
+  puts "Received '#{message.text}' from #{message.sender}"
+
+  Bot.deliver(
     recipient: message.sender,
     message: {
       text: 'Hello, human!'
     }
   )
+end
+
+Bot.on :delivery do |delivery|
+  puts "Delivered message(s) #{delivery.ids}"
 end
