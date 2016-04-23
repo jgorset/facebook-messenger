@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/logo.png">
+  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/example_conversation_with_logo.png">
 </p>
 
 ## Installation
@@ -7,6 +7,8 @@
     $ gem install facebook-messenger
 
 ## Usage
+
+#### Sending and receiving messages
 
 You can reply to messages sent by the human:
 
@@ -45,6 +47,8 @@ Bot.deliver(
 )
 ```
 
+##### Messages with images
+
 The human may require visual aid to understand:
 
 ```ruby
@@ -64,6 +68,8 @@ Bot.deliver(
   }
 )
 ```
+
+##### Messages with buttons
 
 The human may require simple options to communicate:
 
@@ -88,10 +94,7 @@ Bot.deliver(
 )
 ```
 
-*See Facebook's [documentation][message-documentation] for all
-communication options.*
-
-When the human has pressed a button, you can register it:
+When the human has selected an option, you can act on it:
 
 ```ruby
 Bot.on :postback do |postback|
@@ -106,7 +109,11 @@ Bot.on :postback do |postback|
 end
 ```
 
-You can even register when the human received your message:
+*See Facebook's [documentation][message-documentation] for all message options.*
+
+#### Message delivery receipts
+
+You can stalk the human:
 
 ```ruby
 Bot.on :delivery do |delivery|
@@ -119,10 +126,6 @@ Bot.on :delivery do |delivery|
   puts "Human received messages before #{delivery.at}"
 end
 ```
-
-<p align="center">
-  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/example_conversation.png">
-</p>
 
 The bot runs on [Rack][rack], so you hook it up like you would an ordinary
 web application:
