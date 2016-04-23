@@ -43,7 +43,7 @@ describe Facebook::Messenger::Bot do
     end
   end
 
-  describe '.message' do
+  describe '.deliver' do
     let(:messages_url) do
       Facebook::Messenger::Subscriptions.base_uri + '/messages'
     end
@@ -83,7 +83,7 @@ describe Facebook::Messenger::Bot do
       end
 
       it 'sends a message' do
-        expect(subject.message(payload)).to eq(message_id)
+        expect(subject.deliver(payload)).to eq(message_id)
       end
     end
 
@@ -100,8 +100,8 @@ describe Facebook::Messenger::Bot do
         )
       end
 
-      it 'sends a message' do
-        expect { subject.message(payload) }.to raise_error(
+      it 'delivers a message' do
+        expect { subject.deliver(payload) }.to raise_error(
           Facebook::Messenger::Bot::RecipientNotFound,
           'No matching user found.'
         )
@@ -122,8 +122,8 @@ describe Facebook::Messenger::Bot do
         )
       end
 
-      it 'sends a message' do
-        expect { subject.message(payload) }.to raise_error(
+      it 'raises PermissionDenied' do
+        expect { subject.deliver(payload) }.to raise_error(
           Facebook::Messenger::Bot::PermissionDenied,
           'Application does not have permission to use the Send API.'
         )
@@ -143,8 +143,8 @@ describe Facebook::Messenger::Bot do
         )
       end
 
-      it 'sends a message' do
-        expect { subject.message(payload) }.to raise_error(
+      it 'raises InternalError' do
+        expect { subject.deliver(payload) }.to raise_error(
           Facebook::Messenger::Bot::InternalError,
           'Send message failure. Internal server error.'
         )

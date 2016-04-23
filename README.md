@@ -23,7 +23,7 @@ Bot.on :message do |message|
   message.sent_at # => 2016-04-22 21:30:36 +0200
   message.text    # => 'Hello, bot!'
 
-  Bot.message(
+  Bot.deliver(
     recipient: message.sender,
     message: {
       text: 'Hello, human!'
@@ -35,7 +35,7 @@ end
 Or even send messages out of the blue:
 
 ```ruby
-Bot.message(
+Bot.deliver(
   recipient: {
     id: '45123'
   },

@@ -17,18 +17,18 @@ module Facebook
           @hooks = {}
         end
 
-        # Send a message with the given payload.
+        # Delvier a message with the given payload.
         #
-        # payload - A Hash describing the recipient and the message*.
+        # message - A Hash describing the recipient and the message*.
         #
         # * https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
         #
         # Returns a String describing the message ID if the message was sent,
         # or raises an exception if it was not.
-        def message(payload)
+        def deliver(message)
           response = post '/messages', query: {
             access_token: Facebook::Messenger.config.access_token
-          }, body: payload
+          }, body: message
 
           raise_errors_from(response)
 
