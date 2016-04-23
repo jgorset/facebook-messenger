@@ -17,7 +17,7 @@ module Facebook
           @hooks = {}
         end
 
-        # Delvier a message with the given payload.
+        # Deliver a message with the given payload.
         #
         # message - A Hash describing the recipient and the message*.
         #
