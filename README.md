@@ -91,10 +91,6 @@ Bot.deliver(
 *See Facebook's [documentation][message-documentation] for all
 communication options.*
 
-<p align="center">
-  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/example_conversation.png">
-</p>
-
 When the human has pressed a button, you can register it:
 
 ```ruby
@@ -102,9 +98,11 @@ Bot.on :postback do |postback|
   postback.sender    # => { id: '1008372609250235' }
   postback.recipient # => { id: '2015573629214912' }
   postback.sent_at   # => 2016-04-22 21:30:36 +0200
-  postback.payload    # => 'EXTERMINATE'
+  postback.payload   # => 'EXTERMINATE'
 
-  puts "Human #{postback.recipient} marked for extermination"
+  if postback.payload == 'EXTERMINATE'
+    puts "Human #{postback.recipient} marked for extermination"
+  end
 end
 ```
 
@@ -121,6 +119,10 @@ Bot.on :delivery do |delivery|
   puts "Human received messages before #{delivery.at}"
 end
 ```
+
+<p align="center">
+  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/example_conversation.png">
+</p>
 
 The bot runs on [Rack][rack], so you hook it up like you would an ordinary
 web application:
