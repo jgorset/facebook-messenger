@@ -138,7 +138,7 @@ Bot.on :optin do |optin|
     }
   )
 end
-
+```
 
 #### Message delivery receipts
 
@@ -160,8 +160,8 @@ end
 
 ### Create an Application on Facebook
 
-Create an Application on [developers.facebook.com][facebook-developers] and go
-to the Messenger tab. Select the Page you want to install your bot on.
+Create an Application on [developers.facebook.com] and go to the Messenger
+tab. Select the Page you want to install your bot on.
 
 Create a new webhook, enter the domain your bot is connected to and a verify
 token of your choosing.
@@ -231,6 +231,6 @@ If you're using Facebook Messenger, we probably want to [hire you].
 [MIT License]: http://opensource.org/licenses/MIT
 [rubygems.org]: https://rubygems.org
 [message-documentation]: https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
-[facebook-developers]: https://developers.facebook.com
+[developers.facebook.com]: https://developers.facebook.com/
 [rack]: https://github.com/rack/rack
 [send-to-messenger-plugin]: https://developers.facebook.com/docs/messenger-platform/plugin-reference
