@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/example_conversation_with_logo.png">
+  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/logo.png">
 </p>
 
 [![Gem Version](https://img.shields.io/gem/v/facebook-messenger.svg?style=flat)](https://rubygems.org/gems/facebook-messenger)
