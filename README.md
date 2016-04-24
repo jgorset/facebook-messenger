@@ -27,7 +27,7 @@ include Facebook::Messenger
 
 Bot.on :message do |message|
   message.id      # => 'mid.1457764197618:41d102a3e1ae206a38'
-  message.sender  # => { id: '1008372609250235' }
+  message.sender  # => { 'id' => '1008372609250235' }
   message.seq     # => 73
   message.sent_at # => 2016-04-22 21:30:36 +0200
   message.text    # => 'Hello, bot!'
@@ -105,8 +105,8 @@ When the human has selected an option, you can act on it:
 
 ```ruby
 Bot.on :postback do |postback|
-  postback.sender    # => { id: '1008372609250235' }
-  postback.recipient # => { id: '2015573629214912' }
+  postback.sender    # => { 'id' => '1008372609250235' }
+  postback.recipient # => { 'id' => '2015573629214912' }
   postback.sent_at   # => 2016-04-22 21:30:36 +0200
   postback.payload   # => 'EXTERMINATE'
 
@@ -125,8 +125,8 @@ embedded on a website, you will receive an `optin` event.
 
 ```ruby
 Bot.on :optin do |optin|
-  postback.sender    # => { id: '1008372609250235' }
-  postback.recipient # => { id: '2015573629214912' }
+  postback.sender    # => { 'id' => '1008372609250235' }
+  postback.recipient # => { 'id' => '2015573629214912' }
   postback.sent_at   # => 2016-04-22 21:30:36 +0200
   postback.ref       # => 'CONTACT_SKYNET'
 
@@ -148,8 +148,8 @@ You can stalk the human:
 ```ruby
 Bot.on :delivery do |delivery|
   delivery.ids       # => 'mid.1457764197618:41d102a3e1ae206a38'
-  delivery.sender    # => { id: '1008372609250235' }
-  delivery.recipient # => { id: '2015573629214912' }
+  delivery.sender    # => { 'id' => '1008372609250235' }
+  delivery.recipient # => { 'id' => '2015573629214912' }
   delivery.at        # => 2016-04-22 21:30:36 +0200
   delivery.seq       # => 37
 
