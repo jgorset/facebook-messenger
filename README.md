@@ -1,16 +1,13 @@
 <p align="center">
-  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/logo.png">
+  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/conversation_with_logo.gif">
 </p>
+
 
 [![Gem Version](https://img.shields.io/gem/v/facebook-messenger.svg?style=flat)](https://rubygems.org/gems/facebook-messenger)
 [![Build Status](https://img.shields.io/travis/hyperoslo/facebook-messenger.svg?style=flat)](https://travis-ci.org/hyperoslo/facebook-messenger)
 [![Dependency Status](https://img.shields.io/gemnasium/hyperoslo/facebook-messenger.svg?style=flat)](https://gemnasium.com/hyperoslo/facebook-messenger)
 [![Code Climate](https://img.shields.io/codeclimate/github/hyperoslo/facebook-messenger.svg?style=flat)](https://codeclimate.com/github/hyperoslo/facebook-messenger)
 [![Coverage Status](https://img.shields.io/coveralls/hyperoslo/facebook-messenger.svg?style=flat)](https://coveralls.io/r/hyperoslo/facebook-messenger)
-
-<p align="center">
-  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/conversation.gif">
-</p>
 
 ## Installation
 
