@@ -6,7 +6,7 @@ module Facebook
 
       base_uri 'https://graph.facebook.com/v2.6/me'
 
-      EVENTS = [:message, :delivery].freeze
+      EVENTS = [:message, :delivery, :postback].freeze
 
       class << self
         # Deliver a message with the given payload.
