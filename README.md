@@ -8,6 +8,10 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/hyperoslo/facebook-messenger.svg?style=flat)](https://codeclimate.com/github/hyperoslo/facebook-messenger)
 [![Coverage Status](https://img.shields.io/coveralls/hyperoslo/facebook-messenger.svg?style=flat)](https://coveralls.io/r/hyperoslo/facebook-messenger)
 
+<p align="center">
+  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/conversation.gif">
+</p>
+
 ## Installation
 
     $ gem install facebook-messenger
