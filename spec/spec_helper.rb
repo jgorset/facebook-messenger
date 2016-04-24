@@ -1,3 +1,7 @@
+require 'coveralls'
 require 'webmock/rspec'
-require 'facebook/messenger'
 require 'helpers/graph_api_helpers'
+
+Coveralls.wear!
+
+require 'facebook/messenger'
