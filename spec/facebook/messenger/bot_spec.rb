@@ -73,6 +73,20 @@ describe Facebook::Messenger::Bot do
         subject.receive({})
       end
     end
+
+    context 'with an optin' do
+      let(:optin) { Facebook::Messenger::Incoming::Optin.new({}) }
+
+      it 'triggers a :delivery' do
+        expect(Facebook::Messenger::Incoming).to receive(:parse)
+          .and_return(optin)
+
+        expect(Facebook::Messenger::Bot).to receive(:trigger)
+          .with(:optin, optin)
+
+        subject.receive({})
+      end
+    end
   end
 
   describe '.trigger' do

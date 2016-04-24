@@ -90,5 +90,28 @@ describe Facebook::Messenger::Incoming do
         )
       end
     end
+
+    context 'when the payload is an optin' do
+      let :payload do
+        {
+          'sender' => {
+            'id' => '3'
+          },
+          'recipient' => {
+            'id' => '3'
+          },
+          'timestamp' => 145_776_419_762_7,
+          'optin' => {
+            'ref' => 'PASS_THROUGH_PARAM'
+          }
+        }
+      end
+
+      it 'returns an Incoming::Optin' do
+        expect(subject.parse(payload)).to be_a(
+          Facebook::Messenger::Incoming::Optin
+        )
+      end
+    end
   end
 end

@@ -1,6 +1,7 @@
 require 'facebook/messenger/incoming/message'
 require 'facebook/messenger/incoming/delivery'
 require 'facebook/messenger/incoming/postback'
+require 'facebook/messenger/incoming/optin'
 
 module Facebook
   module Messenger
@@ -16,7 +17,8 @@ module Facebook
         {
           'message' => Message,
           'delivery' => Delivery,
-          'postback' => Postback
+          'postback' => Postback,
+          'optin' => Optin
         }.each do |key, klass|
           return klass.new(payload) if payload.key? key
         end
