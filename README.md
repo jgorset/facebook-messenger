@@ -111,6 +111,29 @@ end
 
 *See Facebook's [documentation][message-documentation] for all message options.*
 
+#### Send to Facebook
+
+When the human clicks the [Send to Messenger button][send-to-messenger-plugin]
+embedded on a website, you will receive an `optin` event.
+
+```ruby
+Bot.on :optin do |optin|
+  postback.sender    # => { id: '1008372609250235' }
+  postback.recipient # => { id: '2015573629214912' }
+  postback.sent_at   # => 2016-04-22 21:30:36 +0200
+  postback.ref       # => 'CONTACT_SKYNET'
+
+  Bot.deliver(
+    recipient: {
+      id: '45123'
+    },
+    message: {
+      text: 'Ah, human!'
+    }
+  )
+end
+
+
 #### Message delivery receipts
 
 You can stalk the human:
@@ -204,3 +227,4 @@ If you're using Facebook Messenger, we probably want to [hire you].
 [message-documentation]: https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
 [facebook-developers]: https://developers.facebook.com
 [rack]: https://github.com/rack/rack
+[send-to-messenger-plugin]: https://developers.facebook.com/docs/messenger-platform/plugin-reference
