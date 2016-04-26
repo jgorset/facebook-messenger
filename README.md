@@ -225,7 +225,7 @@ end
 We suggest that you put your bot code in `app/bot`.
 
 ```ruby
-# app/bot.rb
+# app/bot/example.rb
 
 include Facebook::Messenger
 
