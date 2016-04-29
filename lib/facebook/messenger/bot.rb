@@ -60,7 +60,7 @@ module Facebook
         # event - A String describing a Messenger event.
         # args - Arguments to pass to the hook.
         def trigger(event, *args)
-          @hooks.fetch(event).call(*args)
+          hooks.fetch(event).call(*args)
         rescue KeyError
           $stderr.puts "Ignoring #{event} (no hook registered)"
         end
