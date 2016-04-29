@@ -8,19 +8,21 @@ module Facebook
     # The Incoming module parses and abstracts incoming requests from
     # Facebook Messenger.
     module Incoming
+      EVENTS = {
+        'message' => Message,
+        'delivery' => Delivery,
+        'postback' => Postback,
+        'optin' => Optin
+      }.freeze
+
       # Parse the given payload.
       #
       # payload - A Hash describing a payload from Facebook.
       #
       # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
       def self.parse(payload)
-        {
-          'message' => Message,
-          'delivery' => Delivery,
-          'postback' => Postback,
-          'optin' => Optin
-        }.each do |key, klass|
-          return klass.new(payload) if payload.key? key
+        EVENTS.each do |event, klass|
+          return klass.new(payload) if payload.key?(event)
         end
 
         raise UnknownPayload, payload
