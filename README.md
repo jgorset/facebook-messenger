@@ -189,7 +189,7 @@ Facebook::Messenger::Subscriptions.subscribe
 
 ### Run it
 
-##### ... with Rack
+##### ... on Rack
 
 The bot runs on [Rack][rack], so you hook it up like you would an ordinary
 web application:
@@ -206,7 +206,7 @@ run Facebook::Messenger::Server
 $ rackup
 ```
 
-##### ... with Rails
+##### ... on Rails
 
 Rails doesn't give you much that you'll need for a bot, but if you have an
 existing application that you'd like to launch it from or just like Rails
