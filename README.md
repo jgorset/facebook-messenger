@@ -67,9 +67,7 @@ Bot.deliver(
     attachment: {
       type: 'image',
       payload: {
-        url: {
-          'http://sky.net/visual-aids-for-stupid-organisms/pig.jpg'
-        }
+        url: 'http://sky.net/visual-aids-for-stupid-organisms/pig.jpg'
       }
     }
   }
