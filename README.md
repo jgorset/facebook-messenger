@@ -239,6 +239,17 @@ Bot.on :message do |message|
 end
 ```
 
+Remember that Rails only eager loads everything in its production environment.
+In the development and test environments, it only requires files as you
+reference constants. You'll need to explicitly load `app/bot`, then:
+
+```ruby
+# config/initializers/bot.rb
+if Rails.env.production?
+  Dir["#{Rails.root}/app/bot/**/*.rb"].each { |file| require file }
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run
