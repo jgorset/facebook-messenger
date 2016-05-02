@@ -89,10 +89,10 @@ Bot.deliver(
       payload: {
         template_type: 'button',
         text: 'Human, do you like me?',
-        buttons: {
+        buttons: [
           { type: 'postback', title: 'Yes', payload: 'HARMLESS' },
           { type: 'postback', title: 'No', payload: 'EXTERMINATE' }
-        }
+        ]
       }
     }
   }
