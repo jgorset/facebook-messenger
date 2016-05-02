@@ -126,8 +126,7 @@ describe Facebook::Messenger::Bot do
         )
         .to_return(
           body: JSON.dump(hash),
-          headers: default_graph_api_response_headers,
-          headers: { 'Content-Type' => 'text/javascript; charset=UTF-8' }
+          headers: default_graph_api_response_headers
         )
     end
 
