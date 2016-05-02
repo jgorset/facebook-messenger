@@ -126,7 +126,8 @@ describe Facebook::Messenger::Bot do
         )
         .to_return(
           body: JSON.dump(hash),
-          headers: default_graph_api_response_headers
+          headers: default_graph_api_response_headers,
+          headers: { 'Content-Type' => 'text/javascript; charset=UTF-8' }
         )
     end
 
@@ -158,7 +159,7 @@ describe Facebook::Messenger::Bot do
         )
       end
 
-      it 'delivers a message' do
+      it 'raises RecipientNotFound' do
         expect { subject.deliver(payload) }.to raise_error(
           Facebook::Messenger::Bot::RecipientNotFound,
           'No matching user found.'
