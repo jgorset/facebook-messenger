@@ -9,7 +9,7 @@ module Facebook
       base_uri 'https://graph.facebook.com/v2.6/me'
 
       def self.subscribe
-        response = post '/subscribed_apps', query: {
+        response = post '/subscribed_apps', format: :json, query: {
           access_token: Facebook::Messenger.config.access_token
         }
 
@@ -19,7 +19,7 @@ module Facebook
       end
 
       def self.unsubscribe
-        response = delete '/subscribed_apps', query: {
+        response = delete '/subscribed_apps', format: :json, query: {
           access_token: Facebook::Messenger.config.access_token
         }
 
