@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.4.2] - 2016-05-02
+### Fixed
+- Fix a bug that caused `Subscriptions.subscribe` and
+  `Subscriptions.unsubscribe` to not raise errors.
+
 ## [0.4.1] - 2016-05-02
 ### Fixed
 - Fix a bug that caused `Bot.deliver` to return `'message_id'` for successful
