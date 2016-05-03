@@ -129,9 +129,7 @@ Bot.on :optin do |optin|
   optin.ref       # => 'CONTACT_SKYNET'
 
   Bot.deliver(
-    recipient: {
-      id: '45123'
-    },
+    recipient: optin.sender,
     message: {
       text: 'Ah, human!'
     }
