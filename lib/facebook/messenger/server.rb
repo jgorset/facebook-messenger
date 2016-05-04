@@ -24,8 +24,8 @@ module Facebook
       end
 
       def verify
-        if @request['hub.verify_token'] == verify_token
-          @response.write @request['hub.challenge']
+        if @request.params['hub.verify_token'] == verify_token
+          @response.write @request.params['hub.challenge']
         else
           @response.write 'Error; wrong verify token'
         end
