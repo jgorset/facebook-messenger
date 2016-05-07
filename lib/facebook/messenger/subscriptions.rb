@@ -10,7 +10,7 @@ module Facebook
 
       def self.subscribe
         response = post '/subscribed_apps', format: :json, query: {
-          access_token: Facebook::Messenger.config.access_token
+          access_token: Facebook::Messenger.configure.access_token
         }
 
         raise_errors(response)
@@ -20,7 +20,7 @@ module Facebook
 
       def self.unsubscribe
         response = delete '/subscribed_apps', format: :json, query: {
-          access_token: Facebook::Messenger.config.access_token
+          access_token: Facebook::Messenger.configure.access_token
         }
 
         raise_errors(response)

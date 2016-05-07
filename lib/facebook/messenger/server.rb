@@ -32,7 +32,7 @@ module Facebook
       end
 
       def verify_token
-        Facebook::Messenger.config.verify_token
+        Facebook::Messenger.configure.verify_token
       end
 
       def receive

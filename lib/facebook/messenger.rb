@@ -13,12 +13,8 @@ module Facebook
       if block_given?
         block.call(Configuration)
       else
-        config
+        Configuration
       end
-    end
-
-    def self.config
-      Configuration
     end
 
     configure do |config|
