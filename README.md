@@ -167,6 +167,7 @@ token of your choosing.
 
 Use the generated access token and your verify token to configure your bot:
 
+##### ... pass a block, or
 ```ruby
 Facebook::Messenger.configure do |config|
   config.access_token = 'EAAG6WgW...'
@@ -174,6 +175,11 @@ Facebook::Messenger.configure do |config|
 end
 ```
 
+##### ... set directly
+```ruby
+Facebook::Messenger.configure.access_token = 'EAAG6WgW...'
+Facebook::Messenger.configure.verify_token = 'my_voice_is_my_password_verify_me'
+```
 ### Subscribe your Application to a Page
 
 Once you've configured your bot, subscribe it to the Page to get messages
