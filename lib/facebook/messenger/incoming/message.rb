@@ -3,6 +3,9 @@ module Facebook
     module Incoming
       # The Message class represents an incoming Facebook Messenger message.
       class Message
+
+        attr_reader :payload
+
         def initialize(payload)
           @payload = payload
         end

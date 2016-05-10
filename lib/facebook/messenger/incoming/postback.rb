@@ -3,6 +3,9 @@ module Facebook
     module Incoming
       # The Postback class represents an incoming Facebook Messenger postback.
       class Postback
+
+        attr_reader :payload
+
         def initialize(payload)
           @payload = payload
         end

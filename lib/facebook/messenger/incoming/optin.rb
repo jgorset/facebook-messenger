@@ -6,6 +6,9 @@ module Facebook
       #
       # https://developers.facebook.com/docs/messenger-platform/plugin-reference
       class Optin
+
+        attr_reader :payload
+
         def initialize(payload)
           @payload = payload
         end

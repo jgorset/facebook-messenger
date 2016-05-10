@@ -3,6 +3,9 @@ module Facebook
     module Incoming
       # The Delivery class represents the receipt of a delivered message.
       class Delivery
+
+        attr_reader :payload
+
         def initialize(payload)
           @payload = payload
         end
