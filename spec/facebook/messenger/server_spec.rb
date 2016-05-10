@@ -70,5 +70,59 @@ describe Facebook::Messenger::Server do
         ]
       )
     end
+
+    context 'integrity check' do
+      before do
+        Facebook::Messenger.config.app_secret = '__an_insecure_secret_key__'
+      end
+
+      after do
+        Facebook::Messenger.config.app_secret = nil
+      end
+
+      it 'do not trigger if fails' do
+        expect(Facebook::Messenger::Bot).to_not receive(:trigger)
+
+        post '/', {}, 'HTTP_X_HUB_SIGNATURE' => 'sha1=64738239'
+      end
+
+      it 'triggers if succeeds' do
+        expect(Facebook::Messenger::Bot).to receive(:trigger)
+
+        body = JSON.generate(
+          object: 'page',
+          entry: [
+            {
+              id: '1',
+              time: 145_776_419_824_6,
+              messaging: [
+                {
+                  sender: {
+                    id: '2'
+                  },
+                  recipient: {
+                    id: '3'
+                  },
+                  timestamp: 145_776_419_762_7,
+                  message: {
+                    mid: 'mid.1457764197618:41d102a3e1ae206a38',
+                    seq: 73,
+                    text: 'Hello, bot!'
+                  }
+                }
+              ]
+            }
+          ]
+        )
+
+        signature = OpenSSL::HMAC.hexdigest(
+          OpenSSL::Digest.new('sha1'),
+          Facebook::Messenger.config.app_secret,
+          body
+        )
+
+        post '/', body, 'HTTP_X_HUB_SIGNATURE' => "sha1=#{signature}"
+      end
+    end
   end
 end
