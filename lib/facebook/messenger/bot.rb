@@ -107,7 +107,7 @@ module Facebook
         def default_options
           super.merge(
             query: {
-              access_token: Facebook::Messenger.configure.access_token
+              access_token: Facebook::Messenger.config.access_token
             },
             headers: {
               'Content-Type' => 'application/json'

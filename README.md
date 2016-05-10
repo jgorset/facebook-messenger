@@ -180,6 +180,15 @@ end
 Facebook::Messenger.configure.access_token = 'EAAG6WgW...'
 Facebook::Messenger.configure.verify_token = 'my_voice_is_my_password_verify_me'
 ```
+
+##### ... then read directly
+```ruby
+Facebook::Messenger.config.access_token
+# => EAAG6WgW...
+Facebook::Messenger.config.verify_token
+# => my_voice_is_my_password_verify_me
+```
+
 ### Subscribe your Application to a Page
 
 Once you've configured your bot, subscribe it to the Page to get messages
