@@ -12,7 +12,7 @@ describe Facebook::Messenger::Bot do
   subject { Facebook::Messenger::Bot }
 
   describe '.on' do
-    let(:hook) { proc { |args| } }
+    let(:hook) { proc { |_args| } }
 
     context 'with a valid event' do
       before { subject.on :message, &hook }
