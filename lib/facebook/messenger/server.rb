@@ -14,9 +14,8 @@ module Facebook
         @request = Rack::Request.new(env)
         @response = Rack::Response.new
 
-        case
-        when @request.get? then verify
-        when @request.post? then receive
+        if @request.get? then verify
+        elsif @request.post? then receive
         else @response.status = 405
         end
 
