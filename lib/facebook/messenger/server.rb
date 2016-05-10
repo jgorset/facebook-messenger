@@ -1,5 +1,6 @@
 require 'rack'
 require 'json'
+require 'openssl'
 
 module Facebook
   module Messenger
@@ -22,6 +23,8 @@ module Facebook
         @response.finish
       end
 
+      private
+
       def verify
         if @request.params['hub.verify_token'] == verify_token
           @response.write @request.params['hub.challenge']
@@ -35,6 +38,8 @@ module Facebook
       end
 
       def receive
+        return if app_secret && !integrity?
+
         hash = JSON.parse(@request.body.read)
 
         # Facebook may batch several items in the 'entry' array during
@@ -46,6 +51,32 @@ module Facebook
             Facebook::Messenger::Bot.receive(messaging)
           end
         end
+      end
+
+      def integrity?
+        Rack::Utils.secure_compare(x_hub_signature, signature)
+      end
+
+      def x_hub_signature
+        @request.env['HTTP_X_HUB_SIGNATURE'.freeze]
+      end
+
+      def signature
+        format('sha1=%s'.freeze, generate_hmac(@request.body.read))
+      ensure
+        @request.body.rewind
+      end
+
+      def generate_hmac(content)
+        OpenSSL::HMAC.hexdigest(
+          OpenSSL::Digest.new('sha1'),
+          app_secret,
+          content
+        )
+      end
+
+      def app_secret
+        Facebook::Messenger.config.app_secret
       end
     end
   end
