@@ -241,7 +241,7 @@ reference constants. You'll need to explicitly load `app/bot`, then:
 
 ```ruby
 # config/initializers/bot.rb
-if Rails.env.production?
+unless Rails.env.production?
   Dir["#{Rails.root}/app/bot/**/*.rb"].each { |file| require file }
 end
 ```
