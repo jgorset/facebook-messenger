@@ -20,6 +20,12 @@ describe Facebook::Messenger::Incoming::Message do
 
   subject { Facebook::Messenger::Incoming::Message.new(payload) }
 
+  describe '.messaging' do
+    it 'returns the original payload' do
+      expect(subject.messaging).to eq(payload)
+    end
+  end
+
   describe '.id' do
     it 'returns the message id' do
       expect(subject.id).to eq(payload['message']['mid'])

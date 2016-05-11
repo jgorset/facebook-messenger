@@ -18,6 +18,12 @@ describe Facebook::Messenger::Incoming::Postback do
 
   subject { Facebook::Messenger::Incoming::Postback.new(payload) }
 
+  describe '.messaging' do
+    it 'returns the original payload' do
+      expect(subject.messaging).to eq(payload)
+    end
+  end
+
   describe '.sender' do
     it 'returns the sender' do
       expect(subject.sender).to eq(payload['sender'])
