@@ -4,26 +4,26 @@ module Facebook
       # The Postback class represents an incoming Facebook Messenger postback.
       class Postback
 
-        attr_reader :raw_payload
+        attr_reader :messaging
 
-        def initialize(raw_payload)
-          @raw_payload = raw_payload
+        def initialize(messaging)
+          @messaging = messaging
         end
 
         def sender
-          @raw_payload['sender']
+          @messaging['sender']
         end
 
         def recipient
-          @raw_payload['recipient']
+          @messaging['recipient']
         end
 
         def sent_at
-          Time.at(@raw_payload['timestamp'] / 1000)
+          Time.at(@messaging['timestamp'] / 1000)
         end
 
         def payload
-          @raw_payload['postback']['payload']
+          @messaging['postback']['payload']
         end
       end
     end

@@ -4,30 +4,30 @@ module Facebook
       # The Message class represents an incoming Facebook Messenger message.
       class Message
 
-        attr_reader :raw_payload
+        attr_reader :messaging
 
-        def initialize(raw_payload)
-          @raw_payload = raw_payload
+        def initialize(messaging)
+          @messaging = messaging
         end
 
         def id
-          @raw_payload['message']['mid']
+          @messaging['message']['mid']
         end
 
         def sender
-          @raw_payload['sender']
+          @messaging['sender']
         end
 
         def seq
-          @raw_payload['message']['seq']
+          @messaging['message']['seq']
         end
 
         def sent_at
-          Time.at(@raw_payload['timestamp'] / 1000)
+          Time.at(@messaging['timestamp'] / 1000)
         end
 
         def text
-          @raw_payload['message']['text']
+          @messaging['message']['text']
         end
       end
     end

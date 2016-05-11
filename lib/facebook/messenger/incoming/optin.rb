@@ -7,26 +7,26 @@ module Facebook
       # https://developers.facebook.com/docs/messenger-platform/plugin-reference
       class Optin
 
-        attr_reader :raw_payload
+        attr_reader :messaging
 
-        def initialize(raw_payload)
-          @raw_payload = raw_payload
+        def initialize(messaging)
+          @messaging = messaging
         end
 
         def sender
-          @raw_payload['sender']
+          @messaging['sender']
         end
 
         def recipient
-          @raw_payload['recipient']
+          @messaging['recipient']
         end
 
         def sent_at
-          Time.at(@raw_payload['timestamp'] / 1000)
+          Time.at(@messaging['timestamp'] / 1000)
         end
 
         def ref
-          @raw_payload['optin']['ref']
+          @messaging['optin']['ref']
         end
       end
     end

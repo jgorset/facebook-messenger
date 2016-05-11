@@ -20,9 +20,9 @@ describe Facebook::Messenger::Incoming::Message do
 
   subject { Facebook::Messenger::Incoming::Message.new(payload) }
 
-  describe '.raw_payload' do
+  describe '.messaging' do
     it 'returns the original payload' do
-      expect(subject.raw_payload).to eq(payload)
+      expect(subject.messaging).to eq(payload)
     end
   end
 
