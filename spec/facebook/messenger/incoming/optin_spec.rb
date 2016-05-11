@@ -18,9 +18,9 @@ describe Facebook::Messenger::Incoming::Optin do
 
   subject { Facebook::Messenger::Incoming::Optin.new(payload) }
 
-  describe '.payload' do
+  describe '.raw_payload' do
     it 'returns the original payload' do
-      expect(subject.payload).to eq(payload)
+      expect(subject.raw_payload).to eq(payload)
     end
   end
 

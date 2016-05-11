@@ -4,30 +4,30 @@ module Facebook
       # The Delivery class represents the receipt of a delivered message.
       class Delivery
 
-        attr_reader :payload
+        attr_reader :raw_payload
 
-        def initialize(payload)
-          @payload = payload
+        def initialize(raw_payload)
+          @raw_payload = raw_payload
         end
 
         def ids
-          @payload['delivery']['mids']
+          @raw_payload['delivery']['mids']
         end
 
         def at
-          Time.at(@payload['delivery']['watermark'] / 1000)
+          Time.at(@raw_payload['delivery']['watermark'] / 1000)
         end
 
         def seq
-          @payload['delivery']['seq']
+          @raw_payload['delivery']['seq']
         end
 
         def sender
-          @payload['sender']
+          @raw_payload['sender']
         end
 
         def recipient
-          @payload['recipient']
+          @raw_payload['recipient']
         end
       end
     end
