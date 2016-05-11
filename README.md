@@ -261,6 +261,9 @@ unless Rails.env.production?
 end
 ```
 
+To test your locally running bot, you can use [ngrok]. This will create a secure
+tunnel to localhost so that Facebook can reach the webhook.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run
@@ -293,3 +296,4 @@ If you're using Facebook Messenger, we probably want to [hire you].
 [developers.facebook.com]: https://developers.facebook.com/
 [rack]: https://github.com/rack/rack
 [send-to-messenger-plugin]: https://developers.facebook.com/docs/messenger-platform/plugin-reference
+[ngrok]: https://ngrok.com/
