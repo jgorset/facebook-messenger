@@ -3,7 +3,6 @@ module Facebook
     module Incoming
       # The Delivery class represents the receipt of a delivered message.
       class Delivery
-
         attr_reader :messaging
 
         def initialize(messaging)

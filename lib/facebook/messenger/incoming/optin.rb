@@ -6,7 +6,6 @@ module Facebook
       #
       # https://developers.facebook.com/docs/messenger-platform/plugin-reference
       class Optin
-
         attr_reader :messaging
 
         def initialize(messaging)
