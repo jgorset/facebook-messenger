@@ -45,13 +45,13 @@ module Facebook
         #
         # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
         def receive(payload)
-          klass = Facebook::Messenger::Incoming.parse(payload)
+          callback = Facebook::Messenger::Incoming.parse(payload)
 
-          case klass
-          when Incoming::Message then trigger(:message, klass)
-          when Incoming::Delivery then trigger(:delivery, klass)
-          when Incoming::Postback then trigger(:postback, klass)
-          when Incoming::Optin then trigger(:optin, klass)
+          case callback
+          when Incoming::Message then trigger(:message, callback)
+          when Incoming::Delivery then trigger(:delivery, callback)
+          when Incoming::Postback then trigger(:postback, callback)
+          when Incoming::Optin then trigger(:optin, callback)
           end
         end
 
