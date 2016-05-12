@@ -8,28 +8,36 @@ module Facebook
 
       base_uri 'https://graph.facebook.com/v2.6/me'
 
-      def self.subscribe
-        response = post '/subscribed_apps', format: :json, query: {
-          access_token: Facebook::Messenger.config.access_token
-        }
+      format :json
+
+      module_function
+
+      def subscribe
+        response = post '/subscribed_apps'
 
         raise_errors(response)
 
         true
       end
 
-      def self.unsubscribe
-        response = delete '/subscribed_apps', format: :json, query: {
-          access_token: Facebook::Messenger.config.access_token
-        }
+      def unsubscribe
+        response = delete '/subscribed_apps'
 
         raise_errors(response)
 
         true
       end
 
-      def self.raise_errors(response)
+      def raise_errors(response)
         raise Error, response['error']['message'] if response.key? 'error'
+      end
+
+      def default_options
+        super.merge(
+          query: {
+            access_token: Facebook::Messenger.config.access_token
+          }
+        )
       end
 
       class Error < Facebook::Messenger::Error; end
