@@ -3,30 +3,19 @@ require 'spec_helper'
 describe Facebook::Messenger do
   describe '#configure' do
     before do
-      subject.configure.access_token = 'token'
-      subject.configure.verify_token = 'password'
+      Facebook::Messenger.config = Facebook::Messenger::Configuration.new
     end
 
-    context 'when a block is given' do
-      it 'yields the provided access_token and verify_token' do
-        allow(subject).to receive(:configure).and_yield('token', 'password')
-
-        access_token = verify_token = nil
-        subject.configure do |token, password|
-          access_token = token
-          verify_token = password
-        end
-
-        expect(access_token).to eq('token')
-        expect(verify_token).to eq('password')
+    it 'sets correct configuration' do
+      Facebook::Messenger.configure do |config|
+        config.access_token = 'access_token'
+        config.app_secret = 'app_secret'
+        config.verify_token = 'verify_token'
       end
-    end
 
-    context 'when called directly' do
-      it 'sets correct configuration' do
-        expect(subject::Configuration.access_token).to eql('token')
-        expect(subject::Configuration.verify_token).to eq('password')
-      end
+      expect(Facebook::Messenger.config.access_token).to eql('access_token')
+      expect(Facebook::Messenger.config.app_secret).to eql('app_secret')
+      expect(Facebook::Messenger.config.verify_token).to eq('verify_token')
     end
   end
 end

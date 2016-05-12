@@ -9,16 +9,16 @@ require 'facebook/messenger/incoming'
 module Facebook
   # All the code for this gem resides in this module.
   module Messenger
-    def self.configure(&block)
-      if block_given?
-        block.call(Configuration)
-      else
-        Configuration
-      end
+    def self.configure
+      yield config
     end
 
     def self.config
-      Configuration
+      @config ||= Configuration.new
+    end
+
+    def self.config=(config)
+      @config = config
     end
 
     configure do |config|
