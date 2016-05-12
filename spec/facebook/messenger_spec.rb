@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe Facebook::Messenger do
   describe '#configure' do
-    before do
-      Facebook::Messenger.config = Facebook::Messenger::Configuration.new
-    end
-
     it 'sets correct configuration' do
       Facebook::Messenger.configure do |config|
         config.access_token = 'access_token'
