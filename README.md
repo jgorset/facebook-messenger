@@ -11,6 +11,8 @@
 
 ## Installation
 
+[![Join the chat at https://gitter.im/hyperoslo/facebook-messenger](https://badges.gitter.im/hyperoslo/facebook-messenger.svg)](https://gitter.im/hyperoslo/facebook-messenger?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
     $ gem install facebook-messenger
 
 ## Usage
