@@ -13,7 +13,13 @@ describe Facebook::Messenger::Incoming::Message do
       'message' => {
         'mid' => 'mid.1457764197618:41d102a3e1ae206a38',
         'seq' => 73,
-        'text' => 'Hello, bot!'
+        'text' => 'Hello, bot!',
+        'attachments' => [{
+          'type' => 'image',
+          'payload' => {
+            'url' => 'https://www.example.com/1.jpg'
+          }
+        }]
       }
     }
   end
@@ -53,6 +59,12 @@ describe Facebook::Messenger::Incoming::Message do
   describe '.text' do
     it 'returns the text of the message' do
       expect(subject.text).to eq(payload['message']['text'])
+    end
+  end
+
+  describe '.attachments' do
+    it 'returns the message attachments' do
+      expect(subject.text).to eq(payload['message']['attachments'])
     end
   end
 end
