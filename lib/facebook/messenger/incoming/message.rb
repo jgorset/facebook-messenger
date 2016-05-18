@@ -28,6 +28,10 @@ module Facebook
         def text
           @messaging['message']['text']
         end
+
+        def attachments
+          @messaging['message']['attachments']
+        end
       end
     end
   end
