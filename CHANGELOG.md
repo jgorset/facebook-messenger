@@ -1,5 +1,17 @@
 # Change Log
 
+## [0.4.3] - 2016-05-26
+### Added
+- Welcome messages.
+- You may now verify that the message is from Facebook by
+  configuring `app_secret`.
+- Support for Rack 2.
+- Support for receiving attachments from the user.
+
+### Fixed
+- Fix a bug that caused `Subscriptions.subscribe` and
+  `Subscriptions.unsubscribe` to not raise errors.
+
 ## [0.4.2] - 2016-05-02
 ### Fixed
 - Fix a bug that caused `Subscriptions.subscribe` and
