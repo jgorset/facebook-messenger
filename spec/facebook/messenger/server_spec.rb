@@ -71,6 +71,14 @@ describe Facebook::Messenger::Server do
       )
     end
 
+    it 'returns bad request if invalid json' do
+      post '/', 'invalid:json'
+
+      expect(last_response.status).to eq(400)
+      expect(last_response.body).to eq('Error parsing request body format')
+      expect(last_response['Content-Type']).to eq('text/plain')
+    end
+
     context 'integrity check' do
       before do
         Facebook::Messenger.config.app_secret = '__an_insecure_secret_key__'
@@ -122,6 +130,31 @@ describe Facebook::Messenger::Server do
         )
 
         post '/', body, 'HTTP_X_HUB_SIGNATURE' => "sha1=#{signature}"
+      end
+
+      it 'returns bad request if signature is not present' do
+        begin
+          old_stream = $stderr.dup
+          $stderr.reopen('/dev/null')
+          $stderr.sync = true
+
+          post '/', {}
+        ensure
+          $stderr.reopen(old_stream)
+          old_stream.close
+        end
+
+        expect(last_response.status).to eq(400)
+        expect(last_response.body).to eq('Error getting integrity signature')
+        expect(last_response['Content-Type']).to eq('text/plain')
+      end
+
+      it 'returns bad request if signature is invalid' do
+        post '/', {}, 'HTTP_X_HUB_SIGNATURE' => 'sha1=64738239'
+
+        expect(last_response.status).to eq(400)
+        expect(last_response.body).to eq('Error checking message integrity')
+        expect(last_response['Content-Type']).to eq('text/plain')
       end
     end
   end
