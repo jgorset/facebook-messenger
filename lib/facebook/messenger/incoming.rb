@@ -14,7 +14,7 @@ module Facebook
         'delivery' => Delivery,
         'postback' => Postback,
         'optin' => Optin,
-        'read' => Read,
+        'read' => Read
       }.freeze
 
       # Parse the given payload.
