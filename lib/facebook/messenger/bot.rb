@@ -52,6 +52,7 @@ module Facebook
           when Incoming::Delivery then trigger(:delivery, callback)
           when Incoming::Postback then trigger(:postback, callback)
           when Incoming::Optin then trigger(:optin, callback)
+          when Incoming::Read then trigger(:read, callback)
           end
         end
 
