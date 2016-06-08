@@ -1,5 +1,15 @@
 # Change Log
 
+## [0.6.0] - 2016-06-08
+### Added
+- Support for read messages (although it isn't documented yet, Facebook
+  is known to send these).
+
+### Fixed
+- Fix an issue that would crash the bot when Facebook neglects to send the
+  `X-Hub-Signature` header. This will now fail with a warning and prompt
+  Facebook to retry.
+
 ## [0.5.0] - 2016-05-26
 ### Added
 - Welcome messages.
