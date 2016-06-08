@@ -87,6 +87,20 @@ describe Facebook::Messenger::Bot do
         subject.receive({})
       end
     end
+
+    context 'with a read' do
+      let(:read) { Facebook::Messenger::Incoming::Read.new({}) }
+
+      it 'triggers a :read' do
+        expect(Facebook::Messenger::Incoming).to receive(:parse)
+          .and_return(read)
+
+        expect(Facebook::Messenger::Bot).to receive(:trigger)
+          .with(:read, read)
+
+        subject.receive({})
+      end
+    end
   end
 
   describe '.trigger' do
