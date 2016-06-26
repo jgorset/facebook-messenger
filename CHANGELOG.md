@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.7.0] - 2016-06-26
+### Added
+- Welcome messages.
+
 ## [0.6.0] - 2016-06-08
 ### Added
 - Support for read messages (although it isn't documented yet, Facebook
@@ -12,7 +16,6 @@
 
 ## [0.5.0] - 2016-05-26
 ### Added
-- Welcome messages.
 - You may now verify that the message is from Facebook by
   configuring `app_secret`.
 - Support for Rack 2.
