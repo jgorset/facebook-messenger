@@ -155,6 +155,14 @@ Bot.on :delivery do |delivery|
 end
 ```
 
+#### Set a welcome message
+
+You can greet new humans to entice them into talking to you:
+
+```ruby
+Facebook::Messenger::Welcome.set text: 'Hello, human!'
+```
+
 ## Configuration
 
 ### Create an Application on Facebook
