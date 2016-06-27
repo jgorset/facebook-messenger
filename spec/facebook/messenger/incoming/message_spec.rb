@@ -44,6 +44,12 @@ describe Facebook::Messenger::Incoming::Message do
     end
   end
 
+  describe '.recipient' do
+    it 'returns the recipient' do
+      expect(subject.recipient).to eq(payload['recipient'])
+    end
+  end
+
   describe '.seq' do
     it 'returns the message sequence number' do
       expect(subject.seq).to eq(payload['message']['seq'])
