@@ -171,9 +171,12 @@ Create an Application on [developers.facebook.com] and go to the Messenger
 tab. Select the Page you want to install your bot on.
 
 Create a new webhook, enter the domain your bot is connected to and a verify
-token of your choosing. NOTE: If you subscribe to message_echoes, the "Bot.on :message" block will try to process these.  This could potentially put your app in a bad feedback loop.
+token of your choosing.
 
 ![Application settings](https://scontent-amt2-1.xx.fbcdn.net/hphotos-xfp1/t39.2178-6/12057143_211110782612505_894181129_n.png)
+
+*Note*: Don't subscribe to `message_echoes`; it'll echo your bot's own messages
+back to you, effectively DDOSing yourself.
 
 Use the generated access token and your verify token to configure your bot:
 
