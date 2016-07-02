@@ -2,10 +2,10 @@ require 'httparty'
 
 module Facebook
   module Messenger
-    # This module handles setting welcome messages.
+    # This module handles changing thread settings.
     #
-    # https://developers.facebook.com/docs/messenger-platform/send-api-reference#welcome_message_configuration
-    module Welcome
+    # https://developers.facebook.com/docs/messenger-platform/thread-settings
+    module Thread
       include HTTParty
 
       base_uri 'https://graph.facebook.com/v2.6/me'
@@ -14,18 +14,18 @@ module Facebook
 
       module_function
 
-      def set(message)
+      def set(settings)
         response = post '/thread_settings',
-                        body: welcome_setting_for(message).to_json
+                        body: settings.to_json
 
         raise_errors(response)
 
         true
       end
 
-      def unset
-        response = post '/thread_settings',
-                        body: welcome_setting_for(nil).to_json
+      def unset(settings)
+        response = delete '/thread_settings',
+                          body: settings.to_json
 
         raise_errors(response)
 
@@ -45,14 +45,6 @@ module Facebook
             'Content-Type' => 'application/json'
           }
         )
-      end
-
-      def welcome_setting_for(payload)
-        {
-          setting_type: 'call_to_actions',
-          thread_state: 'new_thread',
-          call_to_actions: payload ? [{ message: payload }] : []
-        }
       end
 
       class Error < Facebook::Messenger::Error; end

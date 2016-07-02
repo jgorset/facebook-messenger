@@ -155,12 +155,58 @@ Bot.on :delivery do |delivery|
 end
 ```
 
-#### Set a welcome message
+#### Change thread settings
 
 You can greet new humans to entice them into talking to you:
 
 ```ruby
-Facebook::Messenger::Welcome.set text: 'Hello, human!'
+Facebook::Messenger::Thread.set(
+  setting_type: 'greeting',
+  greeting: {
+    text: 'Welcome to your new bot overlord!'
+  }
+)
+```
+
+You can define the action to trigger when new humans click on the Get
+Started button.
+
+```ruby
+Facebook::Messenger::Thread.set(
+  setting_type: 'call_to_actions',
+  thread_state: 'new_thread',
+  call_to_actions: [
+    {
+      payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_WELCOME'
+    }
+  ]
+)
+```
+
+You can show a persistent menu to humans.
+
+```ruby
+Facebook::Messenger::Thread.set(
+  setting_type: 'call_to_actions',
+  thread_state: 'existing_thread',
+  call_to_actions: [
+    {
+      type: 'postback',
+      title: 'Help',
+      payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_HELP'
+    },
+    {
+      type: 'postback',
+      title: 'Start a New Order',
+      payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER'
+    },
+    {
+      type: 'web_url',
+      title: 'View Website',
+      url: 'http://example.com/'
+    }
+  ]
+)
 ```
 
 ## Configuration

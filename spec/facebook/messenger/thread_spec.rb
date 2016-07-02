@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Facebook::Messenger::Welcome do
+describe Facebook::Messenger::Thread do
   let(:access_token) { '<access token>' }
 
   let(:thread_settings_url) do
-    Facebook::Messenger::Welcome.base_uri + '/thread_settings'
+    Facebook::Messenger::Thread.base_uri + '/thread_settings'
   end
 
   before do
@@ -27,13 +27,7 @@ describe Facebook::Messenger::Welcome do
             body: JSON.dump(
               setting_type: 'call_to_actions',
               thread_state: 'new_thread',
-              call_to_actions: [
-                {
-                  message: {
-                    text: 'Hello, human!'
-                  }
-                }
-              ]
+              call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }]
             )
           )
           .to_return(
@@ -46,7 +40,13 @@ describe Facebook::Messenger::Welcome do
       end
 
       it 'returns true' do
-        expect(subject.set(text: 'Hello, human!')).to be(true)
+        expect(
+          subject.set(
+            setting_type: 'call_to_actions',
+            thread_state: 'new_thread',
+            call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }]
+          )
+        ).to be(true)
       end
     end
 
@@ -71,8 +71,14 @@ describe Facebook::Messenger::Welcome do
       end
 
       it 'raises an error' do
-        expect { subject.set text: 'Hello, human!' }.to raise_error(
-          Facebook::Messenger::Welcome::Error, error_message
+        expect do
+          subject.set(
+            setting_type: 'call_to_actions',
+            thread_state: 'new_thread',
+            call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }]
+          )
+        end.to raise_error(
+          Facebook::Messenger::Thread::Error, error_message
         )
       end
     end
@@ -81,7 +87,7 @@ describe Facebook::Messenger::Welcome do
   describe '.unset' do
     context 'with a successful response' do
       before do
-        stub_request(:post, thread_settings_url)
+        stub_request(:delete, thread_settings_url)
           .with(
             query: {
               access_token: access_token
@@ -91,8 +97,7 @@ describe Facebook::Messenger::Welcome do
             },
             body: JSON.dump(
               setting_type: 'call_to_actions',
-              thread_state: 'new_thread',
-              call_to_actions: []
+              thread_state: 'new_thread'
             )
           )
           .to_return(
@@ -105,7 +110,12 @@ describe Facebook::Messenger::Welcome do
       end
 
       it 'returns true' do
-        expect(subject.unset).to be(true)
+        expect(
+          subject.unset(
+            setting_type: 'call_to_actions',
+            thread_state: 'new_thread'
+          )
+        ).to be(true)
       end
     end
 
@@ -113,7 +123,7 @@ describe Facebook::Messenger::Welcome do
       let(:error_message) { 'Invalid OAuth access token.' }
 
       before do
-        stub_request(:post, thread_settings_url)
+        stub_request(:delete, thread_settings_url)
           .with(query: { access_token: access_token })
           .to_return(
             body: JSON.dump(
@@ -130,8 +140,13 @@ describe Facebook::Messenger::Welcome do
       end
 
       it 'raises an error' do
-        expect { subject.unset }.to raise_error(
-          Facebook::Messenger::Welcome::Error, error_message
+        expect do
+          subject.unset(
+            setting_type: 'call_to_actions',
+            thread_state: 'new_thread'
+          )
+        end.to raise_error(
+          Facebook::Messenger::Thread::Error, error_message
         )
       end
     end
