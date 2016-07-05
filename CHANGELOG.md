@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.8.0] - 2016-07-05
+### Added
+- `Incoming::Message` now has a `recipient` method for consistency.
+- Thread settings for welcome messages and persistent menu.
+
+### Removed
+- Welcome messages (these are now thread settings).
+
 ## [0.7.0] - 2016-06-26
 ### Added
 - Welcome messages.
