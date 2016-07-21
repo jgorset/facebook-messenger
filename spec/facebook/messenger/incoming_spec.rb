@@ -113,5 +113,29 @@ describe Facebook::Messenger::Incoming do
         )
       end
     end
+
+    context 'when the payload is a read' do
+      let :payload do
+        {
+          'sender' => {
+            'id' => '3'
+          },
+          'recipient' => {
+            'id' => '3'
+          },
+          'timestamp' => 145_776_419_762_7,
+          'read' => {
+            'watermark' => 145_866_885_625_3,
+            'seq' => 38
+          }
+        }
+      end
+
+      it 'returns an Incoming::Read' do
+        expect(subject.parse(payload)).to be_a(
+          Facebook::Messenger::Incoming::Read
+        )
+      end
+    end
   end
 end
