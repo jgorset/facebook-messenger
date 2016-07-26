@@ -6,7 +6,7 @@ module Facebook
 
       base_uri 'https://graph.facebook.com/v2.6/me'
 
-      EVENTS = [:message, :delivery, :postback, :optin, :read].freeze
+      EVENTS = [:message, :delivery, :postback, :optin, :read, :account_linking].freeze
 
       class << self
         # Deliver a message with the given payload.
@@ -53,6 +53,7 @@ module Facebook
           when Incoming::Postback then trigger(:postback, callback)
           when Incoming::Optin then trigger(:optin, callback)
           when Incoming::Read then trigger(:read, callback)
+          when Incoming::AccountLinking then trigger(:account_linking, callback)
           end
         end
 

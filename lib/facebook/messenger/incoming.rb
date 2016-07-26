@@ -3,6 +3,7 @@ require 'facebook/messenger/incoming/delivery'
 require 'facebook/messenger/incoming/postback'
 require 'facebook/messenger/incoming/optin'
 require 'facebook/messenger/incoming/read'
+require 'facebook/messenger/incoming/account_linking'
 
 module Facebook
   module Messenger
@@ -14,7 +15,8 @@ module Facebook
         'delivery' => Delivery,
         'postback' => Postback,
         'optin' => Optin,
-        'read' => Read
+        'read' => Read,
+        'account_linking' => AccountLinking
       }.freeze
 
       # Parse the given payload.
