@@ -31,8 +31,6 @@ module Facebook
         def authorization_code
           @messaging['account_linking']['authorization_code']
         end
-
-
       end
     end
   end
