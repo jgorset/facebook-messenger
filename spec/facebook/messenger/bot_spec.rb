@@ -116,8 +116,8 @@ describe Facebook::Messenger::Bot do
 
     context 'with an invalid event' do
       it 'ignores hookless trigger' do
-        expect { subject.trigger(:foo, 'bar') }.
-          to output("Ignoring foo (no hook registered)\n").to_stderr
+        expect { subject.trigger(:foo, 'bar') }
+          .to output("Ignoring foo (no hook registered)\n").to_stderr
       end
     end
   end
