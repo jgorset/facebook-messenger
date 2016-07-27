@@ -36,7 +36,7 @@ module Facebook
         def attachments
           @messaging['message']['attachments']
         end
-        
+
         def quick_replies
           @messaging['message']['quick_reply']
         end
