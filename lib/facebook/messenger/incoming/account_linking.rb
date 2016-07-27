@@ -1,10 +1,11 @@
 module Facebook
   module Messenger
     module Incoming
-      # The Optin class represents an incoming Facebook Messenger optin,
-      # which occurs when a user engages by using the Send-to-Messenger Plugin.
+      # The AccountLinking class represents an incoming Facebook Messenger
+      # Account Linking webhook, when the Linked Account
+      # or Unlink Account call-to-action have been tapped
       #
-      # https://developers.facebook.com/docs/messenger-platform/plugin-reference
+      # https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
       class AccountLinking
         attr_reader :messaging
 
