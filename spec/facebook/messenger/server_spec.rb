@@ -73,7 +73,6 @@ describe Facebook::Messenger::Server do
 
     describe 'Bad request' do
       it 'triggers 405 status' do
-
         patch '/', JSON.dump(
           foo: 'bar'
         )
