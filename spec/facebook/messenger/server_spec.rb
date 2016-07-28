@@ -71,12 +71,14 @@ describe Facebook::Messenger::Server do
       )
     end
 
-    it 'returns bad request if invalid json' do
-      post '/', 'invalid:json'
+    describe 'Bad request' do
+      it 'triggers 405 status' do
 
-      expect(last_response.status).to eq(400)
-      expect(last_response.body).to eq('Error parsing request body format')
-      expect(last_response['Content-Type']).to eq('text/plain')
+        patch '/', JSON.dump(
+          foo: 'bar'
+        )
+        expect(last_response.status).to eq(405)
+      end
     end
 
     context 'integrity check' do

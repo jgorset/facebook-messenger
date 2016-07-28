@@ -48,4 +48,11 @@ describe Facebook::Messenger::Incoming::AccountLinking do
       expect(subject.status).to eq(payload['account_linking']['status'])
     end
   end
+
+  describe '.authorization_code' do
+    it 'returns authorization code defined with the entry point' do
+      expect(subject.authorization_code)
+        .to eq(payload['account_linking']['authorization_code'])
+    end
+  end
 end
