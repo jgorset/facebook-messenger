@@ -80,6 +80,14 @@ describe Facebook::Messenger::Server do
       end
     end
 
+    it 'returns bad request if invalid json' do
+      post '/', 'invalid:json'
+
+      expect(last_response.status).to eq(400)
+      expect(last_response.body).to eq('Error parsing request body format')
+      expect(last_response['Content-Type']).to eq('text/plain')
+    end
+
     context 'integrity check' do
       before do
         Facebook::Messenger.config.app_secret = '__an_insecure_secret_key__'
