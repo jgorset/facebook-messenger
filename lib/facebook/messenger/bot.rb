@@ -6,7 +6,8 @@ module Facebook
 
       base_uri 'https://graph.facebook.com/v2.6/me'
 
-      EVENTS = [:message, :delivery, :postback, :optin, :read].freeze
+      EVENTS = [:message, :delivery, :postback, :optin,
+                :read, :account_linking].freeze
 
       class << self
         # Deliver a message with the given payload.
@@ -46,14 +47,8 @@ module Facebook
         # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
         def receive(payload)
           callback = Facebook::Messenger::Incoming.parse(payload)
-
-          case callback
-          when Incoming::Message then trigger(:message, callback)
-          when Incoming::Delivery then trigger(:delivery, callback)
-          when Incoming::Postback then trigger(:postback, callback)
-          when Incoming::Optin then trigger(:optin, callback)
-          when Incoming::Read then trigger(:read, callback)
-          end
+          event = Facebook::Messenger::Incoming::EVENTS.invert[callback.class]
+          trigger(event.to_sym, callback)
         end
 
         # Trigger the hook for the given event.

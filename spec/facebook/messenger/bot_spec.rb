@@ -113,6 +113,13 @@ describe Facebook::Messenger::Bot do
         expect(subject.trigger(:message, 'foo')).to eq('foo')
       end
     end
+
+    context 'with an invalid event' do
+      it 'ignores hookless trigger' do
+        expect { subject.trigger(:foo, 'bar') }
+          .to output("Ignoring foo (no hook registered)\n").to_stderr
+      end
+    end
   end
 
   describe '.deliver' do
