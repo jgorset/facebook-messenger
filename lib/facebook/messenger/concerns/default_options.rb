@@ -1,6 +1,7 @@
 module Facebook
   module Messenger
     module Concerns
+      # The Common options for incoming optin and postback.
       module DefaultOptions
         attr_reader :messaging
 
@@ -20,6 +21,6 @@ module Facebook
           Time.at(@messaging['timestamp'] / 1000)
         end
       end
-    end  
+    end
   end
 end
