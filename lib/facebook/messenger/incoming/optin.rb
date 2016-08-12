@@ -6,23 +6,7 @@ module Facebook
       #
       # https://developers.facebook.com/docs/messenger-platform/plugin-reference
       class Optin
-        attr_reader :messaging
-
-        def initialize(messaging)
-          @messaging = messaging
-        end
-
-        def sender
-          @messaging['sender']
-        end
-
-        def recipient
-          @messaging['recipient']
-        end
-
-        def sent_at
-          Time.at(@messaging['timestamp'] / 1000)
-        end
+        include Facebook::Messenger::Concerns::DefaultOptions
 
         def ref
           @messaging['optin']['ref']
