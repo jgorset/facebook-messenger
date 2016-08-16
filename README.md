@@ -312,15 +312,15 @@ reference constants. You'll need to explicitly load `app/bot`, then:
 ```ruby
 # config/initializers/bot.rb
 unless Rails.env.production?
-  api_files = Dir[Rails.root.join('app', 'bot', '**', '*.rb')]
-  api_reloader = ActiveSupport::FileUpdateChecker.new(api_files) do
-    api_files.each{ |file| require_dependency file }
+  bot_files = Dir[Rails.root.join('app', 'bot', '**', '*.rb')]
+  bot_reloader = ActiveSupport::FileUpdateChecker.new(bot_files) do
+    bot_files.each{ |file| require_dependency file }
   end
   ActionDispatch::Callbacks.to_prepare do
-    api_reloader.execute_if_updated
+    bot_reloader.execute_if_updated
   end
 
-  api_files.each { |file| require_dependency file }
+  bot_files.each { |file| require_dependency file }
 end
 ```
 
