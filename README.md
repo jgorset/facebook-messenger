@@ -307,13 +307,30 @@ end
 
 Remember that Rails only eager loads everything in its production environment.
 In the development and test environments, it only requires files as you
-reference constants. You'll need to explicitly load `app/bot`, then:
+reference constants. You'll need to explicitly load `app/bots`, then:
 
 ```ruby
 # config/initializers/bot.rb
 unless Rails.env.production?
-  Dir["#{Rails.root}/app/bot/**/*.rb"].each { |file| require file }
+  bot_files = Dir[Rails.root.join('app', 'bots', '**', '*.rb')]
+  bots_reloader = ActiveSupport::FileUpdateChecker.new(bot_files) do
+    bot_files.each{ |file| require_dependency file }
+  end
+  
+  ActionDispatch::Callbacks.to_prepare do
+    bot_reloader.execute_if_updated
+  end
+
+  bot_files.each { |file| require_dependency file }
 end
+```
+
+And add below code into `config/application.rb` to ensure rails knows bot files.
+
+```ruby
+# Auto-load bots and its subdirectories
+config.paths.add File.join('app', 'bots'), glob: File.join('**', '*.rb')
+config.autoload_paths += Dir[Rails.root.join('app', 'bots', '*')]
 ```
 
 To test your locally running bot, you can use [ngrok]. This will create a secure
