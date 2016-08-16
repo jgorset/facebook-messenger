@@ -307,15 +307,16 @@ end
 
 Remember that Rails only eager loads everything in its production environment.
 In the development and test environments, it only requires files as you
-reference constants. You'll need to explicitly load `app/bot`, then:
+reference constants. You'll need to explicitly load `app/bots`, then:
 
 ```ruby
 # config/initializers/bot.rb
 unless Rails.env.production?
   bot_files = Dir[Rails.root.join('app', 'bots', '**', '*.rb')]
-  bot_reloader = ActiveSupport::FileUpdateChecker.new(bot_files) do
+  bots_reloader = ActiveSupport::FileUpdateChecker.new(bot_files) do
     bot_files.each{ |file| require_dependency file }
   end
+  
   ActionDispatch::Callbacks.to_prepare do
     bot_reloader.execute_if_updated
   end
