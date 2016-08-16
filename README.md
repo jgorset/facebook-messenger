@@ -324,6 +324,14 @@ unless Rails.env.production?
 end
 ```
 
+And add below code into `config/application.rb` to ensure rails knows bot files.
+
+```ruby
+# Auto-load bots and its subdirectories
+config.paths.add File.join('app', 'bots'), glob: File.join('**', '*.rb')
+config.autoload_paths += Dir[Rails.root.join('app', 'bots', '*')]
+```
+
 To test your locally running bot, you can use [ngrok]. This will create a secure
 tunnel to localhost so that Facebook can reach the webhook.
 
