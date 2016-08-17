@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.9.0] - 2016-08-17
+### Added
+- Quick replies.
+- Account linking.
+
+### Fixed
+- Fixed a bug that caused `read` to be ignored.
+
 ## [0.8.0] - 2016-07-05
 ### Added
 - `Incoming::Message` now has a `recipient` method for consistency.
