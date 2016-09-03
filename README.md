@@ -318,7 +318,7 @@ unless Rails.env.production?
   end
   
   ActionDispatch::Callbacks.to_prepare do
-    bot_reloader.execute_if_updated
+    bots_reloader.execute_if_updated
   end
 
   bot_files.each { |file| require_dependency file }
