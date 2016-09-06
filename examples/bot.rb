@@ -8,7 +8,7 @@ end
 include Facebook::Messenger
 
 Bot.on :message do |message|
-  puts "Received '#{message.text}' from #{message.sender['id']}"
+  puts "Received '#{message.inspect}' from #{message.sender}"
 
   case message.text
   when /hello/i
