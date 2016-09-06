@@ -15,7 +15,7 @@ describe Facebook::Messenger::Incoming::Message do
         'seq' => 73,
         'text' => 'Hello, bot!',
         'quick_reply' => {
-          'payload' => 'Hi, I am a quick reply!',
+          'payload' => 'Hi, I am a quick reply!'
         },
         'attachments' => [{
           'type' => 'image',
@@ -80,7 +80,9 @@ describe Facebook::Messenger::Incoming::Message do
   describe '.quick_reply' do
     context 'when a quick reply was used' do
       it 'returns the payload of the quick reply' do
-        expect(subject.quick_reply).to eq(payload['message']['quick_reply']['payload'])
+        expect(subject.quick_reply).to eq(
+          payload['message']['quick_reply']['payload']
+        )
       end
     end
 
