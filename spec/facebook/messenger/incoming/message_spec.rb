@@ -75,9 +75,9 @@ describe Facebook::Messenger::Incoming::Message do
     end
   end
 
-  describe '.quick_replies' do
-    it 'returns the message quick_replies' do
-      expect(subject.quick_replies).to eq(payload['message']['quick_reply'])
+  describe '.quick_reply' do
+    it 'returns the message quick_reply' do
+      expect(subject.quick_reply).to eq(payload['message']['quick_reply']['payload'])
     end
   end
 end
