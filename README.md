@@ -76,6 +76,28 @@ Bot.deliver(
 )
 ```
 
+##### Messages with quick replies
+
+The human may appreciate hints:
+
+```ruby
+Bot.deliver(
+  recipient: {
+    id: '45123'
+  },
+  message: {
+    text: 'Human, who is your favorite bot?'
+    quick_replies: [
+      {
+        content_type: 'text',
+        title: 'You are!',
+        payload: 'HARMLESS'
+      }
+    ]
+  }
+)
+```
+
 ##### Messages with buttons
 
 The human may require simple options to communicate:
