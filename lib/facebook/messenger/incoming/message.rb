@@ -38,7 +38,7 @@ module Facebook
         end
 
         def quick_reply
-          return nil unless @messaging['message']['quick_reply']
+          return unless @messaging['message']['quick_reply']
 
           @messaging['message']['quick_reply']['payload']
         end
