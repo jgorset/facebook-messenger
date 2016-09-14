@@ -14,7 +14,9 @@ describe Facebook::Messenger::Incoming::Message do
         'mid' => 'mid.1457764197618:41d102a3e1ae206a38',
         'seq' => 73,
         'text' => 'Hello, bot!',
-        'quick_reply' => 'Hi, I am a quick reply!',
+        'quick_reply' => {
+          'payload' => 'Hi, I am a quick reply!'
+        },
         'attachments' => [{
           'type' => 'image',
           'payload' => {
@@ -75,9 +77,23 @@ describe Facebook::Messenger::Incoming::Message do
     end
   end
 
-  describe '.quick_replies' do
-    it 'returns the message quick_replies' do
-      expect(subject.quick_replies).to eq(payload['message']['quick_reply'])
+  describe '.quick_reply' do
+    context 'when a quick reply was used' do
+      it 'returns the payload of the quick reply' do
+        expect(subject.quick_reply).to eq(
+          payload['message']['quick_reply']['payload']
+        )
+      end
+    end
+
+    context 'when a quick reply was not used' do
+      before do
+        payload['message'].delete('quick_reply')
+      end
+
+      it 'returns nil' do
+        expect(subject.quick_reply).to eq(nil)
+      end
     end
   end
 end

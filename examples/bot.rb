@@ -8,14 +8,21 @@ end
 include Facebook::Messenger
 
 Bot.on :message do |message|
-  puts "Received #{message.text} from #{message.sender}"
+  puts "Received '#{message.inspect}' from #{message.sender}"
 
   case message.text
   when /hello/i
     Bot.deliver(
       recipient: message.sender,
       message: {
-        text: 'Hello, human!'
+        text: 'Hello, human!',
+        quick_replies: [
+          {
+            content_type: 'text',
+            title: 'Hello, bot!',
+            payload: 'HELLO_BOT'
+          }
+        ]
       }
     )
   when /something humans like/i

@@ -37,8 +37,10 @@ module Facebook
           @messaging['message']['attachments']
         end
 
-        def quick_replies
-          @messaging['message']['quick_reply']
+        def quick_reply
+          return unless @messaging['message']['quick_reply']
+
+          @messaging['message']['quick_reply']['payload']
         end
       end
     end
