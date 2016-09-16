@@ -140,6 +140,19 @@ end
 
 *See Facebook's [documentation][message-documentation] for all message options.*
 
+##### Typing Indicator
+
+Show the human you are prepairing a message for them:
+
+```ruby
+Bot.deliver(
+  recipient: {
+    id: '45123'
+  },
+  sender_action: "typing_on"
+)
+```
+
 #### Send to Facebook
 
 When the human clicks the [Send to Messenger button][send-to-messenger-plugin]
