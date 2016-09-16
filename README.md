@@ -310,10 +310,10 @@ Rails.application.routes.draw do
 end
 ```
 
-We suggest that you put your bot code in `app/bots`.
+We suggest that you put your bot code in `app/bot`.
 
 ```ruby
-# app/bots/example.rb
+# app/bot/example.rb
 
 include Facebook::Messenger
 
