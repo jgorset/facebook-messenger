@@ -140,9 +140,9 @@ end
 
 *See Facebook's [documentation][message-documentation] for all message options.*
 
-##### Typing Indicator
+##### Typing indicator
 
-Show the human you are prepairing a message for them:
+Show the human you are preparing a message for them:
 
 ```ruby
 Bot.deliver(
