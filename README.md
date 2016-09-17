@@ -149,7 +149,7 @@ Bot.deliver(
   recipient: {
     id: '45123'
   },
-  sender_action: "typing_on"
+  sender_action: 'typing_on'
 )
 ```
 
