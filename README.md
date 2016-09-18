@@ -323,10 +323,10 @@ Rails.application.routes.draw do
 end
 ```
 
-We suggest that you put your bot code in `app/bot`.
+We suggest that you put your bot code in `app/bots`.
 
 ```ruby
-# app/bot/example.rb
+# app/bots/example.rb
 
 include Facebook::Messenger
 
@@ -351,7 +351,7 @@ unless Rails.env.production?
   bots_reloader = ActiveSupport::FileUpdateChecker.new(bot_files) do
     bot_files.each{ |file| require_dependency file }
   end
-  
+
   ActionDispatch::Callbacks.to_prepare do
     bots_reloader.execute_if_updated
   end
