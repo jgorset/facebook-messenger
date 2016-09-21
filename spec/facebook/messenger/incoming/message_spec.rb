@@ -74,7 +74,7 @@ describe Facebook::Messenger::Incoming::Message do
 
   describe '.is_echo' do
     it 'returns the echo status of the message' do
-      expect(subject.is_echo).to eq(payload['message']['is_echo'])
+      expect(subject.echo?).to eq(payload['message']['is_echo'])
     end
   end
 

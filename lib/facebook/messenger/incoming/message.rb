@@ -33,7 +33,7 @@ module Facebook
           @messaging['message']['text']
         end
 
-        def is_echo
+        def echo?
           @messaging['message']['is_echo']
         end
 
