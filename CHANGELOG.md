@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.10.0] - 2016-09-23
+### Fixed
+- Fixed a bug that caused `Message.quick_replies` to crash when a
+  quick reply wasn't used.
+
+### Changed
+- `Message.quick_replies` is now `Message.quick_reply`.
+
 ## [0.9.0] - 2016-08-17
 ### Added
 - Quick replies.
