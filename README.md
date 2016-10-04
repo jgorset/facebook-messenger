@@ -204,7 +204,7 @@ Facebook::Messenger::Thread.set(
 ```
 
 You can define the action to trigger when new humans click on the Get
-Started button.
+Started button. Before doing it you should check to select the messaging_postbacks field when setting up your webhook.
 
 ```ruby
 Facebook::Messenger::Thread.set(
