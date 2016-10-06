@@ -11,6 +11,7 @@ describe Facebook::Messenger::Incoming::Message do
       },
       'timestamp' => 145_776_419_762_7,
       'message' => {
+        'is_echo' => false,
         'mid' => 'mid.1457764197618:41d102a3e1ae206a38',
         'seq' => 73,
         'text' => 'Hello, bot!',
@@ -68,6 +69,12 @@ describe Facebook::Messenger::Incoming::Message do
   describe '.text' do
     it 'returns the text of the message' do
       expect(subject.text).to eq(payload['message']['text'])
+    end
+  end
+
+  describe '.echo?' do
+    it 'returns the echo status of the message' do
+      expect(subject.echo?).to eq(payload['message']['is_echo'])
     end
   end
 
