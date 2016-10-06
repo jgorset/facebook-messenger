@@ -6,6 +6,12 @@ module Facebook
   module Messenger
     class BadRequestError < Error; end
 
+    X_HUB_SIGNATURE_MISSING_WARNING = <<-HEREDOC.freeze
+      The X-Hub-Signature header is not present in the request. This is
+      expected for the first webhook requests. If it continues after
+      some time, check your app's secret token.
+    HEREDOC
+
     # This module holds the server that processes incoming messages from the
     # Facebook Messenger Platform.
     class Server
@@ -38,57 +44,73 @@ module Facebook
         end
       end
 
-      def verify_token
-        Facebook::Messenger.config.verify_token
-      end
-
       def receive
-        body = @request.body.read
+        check_integrity if app_secret
 
-        check_integrity(body) if app_secret
-
-        events = parse_events(body)
+        events = parse_events
 
         trigger_events(events)
       rescue BadRequestError => error
         respond_with_error(error)
       end
 
-      WARNING = 'The X-Hub-Signature header is not present in the request. ' \
-        'This is expected for the first webhook requests. If this ' \
-        'continues after some time, check your app\'s secret token.'.freeze
-
-      def check_integrity(body)
-        x_hub_signature = @request.env['HTTP_X_HUB_SIGNATURE'.freeze].to_s
-
-        unless x_hub_signature.start_with?('sha1='.freeze)
-          $stderr.puts(WARNING)
+      # Check the integrity of the request.
+      #
+      # Raises BadRequestError if the request has been tampered with.
+      #
+      # Returns nothing.
+      def check_integrity
+        unless signature.start_with?('sha1='.freeze)
+          $stderr.puts(X_HUB_SIGNATURE_MISSING_WARNING)
 
           raise BadRequestError, 'Error getting integrity signature'.freeze
         end
 
-        unless secure_compare(x_hub_signature, signature(body))
-          raise BadRequestError, 'Error checking message integrity'.freeze
-        end
+        raise BadRequestError, 'Error checking message integrity'.freeze \
+          unless valid_signature?
       end
 
-      def secure_compare(x, y)
-        Rack::Utils.secure_compare(x, y)
+      # Returns a String describing the X-Hub-Signature header.
+      def signature
+        @request.env['HTTP_X_HUB_SIGNATURE'.freeze].to_s
       end
 
-      def signature(body)
-        format('sha1=%s'.freeze, generate_hmac(body))
+      # Verify that the signature given in the X-Hub-Signature header matches
+      # that of the body.
+      #
+      # Returns a Boolean.
+      def valid_signature?
+        Rack::Utils.secure_compare(signature, signature_for(body))
       end
 
+      # Sign the given string.
+      #
+      # Returns a String describing its signature.
+      def signature_for(string)
+        format('sha1=%s'.freeze, generate_hmac(string))
+      end
+
+      # Generate a HMAC signature for the given content.
       def generate_hmac(content)
         OpenSSL::HMAC.hexdigest('sha1'.freeze, app_secret, content)
       end
 
+      # Returns a String describing the bot's configured app secret.
       def app_secret
         Facebook::Messenger.config.app_secret
       end
 
-      def parse_events(body)
+      # Returns a String describing the bot's configured verify token.
+      def verify_token
+        Facebook::Messenger.config.verify_token
+      end
+
+      # Returns a String describing the request body.
+      def body
+        @body ||= @request.body.read
+      end
+
+      def parse_events
         JSON.parse(body)
       rescue JSON::ParserError
         raise BadRequestError, 'Error parsing request body format'
