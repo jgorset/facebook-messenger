@@ -6,12 +6,12 @@ require 'facebook/messenger/version'
 Gem::Specification.new do |spec|
   spec.name          = 'facebook-messenger'
   spec.version       = Facebook::Messenger::VERSION
-  spec.authors       = ['Johannes Gorset']
-  spec.email         = ['jgorset@gmail.com']
+  spec.authors       = ['Johannes Gorset', 'Paulo Santos']
+  spec.email         = ['jgorset@gmail.com', 'p@deemaze.com']
 
   spec.summary       = 'Facebook Messenger client'
   spec.description   = 'Facebook Messenger client'
-  spec.homepage      = 'https://github.com/hyperoslo/facebook-messenger'
+  spec.homepage      = 'https://github.com/pjpires/facebook-messenger'
   spec.license       = 'MIT'
 
   spec.files         = Dir[

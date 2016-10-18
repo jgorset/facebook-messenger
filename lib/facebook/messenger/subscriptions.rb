@@ -12,8 +12,10 @@ module Facebook
 
       module_function
 
-      def subscribe
-        response = post '/subscribed_apps'
+      def subscribe(access_token)
+        options = { query: { access_token: access_token } }
+
+        response = post '/subscribed_apps', options
 
         raise_errors(response)
 
@@ -33,11 +35,7 @@ module Facebook
       end
 
       def default_options
-        super.merge(
-          query: {
-            access_token: Facebook::Messenger.config.access_token
-          }
-        )
+        super.merge({})
       end
 
       class Error < Facebook::Messenger::Error; end

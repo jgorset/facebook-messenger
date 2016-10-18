@@ -18,8 +18,10 @@ module Facebook
         #
         # Returns a String describing the message ID if the message was sent,
         # or raises an exception if it was not.
-        def deliver(message)
-          response = post '/messages', body: JSON.dump(message), format: :json
+        def deliver(message, access_token)
+          response = post '/messages', body: JSON.dump(message),
+                                       query: { access_token: access_token },
+                                       format: :json
 
           raise_errors_from(response)
 
@@ -102,9 +104,6 @@ module Facebook
         # Default HTTParty options.
         def default_options
           super.merge(
-            query: {
-              access_token: Facebook::Messenger.config.access_token
-            },
             headers: {
               'Content-Type' => 'application/json'
             }
