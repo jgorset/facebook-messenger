@@ -22,8 +22,10 @@ module Facebook
         true
       end
 
-      def unsubscribe
-        response = delete '/subscribed_apps'
+      def unsubscribe(access_token)
+        options = { query: { access_token: access_token } }
+
+        response = delete '/subscribed_apps', options
 
         raise_errors(response)
 
@@ -35,7 +37,11 @@ module Facebook
       end
 
       def default_options
-        super.merge({})
+        super.merge(
+          headers: {
+            'Content-Type' => 'application/json'
+          }
+        )
       end
 
       class Error < Facebook::Messenger::Error; end
