@@ -37,7 +37,7 @@ module Facebook
       private
 
       def verify
-        if @request.params['hub.verify_token'] == verify_token
+        if valid_verify_token?(@request.params['hub.verify_token'])
           @response.write @request.params['hub.challenge']
         else
           @response.write 'Error; wrong verify token'
@@ -45,7 +45,10 @@ module Facebook
       end
 
       def receive
-        check_integrity if app_secret
+        body_json = JSON.parse(body, symbolize_names: true)
+        recipient_id = body_json[:entry][0][:messaging][0][:recipient][:id]
+
+        check_integrity if app_secret(recipient_id)
 
         events = parse_events
 
@@ -92,17 +95,32 @@ module Facebook
 
       # Generate a HMAC signature for the given content.
       def generate_hmac(content)
-        OpenSSL::HMAC.hexdigest('sha1'.freeze, app_secret, content)
+        content_json = JSON.parse(content, symbolize_names: true)
+        recipient_id = content_json[:entry][0][:messaging][0][:recipient][:id]
+
+        OpenSSL::HMAC.hexdigest('sha1'.freeze,
+                                app_secret(recipient_id),
+                                content)
       end
 
       # Returns a String describing the bot's configured app secret.
-      def app_secret
-        Facebook::Messenger.config.app_secret
+      def app_secret(recipient_id)
+        if Facebook::Messenger.config.config_provider_class.present?
+          config_provider = Facebook::Messenger.config.config_provider_class.new
+          config_provider.app_secret_for(recipient_id)
+        else
+          Facebook::Messenger.config.app_secret
+        end
       end
 
-      # Returns a String describing the bot's configured verify token.
-      def verify_token
-        Facebook::Messenger.config.verify_token
+      # Checks whether a verify token is valid.
+      def valid_verify_token?(token)
+        if Facebook::Messenger.config.config_provider_class.present?
+          config_provider = Facebook::Messenger.config.config_provider_class.new
+          config_provider.valid_verify_token?(token)
+        else
+          Facebook::Messenger.config.verify_token == token
+        end
       end
 
       # Returns a String describing the request body.
