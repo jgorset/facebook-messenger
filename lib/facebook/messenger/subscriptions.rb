@@ -50,9 +50,6 @@ module Facebook
         super.merge(
           query: {
             access_token: Facebook::Messenger.config.access_token
-          },
-          headers: {
-            'Content-Type' => 'application/json'
           }
         )
       end
