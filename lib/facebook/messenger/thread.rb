@@ -14,18 +14,30 @@ module Facebook
 
       module_function
 
-      def set(settings)
-        response = post '/thread_settings',
-                        body: settings.to_json
+      def set(settings, options = {})
+        access_token = options[:access_token]
+
+        req_options = { body: settings.to_json }
+        if access_token.present?
+          req_options[:query] = { access_token: access_token }
+        end
+
+        response = post '/thread_settings', req_options
 
         raise_errors(response)
 
         true
       end
 
-      def unset(settings)
-        response = delete '/thread_settings',
-                          body: settings.to_json
+      def unset(settings, options = {})
+        access_token = options[:access_token]
+
+        req_options = { body: settings.to_json }
+        if access_token.present?
+          req_options[:query] = { access_token: access_token }
+        end
+
+        response = delete '/thread_settings', req_options
 
         raise_errors(response)
 

@@ -37,7 +37,7 @@ module Facebook
       private
 
       def verify
-        if @request.params['hub.verify_token'] == verify_token
+        if valid_verify_token?(@request.params['hub.verify_token'])
           @response.write @request.params['hub.challenge']
         else
           @response.write 'Error; wrong verify token'
@@ -45,7 +45,12 @@ module Facebook
       end
 
       def receive
-        check_integrity if app_secret
+        body_json = JSON.parse(body, symbolize_names: true)
+
+        # Get Facebook page id regardless of the entry type
+        facebook_page_id = body_json.dig(:entry, 0, :id)
+
+        check_integrity if app_secret(facebook_page_id)
 
         events = parse_events
 
@@ -92,17 +97,34 @@ module Facebook
 
       # Generate a HMAC signature for the given content.
       def generate_hmac(content)
-        OpenSSL::HMAC.hexdigest('sha1'.freeze, app_secret, content)
+        content_json = JSON.parse(content, symbolize_names: true)
+
+        # Get Facebook page id regardless of the entry type
+        facebook_page_id = content_json.dig(:entry, 0, :id)
+
+        OpenSSL::HMAC.hexdigest('sha1'.freeze,
+                                app_secret(facebook_page_id),
+                                content)
       end
 
       # Returns a String describing the bot's configured app secret.
-      def app_secret
-        Facebook::Messenger.config.app_secret
+      def app_secret(facebook_page_id)
+        if Facebook::Messenger.config.config_provider_class.present?
+          config_provider = Facebook::Messenger.config.config_provider_class.new
+          config_provider.app_secret_for(facebook_page_id)
+        else
+          Facebook::Messenger.config.app_secret
+        end
       end
 
-      # Returns a String describing the bot's configured verify token.
-      def verify_token
-        Facebook::Messenger.config.verify_token
+      # Checks whether a verify token is valid.
+      def valid_verify_token?(token)
+        if Facebook::Messenger.config.config_provider_class.present?
+          config_provider = Facebook::Messenger.config.config_provider_class.new
+          config_provider.valid_verify_token?(token)
+        else
+          Facebook::Messenger.config.verify_token == token
+        end
       end
 
       # Returns a String describing the request body.
@@ -122,7 +144,7 @@ module Facebook
         events['entry'.freeze].each do |entry|
           # Facebook may batch several items in the 'messaging' array during
           # periods of high load.
-          entry['messaging'.freeze].each do |messaging|
+          entry['messaging'.freeze].try(:each) do |messaging|
             Facebook::Messenger::Bot.receive(messaging)
           end
         end
