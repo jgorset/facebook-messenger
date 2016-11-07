@@ -6,7 +6,7 @@ module Facebook
       attr_accessor :app_secret
       attr_accessor :verify_token
 
-      attr_accessor :config_provider_class
+      attr_accessor :provider
     end
   end
 end

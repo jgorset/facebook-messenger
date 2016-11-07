@@ -109,8 +109,8 @@ module Facebook
 
       # Returns a String describing the bot's configured app secret.
       def app_secret_for(facebook_page_id)
-        if Facebook::Messenger.config.config_provider_class
-          config_provider = Facebook::Messenger.config.config_provider_class.new
+        if Facebook::Messenger.config.provider
+          config_provider = Facebook::Messenger.config.provider.new
           config_provider.app_secret_for(facebook_page_id)
         else
           Facebook::Messenger.config.app_secret
@@ -119,8 +119,8 @@ module Facebook
 
       # Checks whether a verify token is valid.
       def valid_verify_token_for?(token)
-        if Facebook::Messenger.config.config_provider_class
-          config_provider = Facebook::Messenger.config.config_provider_class.new
+        if Facebook::Messenger.config.provider
+          config_provider = Facebook::Messenger.config.provider.new
           config_provider.valid_verify_token_for?(token)
         else
           Facebook::Messenger.config.verify_token == token
