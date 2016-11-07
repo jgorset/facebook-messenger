@@ -62,9 +62,9 @@ describe Dummy do
 
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
-          recipient: subject.sender,
-          sender_action: 'typing_on'
-          }, access_token: access_token)
+                recipient: subject.sender,
+                sender_action: 'typing_on'
+              }, access_token: access_token)
 
       subject.type
     end
@@ -80,10 +80,10 @@ describe Dummy do
 
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
-          recipient: subject.sender,
-          message: {
-            text: 'Hello, human' }
-          }, access_token: access_token)
+                recipient: subject.sender,
+                message: {
+                  text: 'Hello, human' }
+              }, access_token: access_token)
 
       subject.reply(text: 'Hello, human')
     end

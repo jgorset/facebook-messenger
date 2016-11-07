@@ -22,17 +22,21 @@ module Facebook
         end
 
         def type
-          Facebook::Messenger::Bot.deliver({
+          payload = {
             recipient: sender,
             sender_action: 'typing_on'
-          }, access_token: access_token)
+          }
+
+          Facebook::Messenger::Bot.deliver(payload, access_token: access_token)
         end
 
         def reply(message)
-          Facebook::Messenger::Bot.deliver({
+          payload = {
             recipient: sender,
             message: message
-          }, access_token: access_token)
+          }
+
+          Facebook::Messenger::Bot.deliver(payload, access_token: access_token)
         end
 
         def access_token
