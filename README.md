@@ -275,7 +275,7 @@ If your bot lives on multiple Facebook Pages, make a _configuration provider_
 to keep track of access tokens, app secrets and verify tokens for each of them:
 
 ```ruby
-class ExampleProvider < Facebook::Messenger::Configuration::Provider
+class ExampleProvider < Facebook::Messenger::Configuration::Providers::Base
   def valid_verify_token?(verify_token)
     bot.exists?(verify_token: verify_token)
   end
@@ -296,7 +296,7 @@ class ExampleProvider < Facebook::Messenger::Configuration::Provider
 end
 
 Facebook::Messenger.configure do |config|
-  config.provider = ExampleProvider
+  config.provider = ExampleProvider.new
 end
 ```
 
