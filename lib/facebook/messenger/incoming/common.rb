@@ -26,7 +26,10 @@ module Facebook
             recipient
           )
 
-          Facebook::Messenger::Bot.deliver(message, access_token: access_token)
+          Facebook::Messenger::Bot.deliver({
+            recipient: sender,
+            message: message
+          }, access_token: access_token)
         end
       end
     end
