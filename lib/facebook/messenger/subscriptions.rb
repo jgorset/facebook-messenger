@@ -12,30 +12,20 @@ module Facebook
 
       module_function
 
-      def subscribe(options = {})
-        access_token = options[:access_token]
-
-        req_options = {}
-        if access_token.present?
-          req_options[:query] = { access_token: access_token }
-        end
-
-        response = post '/subscribed_apps', req_options
+      def subscribe(access_token:)
+        response = post '/subscribed_apps', query: {
+          access_token: access_token
+        }
 
         raise_errors(response)
 
         true
       end
 
-      def unsubscribe(options = {})
-        access_token = options[:access_token]
-
-        req_options = {}
-        if access_token.present?
-          req_options[:query] = { access_token: access_token }
-        end
-
-        response = delete '/subscribed_apps', req_options
+      def unsubscribe(access_token:)
+        response = delete '/subscribed_apps', query: {
+          access_token: access_token
+        }
 
         raise_errors(response)
 

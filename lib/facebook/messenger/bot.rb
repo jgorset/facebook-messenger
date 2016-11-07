@@ -18,15 +18,14 @@ module Facebook
         #
         # Returns a String describing the message ID if the message was sent,
         # or raises an exception if it was not.
-        def deliver(message, options = {})
-          access_token = options[:access_token]
-
-          req_options = { body: JSON.dump(message), format: :json }
-          if access_token.present?
-            req_options[:query] = { access_token: access_token }
-          end
-
-          response = post '/messages', req_options
+        def deliver(message, access_token:)
+          response = post '/messages', {
+            body: JSON.dump(message),
+            format: :json,
+            query: {
+              access_token: access_token
+            }
+          }
 
           raise_errors_from(response)
 
