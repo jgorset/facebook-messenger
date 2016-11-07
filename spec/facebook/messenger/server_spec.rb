@@ -5,6 +5,8 @@ describe Facebook::Messenger::Server do
   include Rack::Test::Methods
 
   let(:verify_token) { 'verify token' }
+  let(:app_secret) { 'app secret' }
+  let(:access_token) { 'access token' }
   let(:challenge) { 'challenge' }
 
   def app
@@ -12,9 +14,9 @@ describe Facebook::Messenger::Server do
   end
 
   before do
-    Facebook::Messenger.configure do |config|
-      config.verify_token = verify_token
-    end
+    ENV['VERIFY_TOKEN'] = verify_token
+    ENV['ACCESS_TOKEN'] = access_token
+    ENV['APP_SECRET'] = nil
   end
 
   describe 'GET' do
@@ -40,11 +42,8 @@ describe Facebook::Messenger::Server do
   end
 
   describe 'POST' do
-    it 'triggers the bot' do
-      expect(Facebook::Messenger::Bot).to receive(:trigger)
-        .with(:message, any_args)
-
-      post '/', JSON.dump(
+    let :payload do
+      JSON.generate(
         object: 'page',
         entry: [
           {
@@ -71,6 +70,13 @@ describe Facebook::Messenger::Server do
       )
     end
 
+    it 'triggers the bot' do
+      expect(Facebook::Messenger::Bot).to receive(:trigger)
+        .with(:message, any_args)
+
+      post '/', payload
+    end
+
     describe 'Bad request' do
       it 'triggers 405 status' do
         patch '/', JSON.dump(
@@ -90,11 +96,11 @@ describe Facebook::Messenger::Server do
 
     context 'integrity check' do
       before do
-        Facebook::Messenger.config.app_secret = '__an_insecure_secret_key__'
+        ENV['APP_SECRET'] = app_secret
       end
 
       after do
-        Facebook::Messenger.config.app_secret = nil
+        ENV['APP_SECRET'] = nil
       end
 
       it 'do not trigger if fails' do
@@ -106,39 +112,13 @@ describe Facebook::Messenger::Server do
       it 'triggers if succeeds' do
         expect(Facebook::Messenger::Bot).to receive(:trigger)
 
-        body = JSON.generate(
-          object: 'page',
-          entry: [
-            {
-              id: '1',
-              time: 145_776_419_824_6,
-              messaging: [
-                {
-                  sender: {
-                    id: '2'
-                  },
-                  recipient: {
-                    id: '3'
-                  },
-                  timestamp: 145_776_419_762_7,
-                  message: {
-                    mid: 'mid.1457764197618:41d102a3e1ae206a38',
-                    seq: 73,
-                    text: 'Hello, bot!'
-                  }
-                }
-              ]
-            }
-          ]
-        )
-
         signature = OpenSSL::HMAC.hexdigest(
           OpenSSL::Digest.new('sha1'),
-          Facebook::Messenger.config.app_secret,
-          body
+          ENV['APP_SECRET'],
+          payload
         )
 
-        post '/', body, 'HTTP_X_HUB_SIGNATURE' => "sha1=#{signature}"
+        post '/', payload, 'HTTP_X_HUB_SIGNATURE' => "sha1=#{signature}"
       end
 
       it 'returns bad request if signature is not present' do
@@ -147,7 +127,7 @@ describe Facebook::Messenger::Server do
           $stderr.reopen('/dev/null')
           $stderr.sync = true
 
-          post '/', {}
+          post '/', payload
         ensure
           $stderr.reopen(old_stream)
           old_stream.close
@@ -159,7 +139,7 @@ describe Facebook::Messenger::Server do
       end
 
       it 'returns bad request if signature is invalid' do
-        post '/', {}, 'HTTP_X_HUB_SIGNATURE' => 'sha1=64738239'
+        post '/', payload, 'HTTP_X_HUB_SIGNATURE' => 'sha1=64738239'
 
         expect(last_response.status).to eq(400)
         expect(last_response.body).to eq('Error checking message integrity')

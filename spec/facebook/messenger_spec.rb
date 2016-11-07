@@ -1,17 +1,17 @@
 require 'spec_helper'
 
 describe Facebook::Messenger do
+  let(:providers) { Facebook::Messenger::Configuration::Providers }
+
   describe '#configure' do
+    let(:provider) { providers::Environment }
+
     it 'sets correct configuration' do
       Facebook::Messenger.configure do |config|
-        config.access_token = 'access_token'
-        config.app_secret = 'app_secret'
-        config.verify_token = 'verify_token'
+        config.provider = provider
       end
 
-      expect(Facebook::Messenger.config.access_token).to eql('access_token')
-      expect(Facebook::Messenger.config.app_secret).to eql('app_secret')
-      expect(Facebook::Messenger.config.verify_token).to eq('verify_token')
+      expect(Facebook::Messenger.config.provider).to eql(provider)
     end
   end
 end

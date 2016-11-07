@@ -15,7 +15,7 @@ module Facebook
       module_function
 
       def set(settings, access_token:)
-        response = post '/thread_settings', query: {
+        response = post '/thread_settings', body: settings.to_json, query: {
           access_token: access_token
         }
 
@@ -25,7 +25,7 @@ module Facebook
       end
 
       def unset(settings, access_token:)
-        response = delete '/thread_settings', query: {
+        response = delete '/thread_settings', body: settings.to_json, query: {
           access_token: access_token
         }
 
@@ -40,9 +40,6 @@ module Facebook
 
       def default_options
         super.merge(
-          query: {
-            access_token: Facebook::Messenger.config.access_token
-          },
           headers: {
             'Content-Type' => 'application/json'
           }

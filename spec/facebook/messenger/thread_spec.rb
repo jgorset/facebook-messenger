@@ -1,16 +1,14 @@
 require 'spec_helper'
 
 describe Facebook::Messenger::Thread do
-  let(:access_token) { '<access token>' }
+  let(:access_token) { 'access token' }
 
   let(:thread_settings_url) do
     Facebook::Messenger::Thread.base_uri + '/thread_settings'
   end
 
   before do
-    Facebook::Messenger.configure do |config|
-      config.access_token = access_token
-    end
+    ENV['ACCESS_TOKEN'] = access_token
   end
 
   describe '.set' do
@@ -39,14 +37,16 @@ describe Facebook::Messenger::Thread do
           )
       end
 
+      let :options do
+        {
+          setting_type: 'call_to_actions',
+          thread_state: 'new_thread',
+          call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }]
+        }
+      end
+
       it 'returns true' do
-        expect(
-          subject.set(
-            setting_type: 'call_to_actions',
-            thread_state: 'new_thread',
-            call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }]
-          )
-        ).to be(true)
+        expect(subject.set(options, access_token: access_token)).to be(true)
       end
     end
 
@@ -72,11 +72,13 @@ describe Facebook::Messenger::Thread do
 
       it 'raises an error' do
         expect do
-          subject.set(
+          options = {
             setting_type: 'call_to_actions',
             thread_state: 'new_thread',
-            call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }]
-          )
+            call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }],
+          }
+
+          subject.set(options, access_token: access_token)
         end.to raise_error(
           Facebook::Messenger::Thread::Error, error_message
         )
@@ -109,13 +111,15 @@ describe Facebook::Messenger::Thread do
           )
       end
 
+      let :options do
+        {
+          setting_type: 'call_to_actions',
+          thread_state: 'new_thread'
+        }
+      end
+
       it 'returns true' do
-        expect(
-          subject.unset(
-            setting_type: 'call_to_actions',
-            thread_state: 'new_thread'
-          )
-        ).to be(true)
+        expect(subject.unset(options, access_token: access_token)).to be(true)
       end
     end
 
@@ -141,10 +145,11 @@ describe Facebook::Messenger::Thread do
 
       it 'raises an error' do
         expect do
-          subject.unset(
+          options = {
             setting_type: 'call_to_actions',
             thread_state: 'new_thread'
-          )
+          }
+          subject.unset(options, access_token: access_token)
         end.to raise_error(
           Facebook::Messenger::Thread::Error, error_message
         )

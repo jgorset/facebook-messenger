@@ -36,14 +36,6 @@ module Facebook
         raise Error, response['error']['message'] if response.key? 'error'
       end
 
-      def default_options
-        super.merge(
-          query: {
-            access_token: Facebook::Messenger.config.access_token
-          }
-        )
-      end
-
       class Error < Facebook::Messenger::Error; end
     end
   end
