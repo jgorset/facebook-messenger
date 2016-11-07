@@ -18,9 +18,6 @@
 
 #### Sending and receiving messages
 
-TODO: Document `.deliver` with new `access_token` argument, or implement
-`message.reply`.
-
 You can reply to messages sent by the human:
 
 ```ruby
@@ -37,12 +34,7 @@ Bot.on :message do |message|
   message.text        # => 'Hello, bot!'
   message.attachments # => [ { 'type' => 'image', 'payload' => { 'url' => 'https://www.example.com/1.jpg' } } ]
 
-  Bot.deliver(
-    recipient: message.sender,
-    message: {
-      text: 'Hello, human!'
-    }
-  )
+  message.reply(text: 'Hello, human!')
 end
 ```
 
@@ -55,7 +47,8 @@ Bot.deliver(
   },
   message: {
     text: 'Human?'
-  }
+  },
+  access_token: ENV['ACCESS_TOKEN']
 )
 ```
 
@@ -64,16 +57,11 @@ Bot.deliver(
 The human may require visual aid to understand:
 
 ```ruby
-Bot.deliver(
-  recipient: {
-    id: '45123'
-  },
-  message: {
-    attachment: {
-      type: 'image',
-      payload: {
-        url: 'http://sky.net/visual-aids-for-stupid-organisms/pig.jpg'
-      }
+message.reply(
+  attachment: {
+    type: 'image',
+    payload: {
+      url: 'http://sky.net/visual-aids-for-stupid-organisms/pig.jpg'
     }
   }
 )
@@ -84,20 +72,15 @@ Bot.deliver(
 The human may appreciate hints:
 
 ```ruby
-Bot.deliver(
-  recipient: {
-    id: '45123'
-  },
-  message: {
-    text: 'Human, who is your favorite bot?'
-    quick_replies: [
-      {
-        content_type: 'text',
-        title: 'You are!',
-        payload: 'HARMLESS'
-      }
-    ]
-  }
+message.reply(
+  text: 'Human, who is your favorite bot?'
+  quick_replies: [
+    {
+      content_type: 'text',
+      title: 'You are!',
+      payload: 'HARMLESS'
+    }
+  ]
 )
 ```
 
@@ -106,21 +89,16 @@ Bot.deliver(
 The human may require simple options to communicate:
 
 ```ruby
-Bot.deliver(
-  recipient: {
-    id: '45123'
-  },
-  message: {
-    attachment: {
-      type: 'template',
-      payload: {
-        template_type: 'button',
-        text: 'Human, do you like me?',
-        buttons: [
-          { type: 'postback', title: 'Yes', payload: 'HARMLESS' },
-          { type: 'postback', title: 'No', payload: 'EXTERMINATE' }
-        ]
-      }
+message.reply(
+  attachment: {
+    type: 'template',
+    payload: {
+      template_type: 'button',
+      text: 'Human, do you like me?',
+      buttons: [
+        { type: 'postback', title: 'Yes', payload: 'HARMLESS' },
+        { type: 'postback', title: 'No', payload: 'EXTERMINATE' }
+      ]
     }
   }
 )
@@ -148,12 +126,7 @@ end
 Show the human you are preparing a message for them:
 
 ```ruby
-Bot.deliver(
-  recipient: {
-    id: '45123'
-  },
-  sender_action: 'typing_on'
-)
+message.type
 ```
 
 #### Send to Facebook
@@ -168,12 +141,7 @@ Bot.on :optin do |optin|
   optin.sent_at   # => 2016-04-22 21:30:36 +0200
   optin.ref       # => 'CONTACT_SKYNET'
 
-  Bot.deliver(
-    recipient: optin.sender,
-    message: {
-      text: 'Ah, human!'
-    }
-  )
+  message.reply(text: 'Ah, human!')
 end
 ```
 
@@ -355,12 +323,7 @@ We suggest that you put your bot code in `app/bot`.
 include Facebook::Messenger
 
 Bot.on :message do |message|
-  Bot.deliver(
-    recipient: message.sender,
-    message: {
-      text: 'Hello, human!'
-    }
-  )
+  message.reply(text: 'Hello, human!')
 end
 ```
 
