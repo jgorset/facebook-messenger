@@ -18,6 +18,9 @@
 
 #### Sending and receiving messages
 
+TODO: Document `.deliver` with new `access_token` argument, or implement
+`message.reply`.
+
 You can reply to messages sent by the human:
 
 ```ruby

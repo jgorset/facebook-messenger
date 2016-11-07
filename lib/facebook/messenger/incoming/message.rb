@@ -3,30 +3,14 @@ module Facebook
     module Incoming
       # The Message class represents an incoming Facebook Messenger message.
       class Message
-        attr_reader :messaging
-
-        def initialize(messaging)
-          @messaging = messaging
-        end
+        include Facebook::Messenger::Incoming::Common
 
         def id
           @messaging['message']['mid']
         end
 
-        def sender
-          @messaging['sender']
-        end
-
-        def recipient
-          @messaging['recipient']
-        end
-
         def seq
           @messaging['message']['seq']
-        end
-
-        def sent_at
-          Time.at(@messaging['timestamp'] / 1000)
         end
 
         def text

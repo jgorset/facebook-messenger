@@ -1,4 +1,4 @@
-require 'facebook/messenger/concerns/default_options'
+require 'facebook/messenger/incoming/common'
 require 'facebook/messenger/incoming/message'
 require 'facebook/messenger/incoming/delivery'
 require 'facebook/messenger/incoming/postback'

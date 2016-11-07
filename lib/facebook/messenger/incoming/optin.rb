@@ -6,7 +6,7 @@ module Facebook
       #
       # https://developers.facebook.com/docs/messenger-platform/plugin-reference
       class Optin
-        include Facebook::Messenger::Concerns::DefaultOptions
+        include Facebook::Messenger::Incoming::Common
 
         def ref
           @messaging['optin']['ref']
