@@ -23,8 +23,7 @@ module Facebook
     end
 
     configure do |config|
-      config.access_token = ENV['ACCESS_TOKEN']
-      config.verify_token = ENV['VERIFY_TOKEN']
+      config.provider = Configuration::Providers::Environment.new
     end
   end
 end
