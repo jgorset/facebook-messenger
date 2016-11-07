@@ -21,15 +21,22 @@ module Facebook
           Time.at(@messaging['timestamp'] / 1000)
         end
 
-        def reply(message)
-          access_token = Facebook::Messenger.config.provider.access_token_for(
-            recipient
-          )
+        def type
+          Facebook::Messenger::Bot.deliver({
+            recipient: sender,
+            sender_action: 'typing_on'
+          }, access_token: access_token)
+        end
 
+        def reply(message)
           Facebook::Messenger::Bot.deliver({
             recipient: sender,
             message: message
           }, access_token: access_token)
+        end
+
+        def access_token
+          Facebook::Messenger.config.provider.access_token_for(recipient)
         end
       end
     end

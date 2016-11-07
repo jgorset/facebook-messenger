@@ -52,6 +52,24 @@ describe Dummy do
     end
   end
 
+  describe '.type' do
+    let(:access_token) { 'access_token' }
+
+    it 'sends a typing indicator to the sender' do
+      expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
+        .with(subject.recipient)
+        .and_return(access_token)
+
+      expect(Facebook::Messenger::Bot).to receive(:deliver)
+        .with({
+          recipient: subject.sender,
+          sender_action: 'typing_on'
+          }, access_token: access_token)
+
+      subject.type
+    end
+  end
+
   describe '.reply' do
     let(:access_token) { 'access_token' }
 
