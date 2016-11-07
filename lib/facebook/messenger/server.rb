@@ -45,16 +45,9 @@ module Facebook
       end
 
       def receive
-        body_json = JSON.parse(body, symbolize_names: true)
+        check_integrity
 
-        # Get Facebook page id regardless of the entry type
-        facebook_page_id = body_json.dig(:entry, 0, :id)
-
-        check_integrity if app_secret(facebook_page_id)
-
-        events = parse_events
-
-        trigger_events(events)
+        trigger(parsed_body)
       rescue BadRequestError => error
         respond_with_error(error)
       end
@@ -65,6 +58,8 @@ module Facebook
       #
       # Returns nothing.
       def check_integrity
+        return unless app_secret_for(parsed_body['entry'][0]['id'])
+
         unless signature.start_with?('sha1='.freeze)
           $stderr.puts(X_HUB_SIGNATURE_MISSING_WARNING)
 
@@ -103,28 +98,18 @@ module Facebook
         facebook_page_id = content_json.dig(:entry, 0, :id)
 
         OpenSSL::HMAC.hexdigest('sha1'.freeze,
-                                app_secret(facebook_page_id),
+                                app_secret_for(facebook_page_id),
                                 content)
       end
 
       # Returns a String describing the bot's configured app secret.
-      def app_secret(facebook_page_id)
-        if Facebook::Messenger.config.config_provider_class.present?
-          config_provider = Facebook::Messenger.config.config_provider_class.new
-          config_provider.app_secret_for(facebook_page_id)
-        else
-          Facebook::Messenger.config.app_secret
-        end
+      def app_secret_for(facebook_page_id)
+        Facebook::Messenger.config.provider.app_secret_for(facebook_page_id)
       end
 
       # Checks whether a verify token is valid.
       def valid_verify_token?(token)
-        if Facebook::Messenger.config.config_provider_class.present?
-          config_provider = Facebook::Messenger.config.config_provider_class.new
-          config_provider.valid_verify_token?(token)
-        else
-          Facebook::Messenger.config.verify_token == token
-        end
+        Facebook::Messenger.config.provider.valid_verify_token?(token)
       end
 
       # Returns a String describing the request body.
@@ -132,19 +117,20 @@ module Facebook
         @body ||= @request.body.read
       end
 
-      def parse_events
-        JSON.parse(body)
+      # Returns a Hash describing the parsed request body.
+      def parsed_body
+        @parsed_body ||= JSON.parse(body)
       rescue JSON::ParserError
         raise BadRequestError, 'Error parsing request body format'
       end
 
-      def trigger_events(events)
+      def trigger(events)
         # Facebook may batch several items in the 'entry' array during
         # periods of high load.
         events['entry'.freeze].each do |entry|
           # Facebook may batch several items in the 'messaging' array during
           # periods of high load.
-          entry['messaging'.freeze].try(:each) do |messaging|
+          entry['messaging'.freeze].each do |messaging|
             Facebook::Messenger::Bot.receive(messaging)
           end
         end

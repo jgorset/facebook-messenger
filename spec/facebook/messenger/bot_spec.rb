@@ -1,12 +1,14 @@
 require 'spec_helper'
 
 describe Facebook::Messenger::Bot do
-  let(:access_token) { '<access token>' }
+  let(:verify_token) { 'verify token' }
+  let(:app_secret) { 'app secret' }
+  let(:access_token) { 'access token' }
 
   before do
-    Facebook::Messenger.configure do |config|
-      config.access_token = access_token
-    end
+    ENV['ACCESS_TOKEN'] = access_token
+    ENV['APP_SECRET'] = app_secret
+    ENV['ACCESS_TOKEN'] = access_token
   end
 
   subject { Facebook::Messenger::Bot }
@@ -162,7 +164,9 @@ describe Facebook::Messenger::Bot do
       end
 
       it 'sends a message' do
-        expect(subject.deliver(payload)).to eq(message_id)
+        result = subject.deliver(payload, access_token: access_token)
+
+        expect(result).to eq(message_id)
       end
     end
 
@@ -180,7 +184,9 @@ describe Facebook::Messenger::Bot do
       end
 
       it 'raises RecipientNotFound' do
-        expect { subject.deliver(payload) }.to raise_error(
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
           Facebook::Messenger::Bot::RecipientNotFound,
           'No matching user found.'
         )
@@ -202,7 +208,9 @@ describe Facebook::Messenger::Bot do
       end
 
       it 'raises PermissionDenied' do
-        expect { subject.deliver(payload) }.to raise_error(
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
           Facebook::Messenger::Bot::PermissionDenied,
           'Application does not have permission to use the Send API.'
         )
@@ -223,7 +231,9 @@ describe Facebook::Messenger::Bot do
       end
 
       it 'raises InternalError' do
-        expect { subject.deliver(payload) }.to raise_error(
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
           Facebook::Messenger::Bot::InternalError,
           'Send message failure. Internal server error.'
         )

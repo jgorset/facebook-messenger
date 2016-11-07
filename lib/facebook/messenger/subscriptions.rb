@@ -12,30 +12,20 @@ module Facebook
 
       module_function
 
-      def subscribe(options = {})
-        access_token = options[:access_token]
-
-        req_options = {}
-        if access_token.present?
-          req_options[:query] = { access_token: access_token }
-        end
-
-        response = post '/subscribed_apps', req_options
+      def subscribe(access_token:)
+        response = post '/subscribed_apps', query: {
+          access_token: access_token
+        }
 
         raise_errors(response)
 
         true
       end
 
-      def unsubscribe(options = {})
-        access_token = options[:access_token]
-
-        req_options = {}
-        if access_token.present?
-          req_options[:query] = { access_token: access_token }
-        end
-
-        response = delete '/subscribed_apps', req_options
+      def unsubscribe(access_token:)
+        response = delete '/subscribed_apps', query: {
+          access_token: access_token
+        }
 
         raise_errors(response)
 
@@ -44,14 +34,6 @@ module Facebook
 
       def raise_errors(response)
         raise Error, response['error']['message'] if response.key? 'error'
-      end
-
-      def default_options
-        super.merge(
-          query: {
-            access_token: Facebook::Messenger.config.access_token
-          }
-        )
       end
 
       class Error < Facebook::Messenger::Error; end

@@ -14,30 +14,20 @@ module Facebook
 
       module_function
 
-      def set(settings, options = {})
-        access_token = options[:access_token]
-
-        req_options = { body: settings.to_json }
-        if access_token.present?
-          req_options[:query] = { access_token: access_token }
-        end
-
-        response = post '/thread_settings', req_options
+      def set(settings, access_token:)
+        response = post '/thread_settings', body: settings.to_json, query: {
+          access_token: access_token
+        }
 
         raise_errors(response)
 
         true
       end
 
-      def unset(settings, options = {})
-        access_token = options[:access_token]
-
-        req_options = { body: settings.to_json }
-        if access_token.present?
-          req_options[:query] = { access_token: access_token }
-        end
-
-        response = delete '/thread_settings', req_options
+      def unset(settings, access_token:)
+        response = delete '/thread_settings', body: settings.to_json, query: {
+          access_token: access_token
+        }
 
         raise_errors(response)
 
@@ -50,9 +40,6 @@ module Facebook
 
       def default_options
         super.merge(
-          query: {
-            access_token: Facebook::Messenger.config.access_token
-          },
           headers: {
             'Content-Type' => 'application/json'
           }

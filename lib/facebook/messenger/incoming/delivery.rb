@@ -3,11 +3,7 @@ module Facebook
     module Incoming
       # The Delivery class represents the receipt of a delivered message.
       class Delivery
-        attr_reader :messaging
-
-        def initialize(messaging)
-          @messaging = messaging
-        end
+        include Facebook::Messenger::Incoming::Common
 
         def ids
           @messaging['delivery']['mids']
@@ -19,14 +15,6 @@ module Facebook
 
         def seq
           @messaging['delivery']['seq']
-        end
-
-        def sender
-          @messaging['sender']
-        end
-
-        def recipient
-          @messaging['recipient']
         end
       end
     end

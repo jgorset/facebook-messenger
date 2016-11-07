@@ -34,12 +34,7 @@ Bot.on :message do |message|
   message.text        # => 'Hello, bot!'
   message.attachments # => [ { 'type' => 'image', 'payload' => { 'url' => 'https://www.example.com/1.jpg' } } ]
 
-  Bot.deliver(
-    recipient: message.sender,
-    message: {
-      text: 'Hello, human!'
-    }
-  )
+  message.reply(text: 'Hello, human!')
 end
 ```
 
@@ -52,7 +47,8 @@ Bot.deliver(
   },
   message: {
     text: 'Human?'
-  }
+  },
+  access_token: ENV['ACCESS_TOKEN']
 )
 ```
 
@@ -61,16 +57,11 @@ Bot.deliver(
 The human may require visual aid to understand:
 
 ```ruby
-Bot.deliver(
-  recipient: {
-    id: '45123'
-  },
-  message: {
-    attachment: {
-      type: 'image',
-      payload: {
-        url: 'http://sky.net/visual-aids-for-stupid-organisms/pig.jpg'
-      }
+message.reply(
+  attachment: {
+    type: 'image',
+    payload: {
+      url: 'http://sky.net/visual-aids-for-stupid-organisms/pig.jpg'
     }
   }
 )
@@ -81,20 +72,15 @@ Bot.deliver(
 The human may appreciate hints:
 
 ```ruby
-Bot.deliver(
-  recipient: {
-    id: '45123'
-  },
-  message: {
-    text: 'Human, who is your favorite bot?'
-    quick_replies: [
-      {
-        content_type: 'text',
-        title: 'You are!',
-        payload: 'HARMLESS'
-      }
-    ]
-  }
+message.reply(
+  text: 'Human, who is your favorite bot?'
+  quick_replies: [
+    {
+      content_type: 'text',
+      title: 'You are!',
+      payload: 'HARMLESS'
+    }
+  ]
 )
 ```
 
@@ -103,21 +89,16 @@ Bot.deliver(
 The human may require simple options to communicate:
 
 ```ruby
-Bot.deliver(
-  recipient: {
-    id: '45123'
-  },
-  message: {
-    attachment: {
-      type: 'template',
-      payload: {
-        template_type: 'button',
-        text: 'Human, do you like me?',
-        buttons: [
-          { type: 'postback', title: 'Yes', payload: 'HARMLESS' },
-          { type: 'postback', title: 'No', payload: 'EXTERMINATE' }
-        ]
-      }
+message.reply(
+  attachment: {
+    type: 'template',
+    payload: {
+      template_type: 'button',
+      text: 'Human, do you like me?',
+      buttons: [
+        { type: 'postback', title: 'Yes', payload: 'HARMLESS' },
+        { type: 'postback', title: 'No', payload: 'EXTERMINATE' }
+      ]
     }
   }
 )
@@ -145,12 +126,7 @@ end
 Show the human you are preparing a message for them:
 
 ```ruby
-Bot.deliver(
-  recipient: {
-    id: '45123'
-  },
-  sender_action: 'typing_on'
-)
+message.type
 ```
 
 #### Send to Facebook
@@ -165,12 +141,7 @@ Bot.on :optin do |optin|
   optin.sent_at   # => 2016-04-22 21:30:36 +0200
   optin.ref       # => 'CONTACT_SKYNET'
 
-  Bot.deliver(
-    recipient: optin.sender,
-    message: {
-      text: 'Ah, human!'
-    }
-  )
+  message.reply(text: 'Ah, human!')
 end
 ```
 
@@ -259,24 +230,45 @@ token of your choosing.
 *Note*: Don't subscribe to `message_echoes`; it'll echo your bot's own messages
 back to you, effectively DDOSing yourself.
 
-Use the generated access token and your verify token to configure your bot:
+### Make a configuration provider
 
-##### ... pass a block, or
+Use the generated access token and your verify token to configure your bot. Most
+bots live on a single Facebook Page. If that is the case with yours, too, just
+set these environment variables and skip to the next section:
 
-```ruby
-Facebook::Messenger.configure do |config|
-  config.access_token = 'EAAG6WgW...'
-  config.app_secret = '__app_secret_here__'
-  config.verify_token = 'my_voice_is_my_password_verify_me'
-end
+```bash
+export ACCESS_TOKEN=EAAAG6WgW...
+export APP_SECRET=a885a...
+export VERIFY_TOKEN=95vr15g...
 ```
 
-##### ... set directly
+If your bot lives on multiple Facebook Pages, make a _configuration provider_
+to keep track of access tokens, app secrets and verify tokens for each of them:
 
 ```ruby
-Facebook::Messenger.config.access_token = 'EAAG6WgW...'
-Facebook::Messenger.config.app_secret = '__app_secret_here__'
-Facebook::Messenger.config.verify_token = 'my_voice_is_my_password_verify_me'
+class ExampleProvider < Facebook::Messenger::Configuration::Providers::Base
+  def valid_verify_token?(verify_token)
+    bot.exists?(verify_token: verify_token)
+  end
+
+  def app_secret_for(page_id)
+    bot.find_by(page_id: page_id).app_secret
+  end
+
+  def access_token_for(page_id)
+    bot.find_by(page_id: page_id).access_token
+  end
+
+  private
+
+  def bot
+    MyApp::Bot
+  end
+end
+
+Facebook::Messenger.configure do |config|
+  config.provider = ExampleProvider.new
+end
 ```
 
 ### Subscribe your Application to a Page
@@ -331,12 +323,7 @@ We suggest that you put your bot code in `app/bot`.
 include Facebook::Messenger
 
 Bot.on :message do |message|
-  Bot.deliver(
-    recipient: message.sender,
-    message: {
-      text: 'Hello, human!'
-    }
-  )
+  message.reply(text: 'Hello, human!')
 end
 ```
 
@@ -351,7 +338,7 @@ unless Rails.env.production?
   bot_reloader = ActiveSupport::FileUpdateChecker.new(bot_files) do
     bot_files.each{ |file| require_dependency file }
   end
-  
+
   ActionDispatch::Callbacks.to_prepare do
     bot_reloader.execute_if_updated
   end

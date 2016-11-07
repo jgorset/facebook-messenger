@@ -3,7 +3,7 @@ module Facebook
     module Incoming
       # The Postback class represents an incoming Facebook Messenger postback.
       class Postback
-        include Facebook::Messenger::Concerns::DefaultOptions
+        include Facebook::Messenger::Incoming::Common
 
         def payload
           @messaging['postback']['payload']
