@@ -75,7 +75,7 @@ describe Facebook::Messenger::Thread do
           options = {
             setting_type: 'call_to_actions',
             thread_state: 'new_thread',
-            call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }],
+            call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }]
           }
 
           subject.set(options, access_token: access_token)

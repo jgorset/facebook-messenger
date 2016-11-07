@@ -185,7 +185,7 @@ describe Facebook::Messenger::Bot do
 
       it 'raises RecipientNotFound' do
         expect do
-          subject.deliver(payload, access_token: access_token )
+          subject.deliver(payload, access_token: access_token)
         end.to raise_error(
           Facebook::Messenger::Bot::RecipientNotFound,
           'No matching user found.'
