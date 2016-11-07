@@ -37,7 +37,7 @@ module Facebook
       private
 
       def verify
-        if valid_verify_token?(@request.params['hub.verify_token'])
+        if valid_verify_token_for?(@request.params['hub.verify_token'])
           @response.write @request.params['hub.challenge']
         else
           @response.write 'Error; wrong verify token'
@@ -48,9 +48,9 @@ module Facebook
         body_json = JSON.parse(body, symbolize_names: true)
 
         # Get Facebook page id regardless of the entry type
-        facebook_page_id = body_json.dig(:entry, 0, :id)
+        facebook_page_id = body_json[:entry][0][:id]
 
-        check_integrity if app_secret(facebook_page_id)
+        check_integrity if app_secret_for(facebook_page_id)
 
         events = parse_events
 
@@ -108,8 +108,8 @@ module Facebook
       end
 
       # Returns a String describing the bot's configured app secret.
-      def app_secret(facebook_page_id)
-        if Facebook::Messenger.config.config_provider_class.present?
+      def app_secret_for(facebook_page_id)
+        if Facebook::Messenger.config.config_provider_class
           config_provider = Facebook::Messenger.config.config_provider_class.new
           config_provider.app_secret_for(facebook_page_id)
         else
@@ -118,10 +118,10 @@ module Facebook
       end
 
       # Checks whether a verify token is valid.
-      def valid_verify_token?(token)
-        if Facebook::Messenger.config.config_provider_class.present?
+      def valid_verify_token_for?(token)
+        if Facebook::Messenger.config.config_provider_class
           config_provider = Facebook::Messenger.config.config_provider_class.new
-          config_provider.valid_verify_token?(token)
+          config_provider.valid_verify_token_for?(token)
         else
           Facebook::Messenger.config.verify_token == token
         end
@@ -144,7 +144,7 @@ module Facebook
         events['entry'.freeze].each do |entry|
           # Facebook may batch several items in the 'messaging' array during
           # periods of high load.
-          entry['messaging'.freeze].try(:each) do |messaging|
+          entry['messaging'.freeze].each do |messaging|
             Facebook::Messenger::Bot.receive(messaging)
           end
         end
