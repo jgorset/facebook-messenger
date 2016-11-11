@@ -2,3 +2,4 @@ AllCops:
   TargetRubyVersion: 2.1
   Exclude:
     - 'examples/*'
+    - 'vendor/**/*'
