@@ -277,7 +277,7 @@ Once you've configured your bot, subscribe it to the Page to get messages
 from Facebook:
 
 ```ruby
-Facebook::Messenger::Subscriptions.subscribe
+Facebook::Messenger::Subscriptions.subscribe(access_token: access_token)
 ```
 
 ### Run it
