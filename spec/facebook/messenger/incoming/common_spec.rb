@@ -81,8 +81,7 @@ describe Dummy do
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
                 recipient: subject.sender,
-                message: {
-                  text: 'Hello, human' }
+                message: { text: 'Hello, human' }
               }, access_token: access_token)
 
       subject.reply(text: 'Hello, human')
