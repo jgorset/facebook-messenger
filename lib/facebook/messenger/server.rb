@@ -130,8 +130,10 @@ module Facebook
         events['entry'.freeze].each do |entry|
           # Facebook may batch several items in the 'messaging' array during
           # periods of high load.
-          entry['messaging'.freeze].each do |messaging|
-            Facebook::Messenger::Bot.receive(messaging)
+          if entry['messaging'.freeze].present?
+            entry['messaging'.freeze].each do |messaging|
+              Facebook::Messenger::Bot.receive(messaging)
+            end
           end
         end
       end
