@@ -141,7 +141,7 @@ Bot.on :optin do |optin|
   optin.sent_at   # => 2016-04-22 21:30:36 +0200
   optin.ref       # => 'CONTACT_SKYNET'
 
-  message.reply(text: 'Ah, human!')
+  optin.reply(text: 'Ah, human!')
 end
 ```
 
