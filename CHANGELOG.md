@@ -1,5 +1,19 @@
 # Change Log
 
+## [0.11.0] - 2016-11-19
+### Added
+- `reply` and `type` are now available on any incoming entry (such as messages
+  or postbacks).
+- With the introduction of configuration providers, bots may now be installed to
+  multiple Facebook Pages.
+- `Incoming::Message` now has an `echo?` method which returns a boolean
+  describing whether the message was an echo.
+
+### Changed
+- `Bot.deliver` now requires a keyword argument `access_token`.
+- `Facebook::Messenger.configuration.verify_token`, `app_secret` and
+  `access_token` are replaced by configuration providers.
+
 ## [0.10.0] - 2016-09-23
 ### Fixed
 - Fixed a bug that caused `Message.quick_replies` to crash when a
