@@ -84,6 +84,24 @@ describe Facebook::Messenger::Server do
       post '/', payload
     end
 
+    context 'without messaging' do
+      let :payload do
+        JSON.generate(
+          object: 'page',
+          entry: [
+            {
+              id: '1',
+              time: 145_776_419_824_6,
+            }
+          ]
+        )
+      end
+
+      it 'does not trigger the bot' do
+        expect(Facebook::Messenger::Bot).to_not receive(:trigger)
+      end
+    end
+
     context 'with invalid JSON' do
       let(:payload) { 'invalid:json' }
 
