@@ -41,6 +41,13 @@ describe Facebook::Messenger::Server do
     end
   end
 
+  describe 'PATCH' do
+    it 'returns HTTP 405 Method Not Allowed' do
+      patch '/'
+      expect(last_response.status).to eq(405)
+    end
+  end
+
   describe 'POST' do
     let :payload do
       JSON.generate(
@@ -75,15 +82,6 @@ describe Facebook::Messenger::Server do
         .with(:message, any_args)
 
       post '/', payload
-    end
-
-    describe 'Bad request' do
-      it 'triggers 405 status' do
-        patch '/', JSON.dump(
-          foo: 'bar'
-        )
-        expect(last_response.status).to eq(405)
-      end
     end
 
     it 'returns bad request if invalid json' do
