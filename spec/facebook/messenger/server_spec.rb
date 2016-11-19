@@ -41,6 +41,13 @@ describe Facebook::Messenger::Server do
     end
   end
 
+  describe 'PATCH' do
+    it 'returns HTTP 405 Method Not Allowed' do
+      patch '/'
+      expect(last_response.status).to eq(405)
+    end
+  end
+
   describe 'POST' do
     let :payload do
       JSON.generate(
@@ -77,21 +84,34 @@ describe Facebook::Messenger::Server do
       post '/', payload
     end
 
-    describe 'Bad request' do
-      it 'triggers 405 status' do
-        patch '/', JSON.dump(
-          foo: 'bar'
+    context 'without messaging' do
+      let :payload do
+        JSON.generate(
+          object: 'page',
+          entry: [
+            {
+              id: '1',
+              time: 145_776_419_824_6,
+            }
+          ]
         )
-        expect(last_response.status).to eq(405)
+      end
+
+      it 'does not trigger the bot' do
+        expect(Facebook::Messenger::Bot).to_not receive(:trigger)
       end
     end
 
-    it 'returns bad request if invalid json' do
-      post '/', 'invalid:json'
+    context 'with invalid JSON' do
+      let(:payload) { 'invalid:json' }
 
-      expect(last_response.status).to eq(400)
-      expect(last_response.body).to eq('Error parsing request body format')
-      expect(last_response['Content-Type']).to eq('text/plain')
+      it 'returns HTTP 400 Bad Request' do
+        post '/', payload
+
+        expect(last_response.status).to eq(400)
+        expect(last_response.body).to eq('Error parsing request body format')
+        expect(last_response['Content-Type']).to eq('text/plain')
+      end
     end
 
     context 'integrity check' do
