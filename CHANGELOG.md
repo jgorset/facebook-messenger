@@ -1,5 +1,9 @@
 # Change Log
 
+## UNRELEASED
+### Fixed
+- Webhooks that don't have messaging will now be ignored rather than crash.
+
 ## [0.11.0] - 2016-11-19
 ### Added
 - `reply` and `type` are now available on any incoming entry (such as messages
