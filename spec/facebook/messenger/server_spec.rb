@@ -91,7 +91,7 @@ describe Facebook::Messenger::Server do
           entry: [
             {
               id: '1',
-              time: 145_776_419_824_6,
+              time: 145_776_419_824_6
             }
           ]
         )
