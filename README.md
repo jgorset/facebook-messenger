@@ -166,19 +166,19 @@ end
 You can greet new humans to entice them into talking to you:
 
 ```ruby
-Facebook::Messenger::Thread.set(
+Facebook::Messenger::Thread.set({
   setting_type: 'greeting',
   greeting: {
     text: 'Welcome to your new bot overlord!'
-  }
-)
+  },
+}, access_token: ENV['ACCESS_TOKEN'])
 ```
 
 You can define the action to trigger when new humans click on the Get
 Started button. Before doing it you should check to select the messaging_postbacks field when setting up your webhook.
 
 ```ruby
-Facebook::Messenger::Thread.set(
+Facebook::Messenger::Thread.set({
   setting_type: 'call_to_actions',
   thread_state: 'new_thread',
   call_to_actions: [
@@ -186,13 +186,13 @@ Facebook::Messenger::Thread.set(
       payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_WELCOME'
     }
   ]
-)
+}, access_token: ENV['ACCESS_TOKEN'])
 ```
 
 You can show a persistent menu to humans.
 
 ```ruby
-Facebook::Messenger::Thread.set(
+Facebook::Messenger::Thread.set({
   setting_type: 'call_to_actions',
   thread_state: 'existing_thread',
   call_to_actions: [
@@ -212,7 +212,7 @@ Facebook::Messenger::Thread.set(
       url: 'http://example.com/'
     }
   ]
-)
+}, access_token: ENV['ACCESS_TOKEN'])
 ```
 
 ## Configuration
