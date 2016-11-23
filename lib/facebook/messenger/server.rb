@@ -93,9 +93,7 @@ module Facebook
       # Generate a HMAC signature for the given content.
       def generate_hmac(content)
         content_json = JSON.parse(content, symbolize_names: true)
-
-        # Get Facebook page id regardless of the entry type
-        facebook_page_id = content_json.dig(:entry, 0, :id)
+        facebook_page_id = content_json[:entry][0][:id]
 
         OpenSSL::HMAC.hexdigest('sha1'.freeze,
                                 app_secret_for(facebook_page_id),
