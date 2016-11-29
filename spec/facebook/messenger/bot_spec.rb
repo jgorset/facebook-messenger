@@ -174,20 +174,20 @@ describe Facebook::Messenger::Bot do
       before do
         stub_request_to_return(
           error: {
-            message: 'Invalid parameter',
+            message: 'No matching user found.',
             type: 'FacebookApiException',
             code: 100,
-            error_data: 'No matching user found.',
+            error_subcode: 2_018_001,
             fbtrace_id: 'D2kxCybrKVw'
           }
         )
       end
 
-      it 'raises RecipientNotFound' do
+      it 'raises BadParameterError' do
         expect do
           subject.deliver(payload, access_token: access_token)
         end.to raise_error(
-          Facebook::Messenger::Bot::RecipientNotFound,
+          Facebook::Messenger::BadParameterError,
           'No matching user found.'
         )
       end
@@ -197,21 +197,21 @@ describe Facebook::Messenger::Bot do
       before do
         stub_request_to_return(
           error: {
-            message: 'Invalid parameter',
+            message: 'This message is sent outside of allowed window. You' \
+            'need page_messaging_subscriptions permission to be able to do it.',
             type: 'FacebookApiException',
             code: 10,
-            error_data: 'Application does not have permission ' \
-                        'to use the Send API.',
+            error_subcode: 2_018_065,
             fbtrace_id: 'D2kxCybrKVw'
           }
         )
       end
 
-      it 'raises PermissionDenied' do
+      it 'raises PermissionError' do
         expect do
           subject.deliver(payload, access_token: access_token)
         end.to raise_error(
-          Facebook::Messenger::Bot::PermissionDenied,
+          Facebook::Messenger::PermissionError,
           'Application does not have permission to use the Send API.'
         )
       end

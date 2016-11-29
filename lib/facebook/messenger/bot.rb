@@ -26,7 +26,7 @@ module Facebook
                             access_token: access_token
                           }
 
-          raise_errors_from(response)
+          Facebook::Messenger::ErrorParser.raise_errors_from(response)
 
           response['message_id']
         end
@@ -64,34 +64,6 @@ module Facebook
           hooks.fetch(event).call(*args)
         rescue KeyError
           $stderr.puts "Ignoring #{event} (no hook registered)"
-        end
-
-        # Raise any errors in the given response.
-        #
-        # response - A HTTParty::Response object.
-        #
-        # Returns nil if no errors were found, otherwises raises appropriately.
-        def raise_errors_from(response)
-          return unless response.key? 'error'
-          error = response['error']
-
-          raise(
-            error_class_from_error_code(error['code']),
-            (error['error_data'] || error['message'])
-          )
-        end
-
-        # Find the appropriate error class for the given error code.
-        #
-        # error_code - An Integer describing an error code.
-        #
-        # Returns an error class, or raises KeyError if none was found.
-        def error_class_from_error_code(error_code)
-          {
-            100 => RecipientNotFound,
-            10 => PermissionDenied,
-            2 => InternalError
-          }[error_code] || Facebook::Messenger::Error
         end
 
         # Return a Hash of hooks.

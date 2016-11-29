@@ -1,5 +1,5 @@
 require 'facebook/messenger/version'
-require 'facebook/messenger/error'
+require 'facebook/messenger/exceptions'
 require 'facebook/messenger/subscriptions'
 require 'facebook/messenger/thread'
 require 'facebook/messenger/bot'
