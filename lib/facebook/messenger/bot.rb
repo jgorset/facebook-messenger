@@ -1,3 +1,6 @@
+require 'facebook/messenger/bot/error_parser'
+require 'facebook/messenger/bot/exceptions'
+
 module Facebook
   module Messenger
     # The Bot module sends and receives messages.
@@ -26,7 +29,7 @@ module Facebook
                             access_token: access_token
                           }
 
-          Facebook::Messenger::ErrorParser.raise_errors_from(response)
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
 
           response['message_id']
         end
@@ -85,10 +88,6 @@ module Facebook
           )
         end
       end
-
-      class RecipientNotFound < Facebook::Messenger::Error; end
-      class PermissionDenied < Facebook::Messenger::Error; end
-      class InternalError < Facebook::Messenger::Error; end
     end
   end
 end
