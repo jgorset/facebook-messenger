@@ -41,15 +41,14 @@ end
 ... or even send the human messages out of the blue:
 
 ```ruby
-Bot.deliver(
+Bot.deliver({
   recipient: {
     id: '45123'
   },
   message: {
     text: 'Human?'
-  },
-  access_token: ENV['ACCESS_TOKEN']
-)
+  }
+}, access_token: ENV['ACCESS_TOKEN'])
 ```
 
 ##### Messages with images
