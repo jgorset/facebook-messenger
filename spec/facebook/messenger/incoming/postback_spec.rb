@@ -11,7 +11,12 @@ describe Facebook::Messenger::Incoming::Postback do
       },
       'timestamp' => 145_776_419_762_7,
       'postback' => {
-        'payload' => 'USER_DEFINED_PAYLOAD'
+        'payload' => 'USER_DEFINED_PAYLOAD',
+        'referral' => {
+          'ref' => 'my-ref-value',
+          'source' => 'SHORTLINK',
+          'type' => 'OPEN_THREAD'
+        }
       }
     }
   end
@@ -45,6 +50,24 @@ describe Facebook::Messenger::Incoming::Postback do
   describe '.payload' do
     it 'returns the payload of the postback' do
       expect(subject.payload).to eq(payload['postback']['payload'])
+    end
+  end
+
+  describe '.referral' do
+    it 'returns the ref value' do
+      expect(subject.referral.ref).to eq(payload['postback']['referral']['ref'])
+    end
+
+    it 'returns the source value' do
+      expect(subject.referral.source).to eq(
+        payload['postback']['referral']['source']
+      )
+    end
+
+    it 'returns the type value' do
+      expect(subject.referral.type).to eq(
+        payload['postback']['referral']['type']
+      )
     end
   end
 end

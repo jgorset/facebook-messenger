@@ -160,6 +160,20 @@ Bot.on :delivery do |delivery|
 end
 ```
 
+#### Referral
+
+When the human follows a m.me link with a ref parameter like http://m.me/mybot?ref=myparam,
+you will receive a `referral` event.
+
+```ruby
+Bot.on :referral do |referral|
+  referral.sender    # => { 'id' => '1008372609250235' }
+  referral.recipient # => { 'id' => '2015573629214912' }
+  referral.sent_at   # => 2016-04-22 21:30:36 +0200
+  referral.ref       # => 'MYPARAM'
+end
+```
+
 #### Change thread settings
 
 You can greet new humans to entice them into talking to you:
