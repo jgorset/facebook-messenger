@@ -9,11 +9,9 @@ module Facebook
         def initialize(messaging)
           super
 
-          if messaging['postback'] && messaging['postback']['referral']
-            @referral ||= Referral::Referral.new(
-              messaging['postback']['referral']
-            )
-          end
+          @referral ||= Referral::Referral.new(
+            messaging['postback']['referral']
+          ) if messaging['postback'] && messaging['postback']['referral']
         end
 
         def payload
