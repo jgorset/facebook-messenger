@@ -8,6 +8,12 @@ module Facebook
         def payload
           @messaging['postback']['payload']
         end
+
+        def referral
+          @referral ||= Referral::Referral.new(
+            @messaging['postback']['referral']
+          )
+        end
       end
     end
   end

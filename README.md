@@ -41,15 +41,14 @@ end
 ... or even send the human messages out of the blue:
 
 ```ruby
-Bot.deliver(
+Bot.deliver({
   recipient: {
     id: '45123'
   },
   message: {
     text: 'Human?'
-  },
-  access_token: ENV['ACCESS_TOKEN']
-)
+  }
+}, access_token: ENV['ACCESS_TOKEN'])
 ```
 
 ##### Messages with images
@@ -158,6 +157,20 @@ Bot.on :delivery do |delivery|
   delivery.seq       # => 37
 
   puts "Human was online at #{delivery.at}"
+end
+```
+
+#### Referral
+
+When the human follows a m.me link with a ref parameter like http://m.me/mybot?ref=myparam,
+you will receive a `referral` event.
+
+```ruby
+Bot.on :referral do |referral|
+  referral.sender    # => { 'id' => '1008372609250235' }
+  referral.recipient # => { 'id' => '2015573629214912' }
+  referral.sent_at   # => 2016-04-22 21:30:36 +0200
+  referral.ref       # => 'MYPARAM'
 end
 ```
 
