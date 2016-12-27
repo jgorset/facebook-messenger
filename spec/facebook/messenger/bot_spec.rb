@@ -170,61 +170,13 @@ describe Facebook::Messenger::Bot do
       end
     end
 
-    context 'when the recipient could not be found' do
-      before do
-        stub_request_to_return(
-          error: {
-            message: 'Invalid parameter',
-            type: 'FacebookApiException',
-            code: 100,
-            error_data: 'No matching user found.',
-            fbtrace_id: 'D2kxCybrKVw'
-          }
-        )
-      end
-
-      it 'raises RecipientNotFound' do
-        expect do
-          subject.deliver(payload, access_token: access_token)
-        end.to raise_error(
-          Facebook::Messenger::Bot::RecipientNotFound,
-          'No matching user found.'
-        )
-      end
-    end
-
-    context 'when the application does not have permission to use the API' do
-      before do
-        stub_request_to_return(
-          error: {
-            message: 'Invalid parameter',
-            type: 'FacebookApiException',
-            code: 10,
-            error_data: 'Application does not have permission ' \
-                        'to use the Send API.',
-            fbtrace_id: 'D2kxCybrKVw'
-          }
-        )
-      end
-
-      it 'raises PermissionDenied' do
-        expect do
-          subject.deliver(payload, access_token: access_token)
-        end.to raise_error(
-          Facebook::Messenger::Bot::PermissionDenied,
-          'Application does not have permission to use the Send API.'
-        )
-      end
-    end
-
     context 'when Facebook had an internal server error' do
       before do
         stub_request_to_return(
           error: {
-            message: 'Invalid parameter',
+            message: 'Temporary send message failure. Please try again later.',
             type: 'FacebookApiException',
-            code: 2,
-            error_data: 'Send message failure. Internal server error.',
+            code: 1200,
             fbtrace_id: 'D2kxCybrKVw'
           }
         )
@@ -235,7 +187,274 @@ describe Facebook::Messenger::Bot do
           subject.deliver(payload, access_token: access_token)
         end.to raise_error(
           Facebook::Messenger::Bot::InternalError,
-          'Send message failure. Internal server error.'
+          'Temporary send message failure. Please try again later.'
+        )
+      end
+    end
+
+    context 'when exceeding the send rate limit' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'Calls to this API have exceeded the rate limit',
+            type: 'FacebookApiException',
+            code: 613,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises LimitError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::LimitError,
+          'Calls to this API have exceeded the rate limit'
+        )
+      end
+    end
+
+    context 'when passing an invalid facebook psid' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'Invalid fbid.',
+            type: 'FacebookApiException',
+            code: 100,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises BadParameterError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::BadParameterError,
+          'Invalid fbid.'
+        )
+      end
+    end
+
+    context 'when the recipient could not be found' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'No matching user found.',
+            type: 'FacebookApiException',
+            code: 100,
+            error_subcode: 2_018_001,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises BadParameterError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::BadParameterError,
+          'No matching user found.'
+        )
+      end
+    end
+
+    context 'when using an invalid OAuth token' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'Invalid OAuth access token.',
+            type: 'FacebookApiException',
+            code: 190,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises AccessTokenError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::AccessTokenError,
+          'Invalid OAuth access token.'
+        )
+      end
+    end
+
+    context 'when sending messages the current token does not allow to' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'This message is sent outside of allowed window. You ' \
+            'need page_messaging_subscriptions permission to be able to do it.',
+            type: 'FacebookApiException',
+            code: 10,
+            error_subcode: 2_018_065,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises PermissionError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::PermissionError,
+          'This message is sent outside of allowed window. You need ' \
+          'page_messaging_subscriptions permission to be able to do it.'
+        )
+      end
+    end
+
+    context 'when the person cannot receive messages from the page' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'This Person Cannot Receive Messages: This person ' \
+            'isn\'t receiving messages from you right now.',
+            type: 'FacebookApiException',
+            code: 10,
+            error_subcode: 2_018_108,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises PermissionError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::PermissionError,
+          'This Person Cannot Receive Messages: This person isn\'t receiving ' \
+          'messages from you right now.'
+        )
+      end
+    end
+
+    context 'when the person cannot receive messages from the page' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'Message Not Sent: This person isn\'t receiving messages' \
+            ' from you right now.',
+            type: 'FacebookApiException',
+            code: 200,
+            error_subcode: 1_545_041,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises PermissionError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::PermissionError,
+          'Message Not Sent: This person isn\'t receiving messages from you ' \
+          'right now.'
+        )
+      end
+    end
+
+    context 'when the application isnt live with pages_messaging permission' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'Cannot message users who are not admins, developers or ' \
+            'testers of the app until pages_messaging permission is reviewed ' \
+            'and the app is live.',
+            type: 'FacebookApiException',
+            code: 200,
+            error_subcode: 2_018_028,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises PermissionError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::PermissionError,
+          'Cannot message users who are not admins, developers or testers of ' \
+          'the app until pages_messaging permission is reviewed and the app ' \
+          'is live.'
+        )
+      end
+    end
+
+    context 'when the application isnt live with pages_messaging_phone_number' \
+    '  permission' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'Cannot message users who are not admins, developers or ' \
+            'testers of the app until pages_messaging_phone_number permission' \
+            ' is reviewed and the app is live.',
+            type: 'FacebookApiException',
+            code: 200,
+            error_subcode: 2_018_027,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises PermissionError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::PermissionError,
+          'Cannot message users who are not admins, developers or testers of ' \
+          'the app until pages_messaging_phone_number permission is reviewed ' \
+          'and the app is live.'
+        )
+      end
+    end
+
+    context 'when the application is not authorized to do phone matching' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'Requires phone matching access fee to be paid by this ' \
+            'page unless the recipient user is an admin, developer, or tester' \
+            ' of the app.',
+            type: 'FacebookApiException',
+            code: 200,
+            error_subcode: 2_018_021,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises PermissionError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::PermissionError,
+          'Requires phone matching access fee to be paid by this page unless ' \
+          'the recipient user is an admin, developer, or tester of the app.'
+        )
+      end
+    end
+
+    context 'when using an invalid account_linking token' do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'Invalid account_linking_token',
+            type: 'FacebookApiException',
+            code: 10_303,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises AccountLinkingError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::AccountLinkingError,
+          'Invalid account_linking_token'
         )
       end
     end
