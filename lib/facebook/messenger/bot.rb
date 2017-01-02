@@ -28,7 +28,7 @@ module Facebook
 
           raise_errors_from(response)
 
-          response['message_id']
+          response
         end
 
         # Register a hook for the given event.
