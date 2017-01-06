@@ -4,8 +4,13 @@ module Facebook
     module Bot
       include HTTParty
 
-      base_uri 'https://graph.facebook.com/v2.6/me'
-
+      # lazines
+      if Rails.env.production?
+        base_uri 'https://graph.facebook.com/v2.8/386624931385753'
+      else 
+        base_uri 'https://graph.facebook.com/v2.8/230591880697484'
+      end
+      
       EVENTS = [:message, :delivery, :postback, :optin,
                 :read, :account_linking].freeze
 
