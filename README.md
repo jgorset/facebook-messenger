@@ -72,7 +72,7 @@ The human may appreciate hints:
 
 ```ruby
 message.reply(
-  text: 'Human, who is your favorite bot?'
+  text: 'Human, who is your favorite bot?',
   quick_replies: [
     {
       content_type: 'text',
