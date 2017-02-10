@@ -52,7 +52,7 @@ describe Dummy do
     end
   end
 
-  describe '.type' do
+  describe '.typing_on' do
     let(:access_token) { 'access_token' }
 
     it 'sends a typing indicator to the sender' do
@@ -66,7 +66,43 @@ describe Dummy do
                 sender_action: 'typing_on'
               }, access_token: access_token)
 
-      subject.type
+      subject.typing_on
+    end
+  end
+
+  describe '.typing_off' do
+    let(:access_token) { 'access_token' }
+
+    it 'sends a typing off indicator to the sender' do
+      expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
+        .with(subject.recipient)
+        .and_return(access_token)
+
+      expect(Facebook::Messenger::Bot).to receive(:deliver)
+        .with({
+                recipient: subject.sender,
+                sender_action: 'typing_off'
+              }, access_token: access_token)
+
+      subject.typing_off
+    end
+  end
+
+  describe '.mark_seen' do
+    let(:access_token) { 'access_token' }
+
+    it 'sends a typing off indicator to the sender' do
+      expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
+        .with(subject.recipient)
+        .and_return(access_token)
+
+      expect(Facebook::Messenger::Bot).to receive(:deliver)
+        .with({
+                recipient: subject.sender,
+                sender_action: 'mark_seen'
+              }, access_token: access_token)
+
+      subject.mark_seen
     end
   end
 
