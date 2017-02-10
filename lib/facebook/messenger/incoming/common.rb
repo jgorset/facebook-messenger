@@ -21,10 +21,28 @@ module Facebook
           Time.at(@messaging['timestamp'] / 1000)
         end
 
-        def type
+        def typing_on
           payload = {
             recipient: sender,
             sender_action: 'typing_on'
+          }
+
+          Facebook::Messenger::Bot.deliver(payload, access_token: access_token)
+        end
+
+        def typing_off
+          payload = {
+            recipient: sender,
+            sender_action: 'typing_off'
+          }
+
+          Facebook::Messenger::Bot.deliver(payload, access_token: access_token)
+        end
+
+        def mark_seen
+          payload = {
+            recipient: sender,
+            sender_action: 'mark_seen'
           }
 
           Facebook::Messenger::Bot.deliver(payload, access_token: access_token)
