@@ -125,7 +125,21 @@ end
 Show the human you are preparing a message for them:
 
 ```ruby
-message.type
+message.typing_on
+```
+
+Or that you changed your mind:
+
+```ruby
+message.typing_off
+```
+
+##### Mark as viewed
+
+You can mark messages as seen to keep the human on their toes:
+
+```ruby
+message.mark_seen
 ```
 
 #### Send to Facebook
