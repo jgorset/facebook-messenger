@@ -12,7 +12,7 @@ module Facebook
         def referral
           @referral ||= Referral::Referral.new(
             @messaging['postback']['referral']
-          )
+          ) unless @messaging['postback']['referral'].nil?
         end
       end
     end

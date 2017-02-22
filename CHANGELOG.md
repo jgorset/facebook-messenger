@@ -1,6 +1,6 @@
 # Change Log
 
-## UNRELEASED
+## [0.11.1] - 2016-11-23
 ### Fixed
 - Webhooks that don't have messaging will now be ignored rather than crash.
 - Refactored use of `dig` for compatibility with Ruby < 2.3.

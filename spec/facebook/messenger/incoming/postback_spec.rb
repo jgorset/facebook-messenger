@@ -69,5 +69,26 @@ describe Facebook::Messenger::Incoming::Postback do
         payload['postback']['referral']['type']
       )
     end
+
+    context 'when referral is not set' do
+      let :payload do
+        {
+          'sender' => {
+            'id' => '3'
+          },
+          'recipient' => {
+            'id' => '3'
+          },
+          'timestamp' => 145_776_419_762_7,
+          'postback' => {
+            'payload' => 'USER_DEFINED_PAYLOAD'
+          }
+        }
+      end
+
+      it 'returns nil' do
+        expect(subject.referral).to be_nil
+      end
+    end
   end
 end
