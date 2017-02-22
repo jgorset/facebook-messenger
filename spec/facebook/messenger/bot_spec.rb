@@ -356,6 +356,28 @@ describe Facebook::Messenger::Bot do
       end
     end
 
+    context "when the application doesn't have pages_messaging permission" do
+      before do
+        stub_request_to_return(
+          error: {
+            message: 'Requires pages_messaging permission to manage the object',
+            type: 'OAuthException',
+            code: 230,
+            fbtrace_id: 'D2kxCybrKVw'
+          }
+        )
+      end
+
+      it 'raises PermissionError' do
+        expect do
+          subject.deliver(payload, access_token: access_token)
+        end.to raise_error(
+          Facebook::Messenger::Bot::PermissionError,
+          'Requires pages_messaging permission to manage the object'
+        )
+      end
+    end
+
     context 'when the application isnt live with pages_messaging permission' do
       before do
         stub_request_to_return(
