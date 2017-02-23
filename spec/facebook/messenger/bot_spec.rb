@@ -154,19 +154,20 @@ describe Facebook::Messenger::Bot do
     end
 
     context 'when all is well' do
+      let(:recipient_id) { '1008372609250235' }
       let(:message_id) { 'mid.1456970487936:c34767dfe57ee6e339' }
 
       before do
         stub_request_to_return(
-          recipient_id: '1008372609250235',
+          recipient_id: recipient_id,
           message_id: message_id
         )
       end
 
       it 'sends a message' do
         result = subject.deliver(payload, access_token: access_token)
-
-        expect(result).to eq(message_id)
+        expect(result).to eq({ recipient_id: recipient_id,
+                               message_id: message_id }.to_json)
       end
     end
 
