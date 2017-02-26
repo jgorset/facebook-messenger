@@ -31,7 +31,7 @@ module Facebook
 
           Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
 
-          response['message_id']
+          response.body
         end
 
         # Register a hook for the given event.
