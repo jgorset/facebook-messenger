@@ -24,6 +24,16 @@ module Facebook
         true
       end
 
+      def set_messenger_profile(settings, access_token:)
+        response = post '/messenger_profile', body: settings.to_json, query: {
+          access_token: access_token
+        }
+
+        raise_errors(response)
+
+        true
+      end
+
       def unset(settings, access_token:)
         response = delete '/thread_settings', body: settings.to_json, query: {
           access_token: access_token
