@@ -41,17 +41,16 @@ module Facebook
             return unless response.key? 'error'
 
             error = response['error']
-            args = error_args(error)
 
             error_code = error['code']
             error_subcode = error['error_subcode']
 
-            raise_code_only_error(error_code, args) if error_subcode.nil?
+            raise_code_only_error(error_code, error) if error_subcode.nil?
 
-            raise_code_subcode_error(error_code, error_subcode, args)
+            raise_code_subcode_error(error_code, error_subcode, error)
 
             # Default to unidentified error
-            raise Error, error_args(error)
+            raise FacebookError, error
           end
 
           private
@@ -104,16 +103,6 @@ module Facebook
             return unless permission_errors
 
             permission_errors.include? error_subcode
-          end
-
-          def error_args(error)
-            {
-              message: error['message'],
-              type: error['type'],
-              code: error['code'],
-              subcode: error['error_subcode'],
-              fbtrace_id: error['fbtrace_id']
-            }
           end
         end
       end

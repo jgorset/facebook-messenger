@@ -33,10 +33,10 @@ module Facebook
       end
 
       def raise_errors(response)
-        raise Error, response['error']['message'] if response.key? 'error'
+        raise Error, response['error'] if response.key? 'error'
       end
 
-      class Error < Facebook::Messenger::Error; end
+      class Error < Facebook::Messenger::FacebookError; end
     end
   end
 end

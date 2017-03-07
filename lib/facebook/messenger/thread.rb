@@ -35,7 +35,7 @@ module Facebook
       end
 
       def raise_errors(response)
-        raise Error, error_args(response['error']) if response.key? 'error'
+        raise Error, response['error'] if response.key? 'error'
       end
 
       def default_options
@@ -46,17 +46,7 @@ module Facebook
         )
       end
 
-      def error_args(error)
-        {
-          message: error['message'],
-          type: error['type'],
-          code: error['code'],
-          subcode: error['error_subcode'],
-          fbtrace_id: error['fbtrace_id']
-        }
-      end
-
-      class Error < Facebook::Messenger::Error; end
+      class Error < Facebook::Messenger::FacebookError; end
     end
   end
 end

@@ -2,7 +2,7 @@ module Facebook
   module Messenger
     module Bot
       # Base Facebook Messenger send API exception.
-      class SendError < Facebook::Messenger::Error; end
+      class SendError < Facebook::Messenger::FacebookError; end
 
       class AccessTokenError < SendError; end
       class AccountLinkingError < SendError; end
