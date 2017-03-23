@@ -125,13 +125,27 @@ end
 Show the human you are preparing a message for them:
 
 ```ruby
-message.typing_on
+Bot.on :message do |message|  
+  message.typing_on
+
+  # Do something expensive
+
+  message.reply(text: 'Hello, human!')
+end
 ```
 
 Or that you changed your mind:
 
 ```ruby
-message.typing_off
+Bot.on :message do |message|  
+  message.typing_on
+
+  if # something
+    message.reply(text: 'Hello, human!')
+  else
+    message.typing_off
+  end
+end
 ```
 
 ##### Mark as viewed
@@ -139,7 +153,9 @@ message.typing_off
 You can mark messages as seen to keep the human on their toes:
 
 ```ruby
-message.mark_seen
+Bot.on :message do |message|
+  message.mark_seen
+end
 ```
 
 #### Send to Facebook
