@@ -262,16 +262,13 @@ Facebook::Messenger::Thread.set({
 
 ### Create an Application on Facebook
 
-Create an Application on [developers.facebook.com] and go to the Messenger
-tab. Select the Page you want to install your bot on.
-
-Create a new webhook, enter the domain your bot is connected to and a verify
-token of your choosing.
-
-![Application settings](https://scontent-amt2-1.xx.fbcdn.net/hphotos-xfp1/t39.2178-6/12057143_211110782612505_894181129_n.png)
+Follow the [Quick Start][quick-start] guide to create an Application on
+Facebook.
 
 *Note*: Don't subscribe to `message_echoes`; it'll echo your bot's own messages
 back to you, effectively DDOSing yourself.
+
+[quick-start]: https://developers.facebook.com/docs/messenger-platform/guides/quick-start
 
 ### Make a configuration provider
 
