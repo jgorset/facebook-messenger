@@ -3,3 +3,6 @@ AllCops:
   Exclude:
     - 'examples/*'
     - 'vendor/**/*'
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
