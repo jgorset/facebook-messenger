@@ -83,6 +83,7 @@ module Facebook
         # Default HTTParty options.
         def default_options
           super.merge(
+            read_timeout: 300,
             headers: {
               'Content-Type' => 'application/json'
             }
