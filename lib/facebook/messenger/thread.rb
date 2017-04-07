@@ -15,7 +15,7 @@ module Facebook
       module_function
 
       def set(settings, access_token:)
-        response = post '/thread_settings', body: settings.to_json, query: {
+        response = post '/messenger_profile', body: settings.to_json, query: {
           access_token: access_token
         }
 
@@ -25,7 +25,7 @@ module Facebook
       end
 
       def unset(settings, access_token:)
-        response = delete '/thread_settings', body: settings.to_json, query: {
+        response = delete '/messenger_profile', body: settings.to_json, query: {
           access_token: access_token
         }
 
