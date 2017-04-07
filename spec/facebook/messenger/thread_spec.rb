@@ -4,7 +4,7 @@ describe Facebook::Messenger::Thread do
   let(:access_token) { 'access token' }
 
   let(:thread_settings_url) do
-    Facebook::Messenger::Thread.base_uri + '/thread_settings'
+    Facebook::Messenger::Thread.base_uri + '/messenger_profile'
   end
 
   before do
