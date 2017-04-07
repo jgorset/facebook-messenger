@@ -212,12 +212,12 @@ You can greet new humans to entice them into talking to you, in different locale
 Facebook::Messenger::Profile.set({
   greeting: [
     {
-      locale: "default",
-      text: "Welcome to your new bot overlord!"
+      locale: 'default',
+      text: 'Welcome to your new bot overlord!'
     },
     {
-      locale: "fr_FR",
-      text: "Bienvenue dans le bot du Wagon !"
+      locale: 'fr_FR',
+      text: 'Bienvenue dans le bot du Wagon !'
     }
   ]
 }, access_token: ENV['ACCESS_TOKEN'])
@@ -229,7 +229,7 @@ Started button. Before doing it you should check to select the messaging_postbac
 ```ruby
 Facebook::Messenger::Profile.set({
   get_started: {
-    payload: "GET_STARTED_PAYLOAD"
+    payload: 'GET_STARTED_PAYLOAD'
   }
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
@@ -240,40 +240,40 @@ You can show a persistent menu to humans.
 Facebook::Messenger::Profile.set({
   persistent_menu: [
     {
-      locale: "default",
+      locale: 'default',
       composer_input_disabled: true,
       call_to_actions: [
         {
-          title: "My Account",
-          type: "nested",
+          title: 'My Account',
+          type: 'nested',
           call_to_actions: [
             {
-              title: "What's a chatbot?",
-              type: "postback",
-              payload: "EXTERMINATE"
+              title: 'What's a chatbot?',
+              type: 'postback',
+              payload: 'EXTERMINATE'
             },
             {
-              title: "History",
-              type: "postback",
-              payload: "HISTORY_PAYLOAD"
+              title: 'History',
+              type: 'postback',
+              payload: 'HISTORY_PAYLOAD'
             },
             {
-              title: "Contact Info",
-              type: "postback",
-              payload: "CONTACT_INFO_PAYLOAD"
+              title: 'Contact Info',
+              type: 'postback',
+              payload: 'CONTACT_INFO_PAYLOAD'
             }
           ]
         },
         {
-          type: "web_url",
-          title: "Get some help",
-          url: "https://github.com/hyperoslo/facebook-messenger",
-          webview_height_ratio: "full"
+          type: 'web_url',
+          title: 'Get some help',
+          url: 'https://github.com/hyperoslo/facebook-messenger',
+          webview_height_ratio: 'full'
         }
       ]
     },
     {
-      locale: "zh_CN",
+      locale: 'zh_CN',
       composer_input_disabled: false
     }
   ]

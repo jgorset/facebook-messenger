@@ -2,7 +2,7 @@ require 'httparty'
 
 module Facebook
   module Messenger
-    # This module handles changing messenger profile (persistent_menu, get_started and greeting).
+    # This module handles changing messenger profile (menu, start & greeting).
     #
     # https://developers.facebook.com/docs/messenger-platform/messenger-profile
     module Profile

@@ -24,13 +24,13 @@ describe Facebook::Messenger::Profile do
             },
             body: JSON.dump(
               get_started: {
-                payload: "GET_STARTED_PAYLOAD"
+                payload: 'GET_STARTED_PAYLOAD'
               }
             )
           )
           .to_return(
             body: JSON.dump(
-              result: "Successfully added Get Started button"
+              result: 'Successfully added Get Started button'
             ),
             status: 200,
             headers: default_graph_api_response_headers
@@ -40,7 +40,7 @@ describe Facebook::Messenger::Profile do
       let :options do
         {
           get_started: {
-            payload: "GET_STARTED_PAYLOAD"
+            payload: 'GET_STARTED_PAYLOAD'
           }
         }
       end
@@ -74,7 +74,7 @@ describe Facebook::Messenger::Profile do
         expect do
           options = {
             get_started: {
-              payload: "GET_STARTED_PAYLOAD"
+              payload: 'GET_STARTED_PAYLOAD'
             }
           }
 
@@ -99,13 +99,13 @@ describe Facebook::Messenger::Profile do
             },
             body: JSON.dump(
               fields: [
-                "get_started"
+                'get_started'
               ]
             )
           )
           .to_return(
             body: JSON.dump(
-              result: "Successfully deleted Get Started button"
+              result: 'Successfully deleted Get Started button'
             ),
             status: 200,
             headers: default_graph_api_response_headers
@@ -115,7 +115,7 @@ describe Facebook::Messenger::Profile do
       let :options do
         {
           fields: [
-            "get_started"
+            'get_started'
           ]
         }
       end
@@ -149,7 +149,7 @@ describe Facebook::Messenger::Profile do
         expect do
           options = {
             fields: [
-              "get_started"
+              'get_started'
             ]
           }
           subject.unset(options, access_token: access_token)
