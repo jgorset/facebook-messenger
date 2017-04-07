@@ -2,10 +2,10 @@ require 'httparty'
 
 module Facebook
   module Messenger
-    # This module handles changing thread settings.
+    # This module handles changing messenger profile (persistent_menu, get_started and greeting).
     #
-    # https://developers.facebook.com/docs/messenger-platform/thread-settings
-    module Thread
+    # https://developers.facebook.com/docs/messenger-platform/messenger-profile
+    module Profile
       include HTTParty
 
       base_uri 'https://graph.facebook.com/v2.6/me'
@@ -15,7 +15,7 @@ module Facebook
       module_function
 
       def set(settings, access_token:)
-        response = post '/thread_settings', body: settings.to_json, query: {
+        response = post '/messenger_profile', body: settings.to_json, query: {
           access_token: access_token
         }
 
@@ -25,7 +25,7 @@ module Facebook
       end
 
       def unset(settings, access_token:)
-        response = delete '/thread_settings', body: settings.to_json, query: {
+        response = delete '/messenger_profile', body: settings.to_json, query: {
           access_token: access_token
         }
 
