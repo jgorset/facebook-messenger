@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Facebook::Messenger::Thread do
+describe Facebook::Messenger::Profile do
   let(:access_token) { 'access token' }
 
-  let(:thread_settings_url) do
-    Facebook::Messenger::Thread.base_uri + '/thread_settings'
+  let(:messenger_profile_url) do
+    Facebook::Messenger::Profile.base_uri + '/messenger_profile'
   end
 
   before do
@@ -14,7 +14,7 @@ describe Facebook::Messenger::Thread do
   describe '.set' do
     context 'with a successful response' do
       before do
-        stub_request(:post, thread_settings_url)
+        stub_request(:post, messenger_profile_url)
           .with(
             query: {
               access_token: access_token
@@ -23,14 +23,14 @@ describe Facebook::Messenger::Thread do
               'Content-Type' => 'application/json'
             },
             body: JSON.dump(
-              setting_type: 'call_to_actions',
-              thread_state: 'new_thread',
-              call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }]
+              get_started: {
+                payload: 'GET_STARTED_PAYLOAD'
+              }
             )
           )
           .to_return(
             body: JSON.dump(
-              result: "Successfully added new thread's CTAs"
+              result: 'Successfully added Get Started button'
             ),
             status: 200,
             headers: default_graph_api_response_headers
@@ -39,9 +39,9 @@ describe Facebook::Messenger::Thread do
 
       let :options do
         {
-          setting_type: 'call_to_actions',
-          thread_state: 'new_thread',
-          call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }]
+          get_started: {
+            payload: 'GET_STARTED_PAYLOAD'
+          }
         }
       end
 
@@ -54,7 +54,7 @@ describe Facebook::Messenger::Thread do
       let(:error_message) { 'Invalid OAuth access token.' }
 
       before do
-        stub_request(:post, thread_settings_url)
+        stub_request(:post, messenger_profile_url)
           .with(query: { access_token: access_token })
           .to_return(
             body: JSON.dump(
@@ -73,14 +73,14 @@ describe Facebook::Messenger::Thread do
       it 'raises an error' do
         expect do
           options = {
-            setting_type: 'call_to_actions',
-            thread_state: 'new_thread',
-            call_to_actions: [{ payload: 'USER_DEFINED_PAYLOAD' }]
+            get_started: {
+              payload: 'GET_STARTED_PAYLOAD'
+            }
           }
 
           subject.set(options, access_token: access_token)
         end.to raise_error(
-          Facebook::Messenger::Thread::Error, error_message
+          Facebook::Messenger::Profile::Error, error_message
         )
       end
     end
@@ -89,7 +89,7 @@ describe Facebook::Messenger::Thread do
   describe '.unset' do
     context 'with a successful response' do
       before do
-        stub_request(:delete, thread_settings_url)
+        stub_request(:delete, messenger_profile_url)
           .with(
             query: {
               access_token: access_token
@@ -98,13 +98,14 @@ describe Facebook::Messenger::Thread do
               'Content-Type' => 'application/json'
             },
             body: JSON.dump(
-              setting_type: 'call_to_actions',
-              thread_state: 'new_thread'
+              fields: [
+                'get_started'
+              ]
             )
           )
           .to_return(
             body: JSON.dump(
-              result: "Successfully added new thread's CTAs"
+              result: 'Successfully deleted Get Started button'
             ),
             status: 200,
             headers: default_graph_api_response_headers
@@ -113,8 +114,9 @@ describe Facebook::Messenger::Thread do
 
       let :options do
         {
-          setting_type: 'call_to_actions',
-          thread_state: 'new_thread'
+          fields: [
+            'get_started'
+          ]
         }
       end
 
@@ -127,7 +129,7 @@ describe Facebook::Messenger::Thread do
       let(:error_message) { 'Invalid OAuth access token.' }
 
       before do
-        stub_request(:delete, thread_settings_url)
+        stub_request(:delete, messenger_profile_url)
           .with(query: { access_token: access_token })
           .to_return(
             body: JSON.dump(
@@ -146,12 +148,13 @@ describe Facebook::Messenger::Thread do
       it 'raises an error' do
         expect do
           options = {
-            setting_type: 'call_to_actions',
-            thread_state: 'new_thread'
+            fields: [
+              'get_started'
+            ]
           }
           subject.unset(options, access_token: access_token)
         end.to raise_error(
-          Facebook::Messenger::Thread::Error, error_message
+          Facebook::Messenger::Profile::Error, error_message
         )
       end
     end

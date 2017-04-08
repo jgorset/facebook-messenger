@@ -125,7 +125,7 @@ end
 Show the human you are preparing a message for them:
 
 ```ruby
-Bot.on :message do |message|  
+Bot.on :message do |message|
   message.typing_on
 
   # Do something expensive
@@ -137,7 +137,7 @@ end
 Or that you changed your mind:
 
 ```ruby
-Bot.on :message do |message|  
+Bot.on :message do |message|
   message.typing_on
 
   if # something
@@ -204,16 +204,22 @@ Bot.on :referral do |referral|
 end
 ```
 
-#### Change thread settings
+#### Change messenger profile
 
-You can greet new humans to entice them into talking to you:
+You can greet new humans to entice them into talking to you, in different locales:
 
 ```ruby
-Facebook::Messenger::Thread.set({
-  setting_type: 'greeting',
-  greeting: {
-    text: 'Welcome to your new bot overlord!'
-  },
+Facebook::Messenger::Profile.set({
+  greeting: [
+    {
+      locale: 'default',
+      text: 'Welcome to your new bot overlord!'
+    },
+    {
+      locale: 'fr_FR',
+      text: 'Bienvenue dans le bot du Wagon !'
+    }
+  ]
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
 
@@ -221,38 +227,54 @@ You can define the action to trigger when new humans click on the Get
 Started button. Before doing it you should check to select the messaging_postbacks field when setting up your webhook.
 
 ```ruby
-Facebook::Messenger::Thread.set({
-  setting_type: 'call_to_actions',
-  thread_state: 'new_thread',
-  call_to_actions: [
-    {
-      payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_WELCOME'
-    }
-  ]
+Facebook::Messenger::Profile.set({
+  get_started: {
+    payload: 'GET_STARTED_PAYLOAD'
+  }
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
 
 You can show a persistent menu to humans.
 
 ```ruby
-Facebook::Messenger::Thread.set({
-  setting_type: 'call_to_actions',
-  thread_state: 'existing_thread',
-  call_to_actions: [
+Facebook::Messenger::Profile.set({
+  persistent_menu: [
     {
-      type: 'postback',
-      title: 'Help',
-      payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_HELP'
+      locale: 'default',
+      composer_input_disabled: true,
+      call_to_actions: [
+        {
+          title: 'My Account',
+          type: 'nested',
+          call_to_actions: [
+            {
+              title: 'What's a chatbot?',
+              type: 'postback',
+              payload: 'EXTERMINATE'
+            },
+            {
+              title: 'History',
+              type: 'postback',
+              payload: 'HISTORY_PAYLOAD'
+            },
+            {
+              title: 'Contact Info',
+              type: 'postback',
+              payload: 'CONTACT_INFO_PAYLOAD'
+            }
+          ]
+        },
+        {
+          type: 'web_url',
+          title: 'Get some help',
+          url: 'https://github.com/hyperoslo/facebook-messenger',
+          webview_height_ratio: 'full'
+        }
+      ]
     },
     {
-      type: 'postback',
-      title: 'Start a New Order',
-      payload: 'DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER'
-    },
-    {
-      type: 'web_url',
-      title: 'View Website',
-      url: 'http://example.com/'
+      locale: 'zh_CN',
+      composer_input_disabled: false
     }
   ]
 }, access_token: ENV['ACCESS_TOKEN'])
