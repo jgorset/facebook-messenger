@@ -439,7 +439,8 @@ https://github.com/hyperoslo/facebook-messenger.
 
 ## Projects using Facebook Messenger
 
-* [Rubotnik] is a boilerplate for Facebook Messenger, and a great place to start if you're new to bots.
+* [Rubotnik](https://github.com/progapandist/rubotnik-boilerplate) is a boilerplate
+for Facebook Messenger, and a great place to start if you're new to bots.
 
 ## Hyper loves you
 
