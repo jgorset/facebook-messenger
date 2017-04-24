@@ -437,6 +437,10 @@ commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.or
 Bug reports and pull requests are welcome on GitHub at
 https://github.com/hyperoslo/facebook-messenger.
 
+## Projects using Facebook Messenger
+
+* [Rubotnik] is a boilerplate for Facebook Messenger, and a great place to start if you're new to bots.
+
 ## Hyper loves you
 
 [Hyper] made this. We're a bunch of folks who love building things. You should
