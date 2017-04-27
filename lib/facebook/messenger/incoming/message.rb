@@ -25,6 +25,10 @@ module Facebook
           @messaging['message']['attachments']
         end
 
+        def app_id
+          @messaging['message']['app_id']
+        end
+
         def quick_reply
           return unless @messaging['message']['quick_reply']
 

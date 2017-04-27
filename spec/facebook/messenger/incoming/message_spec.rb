@@ -12,6 +12,7 @@ describe Facebook::Messenger::Incoming::Message do
       'timestamp' => 145_776_419_762_7,
       'message' => {
         'is_echo' => false,
+        'app_id' => 184719329217930000,
         'mid' => 'mid.1457764197618:41d102a3e1ae206a38',
         'seq' => 73,
         'text' => 'Hello, bot!',
@@ -81,6 +82,12 @@ describe Facebook::Messenger::Incoming::Message do
   describe '.attachments' do
     it 'returns the message attachments' do
       expect(subject.attachments).to eq(payload['message']['attachments'])
+    end
+  end
+
+  describe '.app_id' do
+    it 'returns the app_id from which the message was sent' do
+      expect(subject.app_id).to eq(payload['message']['app_id'])
     end
   end
 
