@@ -442,6 +442,9 @@ https://github.com/hyperoslo/facebook-messenger.
 * [Rubotnik](https://github.com/progapandist/rubotnik-boilerplate) is a boilerplate
 for Facebook Messenger, and a great place to start if you're new to bots.
 
+* [Chatwoot](http://chatwoot.com/) use Facebook Messenger to integrate their customer
+support bots with, well, Facebook Messenger.
+
 ## Hyper loves you
 
 [Hyper] made this. We're a bunch of folks who love building things. You should
