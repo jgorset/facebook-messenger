@@ -12,7 +12,7 @@ describe Facebook::Messenger::Incoming::Message do
       'timestamp' => 145_776_419_762_7,
       'message' => {
         'is_echo' => false,
-        'app_id' => 184719329217930000,
+        'app_id' => 184_719_329_217_930_000,
         'mid' => 'mid.1457764197618:41d102a3e1ae206a38',
         'seq' => 73,
         'text' => 'Hello, bot!',
