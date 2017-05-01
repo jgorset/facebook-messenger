@@ -5,6 +5,8 @@ module Facebook
       class Message
         include Facebook::Messenger::Incoming::Common
 
+        ATTACHMENT_TYPES = ['image', 'audio', 'video', 'file','location','fallback']
+
         def id
           @messaging['message']['mid']
         end
@@ -29,11 +31,42 @@ module Facebook
           @messaging['message']['app_id']
         end
 
+        ATTACHMENT_TYPES.each do |attachment_type|
+          define_method "#{attachment_type}_attachment?" do
+            attachment_type?(attachment_type)
+          end
+        end
+
+        def attachment_type
+          attachments.first['type']
+        end
+
+        def attachment_url
+          return nil if attachments == nil
+          if ['image', 'audio', 'video', 'file'].include? attachment_type
+            url = attachments.first['payload']['url']
+          end
+          url
+        end
+
+        def location_coordinates
+          return [] unless attachment_type?('location')
+          coordinates_data = attachments.first['payload']['coordinates']
+          [coordinates_data['lat'], coordinates_data['long']]
+        end
+
         def quick_reply
           return unless @messaging['message']['quick_reply']
 
           @messaging['message']['quick_reply']['payload']
         end
+
+        private
+
+        def attachment_type?(attachment_type)
+          attachments != nil && attachments.first['type'] == attachment_type
+        end
+
       end
     end
   end

@@ -85,6 +85,23 @@ describe Facebook::Messenger::Incoming::Message do
     end
   end
 
+  describe '.image_attachment?' do
+    it 'returns whether the attachment is an image' do
+      expect(subject.image_attachment?).to eq(payload['message']['attachments'].first['type'] == 'image')
+    end
+  end
+
+  describe '.attachment_type' do
+    it 'returns the type of the attachment' do
+      expect(subject.attachment_type).to eq(payload['message']['attachments'].first['type'])
+    end
+  end
+
+  describe '.attachment_url' do
+    it 'returns the url of the attachment' do
+      expect(subject.attachment_url).to eq(payload['message']['attachments'].first['payload']['url'])
+    end
+  end
   describe '.app_id' do
     it 'returns the app_id from which the message was sent' do
       expect(subject.app_id).to eq(payload['message']['app_id'])
