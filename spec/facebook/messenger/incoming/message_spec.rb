@@ -29,6 +29,100 @@ describe Facebook::Messenger::Incoming::Message do
     }
   end
 
+  let :video_payload do
+    {
+      'sender' => {
+        'id' => '5'
+      },
+      'recipient' => {
+        'id' => '7'
+      },
+      'timestamp' => 145_776_419_762_4,
+      'message' => {
+        'is_echo' => false,
+        'app_id' => 184_719_329_217_930_001,
+        'mid' => 'mid.1457764197618:41d102a3e1ae206a38',
+        'attachments' => [{
+          'type' => 'video',
+          'payload' => {
+            'url' => 'https://www.example.com/2.mp4'
+          }
+        }]
+      }
+    }
+  end
+
+  let :file_payload do
+    {
+      'sender' => {
+        'id' => '5'
+      },
+      'recipient' => {
+        'id' => '7'
+      },
+      'timestamp' => 145_776_412_762_4,
+      'message' => {
+        'is_echo' => false,
+        'app_id' => 184_719_329_217_930_001,
+        'mid' => 'mid.1457764197618:41d102a3e1ae206a39',
+        'attachments' => [{
+          'type' => 'file',
+          'payload' => {
+            'url' => 'https://www.example.com/3.pdf'
+          }
+        }]
+      }
+    }
+  end
+
+  let :audio_payload do
+    {
+      'sender' => {
+        'id' => '8'
+      },
+      'recipient' => {
+        'id' => '9'
+      },
+      'timestamp' => 145_776_419_732_4,
+      'message' => {
+        'is_echo' => false,
+        'app_id' => 184_719_329_217_930_001,
+        'mid' => 'mid.1457764197618:41d102a3e1ae206a48',
+        'attachments' => [{
+          'type' => 'audio',
+          'payload' => {
+            'url' => 'https://www.example.com/4.ogg'
+          }
+        }]
+      }
+    }
+  end
+
+
+  let :location_payload do
+    {
+      'sender' => {
+        'id' => '6'
+      },
+      'recipient' => {
+        'id' => '9'
+      },
+      'timestamp' => 145_776_429_762_4,
+      'message' => {
+        'is_echo' => false,
+        'app_id' => 184_719_329_222_930_001,
+        'mid' => 'mid.1457764197618:41d102a3e1ae206a38',
+        'attachments' => [{
+          'type' => 'location',
+          'payload' => {
+            'coordinates.lat' => '39.920_770',
+            'coordinates.long' => '40.920_770'
+          }
+        }]
+      }
+    }
+  end
+
   subject { Facebook::Messenger::Incoming::Message.new(payload) }
 
   describe '.messaging' do
@@ -88,6 +182,41 @@ describe Facebook::Messenger::Incoming::Message do
   describe '.image_attachment?' do
     it 'returns whether the attachment is an image' do
       expect(subject.image_attachment?).to eq(payload['message']['attachments'].first['type'] == 'image')
+    end
+  end
+
+  describe '.video_attachment?' do
+    subject { Facebook::Messenger::Incoming::Message.new(video_payload) }
+    it 'returns whether the attachment is a video' do
+      expect(subject.video_attachment?).to eq(video_payload['message']['attachments'].first['type'] == 'video')
+    end
+  end
+
+  describe '.location_attachment?' do
+    subject { Facebook::Messenger::Incoming::Message.new(location_payload) }
+    it 'returns whether the attachment is a video' do
+      expect(subject.location_attachment?).to eq(location_payload['message']['attachments'].first['type'] == 'location')
+    end
+  end
+
+  describe '.audio_attachment?' do
+    subject { Facebook::Messenger::Incoming::Message.new(audio_payload) }
+    it 'returns whether the attachment is an audio' do
+      expect(subject.audio_attachment?).to eq(audio_payload['message']['attachments'].first['type'] == 'audio')
+    end
+  end
+
+  describe '.file_attachment?' do
+    subject { Facebook::Messenger::Incoming::Message.new(file_payload) }
+    it 'returns whether the attachment is a file' do
+      expect(subject.file_attachment?).to eq(file_payload['message']['attachments'].first['type'] == 'file')
+    end
+  end
+
+  describe '.location_coordinates' do
+    subject { Facebook::Messenger::Incoming::Message.new(location_payload) }
+    it 'returns array of lat long coordinates' do
+      expect(subject.location_coordinates).to eq([location_payload['message']['attachments'].first['payload']['coordinates.lat'],location_payload['message']['attachments'].first['payload']['coordinates.long']])
     end
   end
 

@@ -38,6 +38,7 @@ module Facebook
         end
 
         def attachment_type
+          return nil if attachments == nil
           attachments.first['type']
         end
 
@@ -45,14 +46,16 @@ module Facebook
           return nil if attachments == nil
           if ['image', 'audio', 'video', 'file'].include? attachment_type
             url = attachments.first['payload']['url']
+          else
+            url = nil
           end
           url
         end
 
         def location_coordinates
           return [] unless attachment_type?('location')
-          coordinates_data = attachments.first['payload']['coordinates']
-          [coordinates_data['lat'], coordinates_data['long']]
+          coordinates_data = attachments.first['payload']
+          [coordinates_data['coordinates.lat'], coordinates_data['coordinates.long']]
         end
 
         def quick_reply
