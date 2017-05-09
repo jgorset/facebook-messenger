@@ -54,8 +54,8 @@ module Facebook
 
         def location_coordinates
           return [] unless attachment_type?('location')
-          coordinates_data = attachments.first['payload']
-          [coordinates_data['coordinates.lat'], coordinates_data['coordinates.long']]
+          coordinates_data = attachments.first['payload']['coordinates']
+          [coordinates_data['lat'], coordinates_data['long']]
         end
 
         def quick_reply

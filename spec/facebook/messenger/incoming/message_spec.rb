@@ -115,8 +115,10 @@ describe Facebook::Messenger::Incoming::Message do
         'attachments' => [{
           'type' => 'location',
           'payload' => {
-            'coordinates.lat' => '39.920_770',
-            'coordinates.long' => '40.920_770'
+            'coordinates' => {
+              'lat' => '39.920_770',
+              'long' => '40.920_770'
+            }
           }
         }]
       }
@@ -216,7 +218,7 @@ describe Facebook::Messenger::Incoming::Message do
   describe '.location_coordinates' do
     subject { Facebook::Messenger::Incoming::Message.new(location_payload) }
     it 'returns array of lat long coordinates' do
-      expect(subject.location_coordinates).to eq([location_payload['message']['attachments'].first['payload']['coordinates.lat'],location_payload['message']['attachments'].first['payload']['coordinates.long']])
+      expect(subject.location_coordinates).to eq([location_payload['message']['attachments'].first['payload']['coordinates']['lat'],location_payload['message']['attachments'].first['payload']['coordinates']['long']])
     end
   end
 
