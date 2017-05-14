@@ -98,7 +98,6 @@ describe Facebook::Messenger::Incoming::Message do
     }
   end
 
-
   let :location_payload do
     {
       'sender' => {
@@ -183,54 +182,70 @@ describe Facebook::Messenger::Incoming::Message do
 
   describe '.image_attachment?' do
     it 'returns whether the attachment is an image' do
-      expect(subject.image_attachment?).to eq(payload['message']['attachments'].first['type'] == 'image')
+      expect(subject.image_attachment?).to be(true)
     end
   end
 
   describe '.video_attachment?' do
     subject { Facebook::Messenger::Incoming::Message.new(video_payload) }
+
     it 'returns whether the attachment is a video' do
-      expect(subject.video_attachment?).to eq(video_payload['message']['attachments'].first['type'] == 'video')
+      expect(subject.video_attachment?).to be(true)
     end
   end
 
   describe '.location_attachment?' do
     subject { Facebook::Messenger::Incoming::Message.new(location_payload) }
+
     it 'returns whether the attachment is a video' do
-      expect(subject.location_attachment?).to eq(location_payload['message']['attachments'].first['type'] == 'location')
+      expect(subject.location_attachment?).to be(true)
     end
   end
 
   describe '.audio_attachment?' do
     subject { Facebook::Messenger::Incoming::Message.new(audio_payload) }
+
     it 'returns whether the attachment is an audio' do
-      expect(subject.audio_attachment?).to eq(audio_payload['message']['attachments'].first['type'] == 'audio')
+      expect(subject.audio_attachment?).to be(true)
     end
   end
 
   describe '.file_attachment?' do
     subject { Facebook::Messenger::Incoming::Message.new(file_payload) }
+
     it 'returns whether the attachment is a file' do
-      expect(subject.file_attachment?).to eq(file_payload['message']['attachments'].first['type'] == 'file')
+      expect(subject.file_attachment?).to be(true)
     end
   end
 
   describe '.location_coordinates' do
     subject { Facebook::Messenger::Incoming::Message.new(location_payload) }
+
+    let(:attachments) { location_payload['message']['attachments'] }
+
     it 'returns array of lat long coordinates' do
-      expect(subject.location_coordinates).to eq([location_payload['message']['attachments'].first['payload']['coordinates']['lat'],location_payload['message']['attachments'].first['payload']['coordinates']['long']])
+      expect(subject.location_coordinates).to eq(
+        [
+          attachments.first['payload']['coordinates']['lat'],
+          attachments.first['payload']['coordinates']['long']
+        ]
+      )
     end
   end
 
   describe '.attachment_type' do
     it 'returns the type of the attachment' do
-      expect(subject.attachment_type).to eq(payload['message']['attachments'].first['type'])
+      expect(subject.attachment_type).to eq(
+        payload['message']['attachments'].first['type']
+      )
     end
   end
 
   describe '.attachment_url' do
     it 'returns the url of the attachment' do
-      expect(subject.attachment_url).to eq(payload['message']['attachments'].first['payload']['url'])
+      expect(subject.attachment_url).to eq(
+        payload['message']['attachments'].first['payload']['url']
+      )
     end
   end
   describe '.app_id' do

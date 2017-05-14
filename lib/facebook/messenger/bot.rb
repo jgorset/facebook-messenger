@@ -9,9 +9,9 @@ module Facebook
 
       base_uri 'https://graph.facebook.com/v2.6/me'
 
-      EVENTS = %i[
+      EVENTS = %i(
         message delivery postback optin read account_linking referral
-      ].freeze
+      ).freeze
 
       class << self
         # Deliver a message with the given payload.

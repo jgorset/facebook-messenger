@@ -5,7 +5,7 @@ module Facebook
       class Message
         include Facebook::Messenger::Incoming::Common
 
-        ATTACHMENT_TYPES = ['image', 'audio', 'video', 'file','location','fallback']
+        ATTACHMENT_TYPES = %w(image audio video file location fallback).freeze
 
         def id
           @messaging['message']['mid']
@@ -38,22 +38,21 @@ module Facebook
         end
 
         def attachment_type
-          return nil if attachments == nil
+          return if attachments.nil?
+
           attachments.first['type']
         end
 
         def attachment_url
-          return nil if attachments == nil
-          if ['image', 'audio', 'video', 'file'].include? attachment_type
-            url = attachments.first['payload']['url']
-          else
-            url = nil
-          end
-          url
+          return if attachments.nil?
+          return unless %w(image audio video file).include? attachment_type
+
+          attachments.first['payload']['url']
         end
 
         def location_coordinates
           return [] unless attachment_type?('location')
+
           coordinates_data = attachments.first['payload']['coordinates']
           [coordinates_data['lat'], coordinates_data['long']]
         end
@@ -67,9 +66,8 @@ module Facebook
         private
 
         def attachment_type?(attachment_type)
-          attachments != nil && attachments.first['type'] == attachment_type
+          !attachments.nil? && attachments.first['type'] == attachment_type
         end
-
       end
     end
   end
