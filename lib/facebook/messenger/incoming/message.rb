@@ -5,7 +5,7 @@ module Facebook
       class Message
         include Facebook::Messenger::Incoming::Common
 
-        ATTACHMENT_TYPES = %w(image audio video file location fallback).freeze
+        ATTACHMENT_TYPES = %w[image audio video file location fallback].freeze
 
         def id
           @messaging['message']['mid']
@@ -45,7 +45,7 @@ module Facebook
 
         def attachment_url
           return if attachments.nil?
-          return unless %w(image audio video file).include? attachment_type
+          return unless %w[image audio video file].include? attachment_type
 
           attachments.first['payload']['url']
         end
