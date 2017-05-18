@@ -1,5 +1,14 @@
 # Change Log
 
+## [0.13.0] - 2017-05-18
+
+### Added
+- `Message#app_id` yields the application ID for message echoes.
+- Helpers to determine the attachments of a message (e.g. `Message#image_attachment?`).
+
+### Changed
+- `Thread` is now `Profile` to correspond with Facebook's API.
+
 ## [0.12.0] - 2017-03-31
 ### Added
 - Various errors from the Facebook Messenger platform are now subclasses of
