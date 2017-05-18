@@ -445,7 +445,7 @@ for Facebook Messenger, and a great place to start if you're new to bots.
 * [Chatwoot](http://chatwoot.com/) use Facebook Messenger to integrate their customer
 support bots with, well, Facebook Messenger.
 
-* [Botamp](https://botamp.com) is a all-in-one solution for Marketing Automation via messaging apps.
+* [Botamp](https://botamp.com) is the all-in-one solution for Marketing Automation via messaging apps.
 
 ## Hyper loves you
 
