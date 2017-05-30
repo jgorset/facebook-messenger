@@ -342,6 +342,11 @@ from Facebook:
 Facebook::Messenger::Subscriptions.subscribe(access_token: access_token)
 ```
 
+You only need to subscribe your page once. As long as your bot works and
+responds to Messenger's requests in a timely fashion it will remain
+subscribed, but if your bot crashes or otherwise becomes unavailable Messenger
+may unsubscribe it and you'll have to subscribe again.
+
 ### Run it
 
 ##### ... on Rack
