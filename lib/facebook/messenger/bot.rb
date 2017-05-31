@@ -10,7 +10,14 @@ module Facebook
       base_uri 'https://graph.facebook.com/v2.6/me'
 
       EVENTS = %i[
-        message delivery postback optin read account_linking referral
+        message
+        delivery
+        postback
+        optin
+        read
+        account_linking
+        referral
+        message_echo
       ].freeze
 
       class << self

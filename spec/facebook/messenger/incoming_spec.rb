@@ -41,6 +41,32 @@ describe Facebook::Messenger::Incoming do
       end
     end
 
+    context 'when the payload is a message echo' do
+      let :payload do
+        {
+          'sender' => {
+            'id' => '2'
+          },
+          'recipient' => {
+            'id' => '3'
+          },
+          'timestamp' => 145_776_419_762_7,
+          'message' => {
+            'is_echo' => true,
+            'mid' => 'mid.1457764197618:41d102a3e1ae206a38',
+            'seq' => 73,
+            'text' => 'Hello, bot!'
+          }
+        }
+      end
+
+      it 'returns an Incoming::MessageEcho' do
+        expect(subject.parse(payload)).to be_a(
+          Facebook::Messenger::Incoming::MessageEcho
+        )
+      end
+    end
+
     context 'when the payload is a delivery' do
       let :payload do
         {
