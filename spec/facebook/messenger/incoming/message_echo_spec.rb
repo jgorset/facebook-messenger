@@ -133,7 +133,7 @@ describe Facebook::Messenger::Incoming::MessageEcho do
   end
 
   describe '.id' do
-    it 'returns the message id' do
+    it 'returns the message echo id' do
       expect(subject.id).to eq(payload['message']['mid'])
     end
   end
@@ -151,31 +151,31 @@ describe Facebook::Messenger::Incoming::MessageEcho do
   end
 
   describe '.seq' do
-    it 'returns the message sequence number' do
+    it 'returns the message echo sequence number' do
       expect(subject.seq).to eq(payload['message']['seq'])
     end
   end
 
   describe '.sent_at' do
-    it 'returns when the message was sent' do
+    it 'returns when the message echo was sent' do
       expect(subject.sent_at).to eq(Time.at(payload['timestamp'] / 1000))
     end
   end
 
   describe '.text' do
-    it 'returns the text of the message' do
+    it 'returns the text of the message echo' do
       expect(subject.text).to eq(payload['message']['text'])
     end
   end
 
   describe '.echo?' do
-    it 'returns the echo status of the message' do
+    it 'returns the echo status of the message echo' do
       expect(subject.echo?).to eq(payload['message']['is_echo'])
     end
   end
 
   describe '.attachments' do
-    it 'returns the message attachments' do
+    it 'returns the message echo attachments' do
       expect(subject.attachments).to eq(payload['message']['attachments'])
     end
   end
@@ -249,7 +249,7 @@ describe Facebook::Messenger::Incoming::MessageEcho do
     end
   end
   describe '.app_id' do
-    it 'returns the app_id from which the message was sent' do
+    it 'returns the app_id from which the message echo was sent' do
       expect(subject.app_id).to eq(payload['message']['app_id'])
     end
   end

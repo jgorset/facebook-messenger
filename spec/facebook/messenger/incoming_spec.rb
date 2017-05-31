@@ -60,7 +60,7 @@ describe Facebook::Messenger::Incoming do
         }
       end
 
-      it 'returns an Incoming::Message' do
+      it 'returns an Incoming::MessageEcho' do
         expect(subject.parse(payload)).to be_a(
           Facebook::Messenger::Incoming::MessageEcho
         )
