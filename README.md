@@ -158,6 +158,24 @@ Bot.on :message do |message|
 end
 ```
 
+##### Record messages
+
+You can keep track of messages sent to and from the human:
+
+```ruby
+Bot.on :message_echo do |message_echo|
+  message_echo.id          # => 'mid.1457764197618:41d102a3e1ae206a38'
+  message_echo.sender      # => { 'id' => '1008372609250235' }
+  message_echo.seq         # => 73
+  message_echo.sent_at     # => 2016-04-22 21:30:36 +0200
+  message_echo.text        # => 'Hello, bot!'
+  message_echo.attachments # => [ { 'type' => 'image', 'payload' => { 'url' => 'https://www.example.com/1.jpg' } } ]
+
+  # Log or store in your storage method of choice.
+end
+```
+
+
 #### Send to Facebook
 
 When the human clicks the [Send to Messenger button][send-to-messenger-plugin]
@@ -286,9 +304,6 @@ Facebook::Messenger::Profile.set({
 
 Follow the [Quick Start][quick-start] guide to create an Application on
 Facebook.
-
-*Note*: Don't subscribe to `message_echoes`; it'll echo your bot's own messages
-back to you, effectively DDOSing yourself.
 
 [quick-start]: https://developers.facebook.com/docs/messenger-platform/guides/quick-start
 
