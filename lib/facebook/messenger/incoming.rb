@@ -30,16 +30,19 @@ module Facebook
       #
       # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
       def self.parse(payload)
-        if payload.key?('message')
-          if payload['message']['is_echo'] == true
-            return MessageEcho.new(payload)
-          end
-        end
+        return MessageEcho.new(payload) if payload_is_echo?(payload)
+
         EVENTS.each do |event, klass|
           return klass.new(payload) if payload.key?(event)
         end
 
         raise UnknownPayload, payload
+      end
+
+      private
+      
+      def self.payload_is_echo?(payload)
+        return payload.key?('message') && payload['message']['is_echo'] == true
       end
 
       class UnknownPayload < Facebook::Messenger::Error; end
