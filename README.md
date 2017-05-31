@@ -160,7 +160,7 @@ end
 
 ##### Record messages
 
-You can keep track of messages sent to and from the human:
+You can keep track of messages sent to the human:
 
 ```ruby
 Bot.on :message_echo do |message_echo|
