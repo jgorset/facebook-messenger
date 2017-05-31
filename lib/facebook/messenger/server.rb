@@ -22,6 +22,8 @@ module Facebook
       def call(env)
         @request = Rack::Request.new(env)
         @response = Rack::Response.new
+        # By default, send a 200 to Facebook to let them know we received the message correctly
+        @response.status = 200 
 
         if @request.get?
           verify
