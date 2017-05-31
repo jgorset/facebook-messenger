@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.0.0] - 2017-05-31
+
+### Added
+- You may now subscribe to message echoes without DDOSing yourself.
+
 ## [0.13.0] - 2017-05-18
 
 ### Added
