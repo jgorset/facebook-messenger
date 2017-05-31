@@ -1,5 +1,6 @@
 require 'facebook/messenger/incoming/common'
 require 'facebook/messenger/incoming/message'
+require 'facebook/messenger/incoming/message_echo'
 require 'facebook/messenger/incoming/delivery'
 require 'facebook/messenger/incoming/postback'
 require 'facebook/messenger/incoming/optin'
@@ -19,7 +20,8 @@ module Facebook
         'optin' => Optin,
         'read' => Read,
         'account_linking' => AccountLinking,
-        'referral' => Referral
+        'referral' => Referral,
+        'message_echo' => MessageEcho
       }.freeze
 
       # Parse the given payload.
@@ -28,6 +30,11 @@ module Facebook
       #
       # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
       def self.parse(payload)
+        if payload.key?('message')
+          if payload['message']['is_echo'] == true
+            return MessageEcho.new(payload)
+          end
+        end
         EVENTS.each do |event, klass|
           return klass.new(payload) if payload.key?(event)
         end
