@@ -39,10 +39,8 @@ module Facebook
         raise UnknownPayload, payload
       end
 
-      private
-      
       def self.payload_is_echo?(payload)
-        return payload.key?('message') && payload['message']['is_echo'] == true
+        payload.key?('message') && payload['message']['is_echo'] == true
       end
 
       class UnknownPayload < Facebook::Messenger::Error; end
