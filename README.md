@@ -8,7 +8,6 @@
 [![Dependency Status](https://img.shields.io/gemnasium/hyperoslo/facebook-messenger.svg?style=flat)](https://gemnasium.com/hyperoslo/facebook-messenger)
 [![Code Climate](https://img.shields.io/codeclimate/github/hyperoslo/facebook-messenger.svg?style=flat)](https://codeclimate.com/github/hyperoslo/facebook-messenger)
 [![Coverage Status](https://img.shields.io/coveralls/hyperoslo/facebook-messenger.svg?style=flat)](https://coveralls.io/r/hyperoslo/facebook-messenger)
-[![Join the chat at https://gitter.im/hyperoslo/facebook-messenger](https://badges.gitter.im/hyperoslo/facebook-messenger.svg)](https://gitter.im/hyperoslo/facebook-messenger?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Installation
 
