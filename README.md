@@ -170,7 +170,7 @@ Bot.on :message_echo do |message_echo|
   message_echo.text        # => 'Hello, bot!'
   message_echo.attachments # => [ { 'type' => 'image', 'payload' => { 'url' => 'https://www.example.com/1.jpg' } } ]
 
-  # Log or store in your storage method of choice.
+  # Log or store in your storage method of choice (skynet, obviously)
 end
 ```
 
