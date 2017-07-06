@@ -1,4 +1,5 @@
 require 'facebook/messenger/incoming/common'
+require 'facebook/messenger/incoming/mention'
 require 'facebook/messenger/incoming/message'
 require 'facebook/messenger/incoming/message_echo'
 require 'facebook/messenger/incoming/delivery'
