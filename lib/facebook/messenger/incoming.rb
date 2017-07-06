@@ -21,7 +21,8 @@ module Facebook
         'read' => Read,
         'account_linking' => AccountLinking,
         'referral' => Referral,
-        'message_echo' => MessageEcho
+        'message_echo' => MessageEcho,
+        'mention' => Mention,
       }.freeze
 
       # Parse the given payload.
