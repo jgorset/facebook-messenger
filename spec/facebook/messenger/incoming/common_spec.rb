@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 class Dummy
-  include Facebook::Messenger::Incoming::Common
+  include Facebook::Messenger::Incoming::Messaging::Common
 end
 
 describe Dummy do

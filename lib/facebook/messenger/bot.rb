@@ -18,7 +18,12 @@ module Facebook
         account_linking
         referral
         message_echo
+      ].freeze
+
+      FIELDS = %i[
+        comments
         mention
+        posts
       ].freeze
 
       class << self
@@ -48,10 +53,11 @@ module Facebook
         # event - A String describing a Messenger event.
         # block - A code block to run upon the event.
         def on(event, &block)
-          unless EVENTS.include? event
+          unless EVENTS.include?(event) || FIELDS.include?(event)
             raise ArgumentError,
-                  "#{event} is not a valid event; " \
+                  "#{event} is not a valid event or field; " \
                   "available events are #{EVENTS.join(',')}"
+                  "available fields are #{FIELDS.join(',')}"
           end
 
           hooks[event] = block
@@ -64,8 +70,11 @@ module Facebook
         # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
         def receive(payload)
           callback = Facebook::Messenger::Incoming.parse(payload)
+
           event = Facebook::Messenger::Incoming::EVENTS.invert[callback.class]
-          trigger(event.to_sym, callback)
+          field = Facebook::Messenger::Incoming::FIELDS.invert[callback.class]
+
+          trigger((event || field).to_sym, callback)
         end
 
         # Trigger the hook for the given event.

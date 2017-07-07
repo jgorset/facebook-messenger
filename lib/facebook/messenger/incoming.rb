@@ -1,13 +1,16 @@
-require 'facebook/messenger/incoming/common'
-require 'facebook/messenger/incoming/mention'
-require 'facebook/messenger/incoming/message'
-require 'facebook/messenger/incoming/message_echo'
-require 'facebook/messenger/incoming/delivery'
-require 'facebook/messenger/incoming/postback'
-require 'facebook/messenger/incoming/optin'
-require 'facebook/messenger/incoming/read'
-require 'facebook/messenger/incoming/account_linking'
-require 'facebook/messenger/incoming/referral'
+require 'facebook/messenger/incoming/changes/common'
+require 'facebook/messenger/incoming/changes/comment'
+require 'facebook/messenger/incoming/changes/mention'
+require 'facebook/messenger/incoming/changes/post'
+require 'facebook/messenger/incoming/messaging/common'
+require 'facebook/messenger/incoming/messaging/message'
+require 'facebook/messenger/incoming/messaging/message_echo'
+require 'facebook/messenger/incoming/messaging/delivery'
+require 'facebook/messenger/incoming/messaging/postback'
+require 'facebook/messenger/incoming/messaging/optin'
+require 'facebook/messenger/incoming/messaging/read'
+require 'facebook/messenger/incoming/messaging/account_linking'
+require 'facebook/messenger/incoming/messaging/referral'
 
 module Facebook
   module Messenger
@@ -15,15 +18,20 @@ module Facebook
     # Facebook Messenger.
     module Incoming
       EVENTS = {
-        'message' => Message,
-        'delivery' => Delivery,
-        'postback' => Postback,
-        'optin' => Optin,
-        'read' => Read,
-        'account_linking' => AccountLinking,
-        'referral' => Referral,
-        'message_echo' => MessageEcho,
-        'mention' => Mention,
+        'message' => Messaging::Message,
+        'delivery' => Messaging::Delivery,
+        'postback' => Messaging::Postback,
+        'optin' => Messaging::Optin,
+        'read' => Messaging::Read,
+        'account_linking' => Messaging::AccountLinking,
+        'referral' => Messaging::Referral,
+        'message_echo' => Messaging::MessageEcho,
+      }.freeze
+
+      FIELDS = {
+        'comments' => Changes::Comment,
+        'mention' => Changes::Mention,
+        'posts' => Changes::Post,
       }.freeze
 
       # Parse the given payload.
@@ -32,10 +40,14 @@ module Facebook
       #
       # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
       def self.parse(payload)
-        return MessageEcho.new(payload) if payload_is_echo?(payload)
+        return Messaging::MessageEcho.new(payload) if payload_is_echo?(payload)
 
         EVENTS.each do |event, klass|
           return klass.new(payload) if payload.key?(event)
+        end
+
+        FIELDS.each do |field, klass|
+          return klass.new(payload['value']) if field == payload['field']
         end
 
         raise UnknownPayload, payload
