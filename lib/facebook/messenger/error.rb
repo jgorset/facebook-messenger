@@ -24,7 +24,7 @@ module Facebook
       end
 
       def to_s
-        @message
+        "#{@message} (subcode: #{subcode})"
       end
     end
   end
