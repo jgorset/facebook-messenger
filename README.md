@@ -174,6 +174,17 @@ Bot.on :message_echo do |message_echo|
 end
 ```
 
+##### Record accepted message requests
+
+You can keep track of message requests accepted by the human:
+
+```ruby
+Bot.on :message_request do |message_request|
+  message_request.accept? # => true
+
+  # Log or store in your storage method of choice (skynet, obviously)
+end
+```
 
 #### Send to Facebook
 
