@@ -29,16 +29,17 @@ describe Facebook::Messenger::Incoming::Message do
           'entities' => {
             'datetime' => [
               {
-                'confidence': 0.97249440664957,
-                'values': ['...'],
-                'value': '2017-05-10T14:00:00.000-07:00',
-                'grain': 'hour', 'type': 'value'
+                'confidence' => 0.97249440664957,
+                'values' => ['...'],
+                'value' => '2017-05-10T14:00:00.000-07:00',
+                'grain' => 'hour',
+                'type' => 'value'
               }
             ],
-            'greetings': [
+            'greetings' => [
               {
-                'confidence': 1,
-                'value': 'true'
+                'confidence' => 1,
+                'value' => 'true'
               }
             ]
           }
