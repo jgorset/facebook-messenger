@@ -192,8 +192,8 @@ describe Facebook::Messenger::Incoming::Message do
     end
   end
 
-  describe '.entities' do
-    it 'returns the message attachments' do
+  describe '.nlp' do
+    it 'returns the message NLP entities' do
       expect(subject.nlp).to eq(payload['message']['nlp'])
     end
   end
