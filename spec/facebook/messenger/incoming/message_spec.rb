@@ -24,7 +24,25 @@ describe Facebook::Messenger::Incoming::Message do
           'payload' => {
             'url' => 'https://www.example.com/1.jpg'
           }
-        }]
+        }],
+        'nlp' => {
+          'entities' => {
+            'datetime' => [
+              {
+                'confidence': 0.97249440664957,
+                'values': ['...'],
+                'value': '2017-05-10T14:00:00.000-07:00',
+                'grain': 'hour', 'type': 'value'
+              }
+            ],
+            'greetings': [
+              {
+                'confidence': 1,
+                'value': 'true'
+              }
+            ]
+          }
+        }
       }
     }
   end
@@ -171,6 +189,12 @@ describe Facebook::Messenger::Incoming::Message do
   describe '.echo?' do
     it 'returns the echo status of the message' do
       expect(subject.echo?).to eq(payload['message']['is_echo'])
+    end
+  end
+
+  describe '.entities' do
+    it 'returns the message attachments' do
+      expect(subject.nlp).to eq(payload['message']['nlp'])
     end
   end
 
