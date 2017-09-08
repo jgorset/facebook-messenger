@@ -27,6 +27,10 @@ module Facebook
           @messaging['message']['attachments']
         end
 
+        def nlp
+          @messaging['message']['nlp']
+        end
+
         def app_id
           @messaging['message']['app_id']
         end
