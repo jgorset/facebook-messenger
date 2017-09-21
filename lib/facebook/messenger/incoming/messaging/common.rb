@@ -11,11 +11,11 @@ module Facebook
           end
 
           def sender
-            @messaging['sender']
+            @sender ||= @messaging['sender'].tap { |x| x.delete('community') }
           end
 
           def recipient
-            @messaging['recipient']
+            @recipient ||= @messaging['recipient'].tap { |x| x.delete('community') }
           end
 
           def sent_at
