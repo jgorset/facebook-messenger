@@ -25,15 +25,15 @@ describe Facebook::Messenger::Incoming::Payment do
           'contact_email' => 'peter@anemailprovider.com',
           'contact_phone' => '+15105551234'
         },
-       'payment_credential' => {
-          'provider_type' => 'stripe', # paypal if you are using paypal as provider
+        'payment_credential' => {
+          'provider_type' => 'stripe',
           'charge_id' => 'ch_18tmdBEoNIH3FPJHa60ep123',
-          'fb_payment_id' => '123456789',
-        },      
+          'fb_payment_id' => '123456789'
+        },
         'amount' => {
           'currency' => 'USD',
           'amount' => '29.62'
-        }, 
+        },
         'shipping_option_id' => '123'
       }
     }
@@ -75,7 +75,8 @@ describe Facebook::Messenger::Incoming::Payment do
     end
 
     it 'returns the payment_credential value' do
-      expect(subject.payment.payment_credential).to eq(payload['payment']['payment_credential'])
+      expect(subject.payment.payment_credential).
+        to eq(payload['payment']['payment_credential'])
     end
 
     it 'returns the amount value' do
@@ -83,7 +84,8 @@ describe Facebook::Messenger::Incoming::Payment do
     end
 
     it 'returns the shipping_option_id value' do
-      expect(subject.payment.shipping_option_id).to eq(payload['payment']['shipping_option_id'])
+      expect(subject.payment.shipping_option_id).
+        to eq(payload['payment']['shipping_option_id'])
     end
   end
 end
