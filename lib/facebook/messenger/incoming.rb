@@ -8,7 +8,7 @@ require 'facebook/messenger/incoming/optin'
 require 'facebook/messenger/incoming/read'
 require 'facebook/messenger/incoming/account_linking'
 require 'facebook/messenger/incoming/referral'
-require "facebook/messenger/incoming/payment"
+require 'facebook/messenger/incoming/payment'
 
 module Facebook
   module Messenger

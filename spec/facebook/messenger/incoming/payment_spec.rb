@@ -71,12 +71,13 @@ describe Facebook::Messenger::Incoming::Payment do
     end
 
     it 'returns the requested_user_info value' do
-      expect(subject.payment.user_info).to eq(payload['payment']['requested_user_info'])
+      expect(subject.payment.user_info)
+        .to eq(payload['payment']['requested_user_info'])
     end
 
     it 'returns the payment_credential value' do
-      expect(subject.payment.payment_credential).
-        to eq(payload['payment']['payment_credential'])
+      expect(subject.payment.payment_credential)
+        .to eq(payload['payment']['payment_credential'])
     end
 
     it 'returns the amount value' do
@@ -84,8 +85,8 @@ describe Facebook::Messenger::Incoming::Payment do
     end
 
     it 'returns the shipping_option_id value' do
-      expect(subject.payment.shipping_option_id).
-        to eq(payload['payment']['shipping_option_id'])
+      expect(subject.payment.shipping_option_id)
+        .to eq(payload['payment']['shipping_option_id'])
     end
   end
 end

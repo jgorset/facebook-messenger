@@ -1,7 +1,8 @@
 module Facebook
   module Messenger
     module Incoming
-      # The Payment class represents the successful purchase using the Buy Button
+      # The Payment class represents a successful purchase using the Buy Button
+      #
       # https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/payment
       class Payment
         include Facebook::Messenger::Incoming::Common
@@ -36,7 +37,6 @@ module Facebook
         def payment
           @payment ||= Payment.new(@messaging['payment'])
         end
-        
       end
     end
   end
