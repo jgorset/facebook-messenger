@@ -406,6 +406,8 @@ require 'facebook/messenger'
 require_relative 'bot'
 
 run Facebook::Messenger::Server
+
+# or Facebook::Messenger::ServerNoError for dev
 ```
 
 ```
