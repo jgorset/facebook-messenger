@@ -276,7 +276,7 @@ Facebook::Messenger::Profile.set({
           type: 'nested',
           call_to_actions: [
             {
-              title: 'What's a chatbot?',
+              title: 'What is a chatbot?',
               type: 'postback',
               payload: 'EXTERMINATE'
             },
