@@ -9,8 +9,6 @@ require 'facebook/messenger/incoming/read'
 require 'facebook/messenger/incoming/account_linking'
 require 'facebook/messenger/incoming/referral'
 require 'facebook/messenger/incoming/payment'
-require 'facebook/messenger/incoming/pass_thread_control'
-require 'facebook/messenger/incoming/take_thread_control'
 
 module Facebook
   module Messenger
@@ -27,9 +25,7 @@ module Facebook
         'referral' => Referral,
         'message_echo' => MessageEcho,
         'message_request' => MessageRequest,
-        'payment' => Payment,
-        'pass_thread_control' => PassThreadControl,
-        'take_thread_control' => TakeThreadControl
+        'payment' => Payment
       }.freeze
 
       # Parse the given payload.
