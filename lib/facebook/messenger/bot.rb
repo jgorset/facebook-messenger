@@ -1,5 +1,6 @@
 require 'facebook/messenger/bot/error_parser'
 require 'facebook/messenger/bot/exceptions'
+require 'facebook/messenger/bot/message_type'
 
 module Facebook
   module Messenger

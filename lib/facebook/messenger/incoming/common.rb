@@ -51,7 +51,8 @@ module Facebook
         def reply(message)
           payload = {
             recipient: sender,
-            message: message
+            message: message,
+            message_type: Facebook::Messenger::Bot::MessageType::RESPONSE
           }
 
           Facebook::Messenger::Bot.deliver(payload, access_token: access_token)
