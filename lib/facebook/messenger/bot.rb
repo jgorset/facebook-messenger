@@ -20,6 +20,7 @@ module Facebook
         referral
         message_echo
         payment
+        pass_thread_control
       ].freeze
 
       class << self
