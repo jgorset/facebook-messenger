@@ -18,6 +18,7 @@ module Facebook
         account_linking
         referral
         message_echo
+        payment
       ].freeze
 
       class << self
