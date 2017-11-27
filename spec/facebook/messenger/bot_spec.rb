@@ -131,6 +131,7 @@ describe Facebook::Messenger::Bot do
 
     let(:payload) do
       {
+        messaging_type: "RESPONSE",
         recipient: {
           id: '123'
         },
