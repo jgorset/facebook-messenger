@@ -17,11 +17,11 @@ module Facebook
           @messaging['recipient']
         end
 
-        # https://developers.facebook.com/docs/messenger-platform/discovery/checkbox-plugin
-        # If the user responds to your message, the appropriate event (messages, messaging_postbacks, etc.) 
-        # will be sent to your webhook, with a prior_message object appended. The prior_message object includes 
-        # the source of the message the user is responding to, as well as the user_ref used for the 
-        # original message send.
+        # If the user responds to your message, the appropriate event 
+        # (messages, messaging_postbacks, etc.) will be sent to your webhook,
+        # with a prior_message object appended. The prior_message object 
+        # includes the source of the message the user is responding to, as well
+        # as the user_ref used for the original message send.
         def prior_message
           @messaging['prior_message']
         end
