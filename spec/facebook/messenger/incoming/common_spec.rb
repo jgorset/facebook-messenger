@@ -30,7 +30,7 @@ describe Dummy do
         }]
       },
       'prior_message' => {
-        'source' => 'checkbox_plugin',        
+        'source' => 'checkbox_plugin',
         'identifier' => '903dac41-0976-467f-805e-ed58dc23a783'
       }
     }
