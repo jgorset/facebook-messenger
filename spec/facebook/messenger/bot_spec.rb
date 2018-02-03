@@ -105,7 +105,9 @@ describe Facebook::Messenger::Bot do
     end
 
     context 'with a policy-violation' do
-      let(:policy_enforcement) { Facebook::Messenger::Incoming::PolicyEnforcement.new({}) }
+      let(:policy_enforcement) do
+        Facebook::Messenger::Incoming::PolicyEnforcement.new({})
+      end
 
       it 'triggers a :policy-enforcement' do
         expect(Facebook::Messenger::Incoming).to receive(:parse)
