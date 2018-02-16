@@ -13,6 +13,11 @@ module Facebook
       attr_reader :user_msg
       attr_reader :fbtrace_id
 
+      #
+      # Constructor function.
+      #
+      # @param [Hash] error Hash containing information about error.
+      #
       def initialize(error)
         @message = error['message']
         @type = error['type']
@@ -23,6 +28,13 @@ module Facebook
         @fbtrace_id = error['fbtrace_id']
       end
 
+      #
+      # Function to convert the error into string.
+      #
+      # @example Error_Object.to_s #=> "Invalid OAuth access token. (subcode: 1234567)"
+      #
+      # @return [String] String describing the error message
+      #
       def to_s
         "#{@message} (subcode: #{subcode})"
       end
