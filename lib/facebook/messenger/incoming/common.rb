@@ -18,8 +18,10 @@ module Facebook
 
         #
         # Function return PSID of sender.
-        # @see https://developers.facebook.com/docs/messenger-platform/identity Info about PSID.
-        # @see https://developers.facebook.com/docs/messenger-platform/webhook#format Webhook event format.
+        # @see https://developers.facebook.com/docs/messenger-platform/identity
+        #   Info about PSID.
+        # @see https://developers.facebook.com/docs/messenger-platform/webhook#format
+        #   Webhook event format.
         #
         # @return [String] PSID of sender.
         #
@@ -48,7 +50,8 @@ module Facebook
 
         #
         # Function send sender_action of 'typing_on' to sender.
-        # @see https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions Info about sender actions.
+        # @see https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions
+        #   Info about sender actions.
         #
         # @return Send message to sender.
         #
@@ -63,7 +66,8 @@ module Facebook
 
         #
         # Function send sender_action of 'typing_off' to sender.
-        # @see https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions Info about sender actions.
+        # @see https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions
+        #   Info about sender actions.
         #
         # @return Send message to sender.
         #
@@ -78,7 +82,8 @@ module Facebook
 
         #
         # Function send sender_action of 'mark_seen' to sender.
-        # @see https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions Info about sender actions.
+        # @see https://developers.facebook.com/docs/messenger-platform/send-messages/sender-actions
+        #   Info about sender actions.
         #
         # @return Send message to sender.
         #

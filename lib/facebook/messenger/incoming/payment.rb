@@ -18,7 +18,8 @@ module Facebook
             @payment['payload']
           end
 
-          # Return hash containing the requested information from user when they click buy button.
+          # Return hash containing the requested information from user when they
+          #   click buy button.
           def user_info
             @payment['requested_user_info']
           end

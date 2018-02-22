@@ -1,7 +1,7 @@
 module Facebook
   module Messenger
     module Incoming
-      # The Referral class represents an incoming Facebook Messenger referral event.
+      # Referral class represents an incoming Facebook Messenger referral event.
       #
       # @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messaging_referrals
       class Referral

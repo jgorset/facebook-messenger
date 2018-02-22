@@ -31,9 +31,10 @@ module Facebook
         # Deliver a message with the given payload.
         # @see https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
         #
-        # @raise [Facebook::Messenger::Bot::SendError] if there is any error in response while sending message to user.
+        # @raise [Facebook::Messenger::Bot::SendError] if there is any error
+        #   in response while sending message.
         #
-        # @param [Hash] message A Hash describing the recipient and the message*.
+        # @param [Hash] message A Hash describing the recipient and the message.
         # @param [String] access_token Access token.
         #
         # Returns a String describing the message ID if the message was sent,
@@ -53,7 +54,7 @@ module Facebook
 
         # Register a hook for the given event.
         #
-        # @raise [ArgumentError] if received event is not registered in EVENTS hash.
+        # @raise [ArgumentError] if received event is not registered.
         #
         # @param [String] event A String describing a Messenger event.
         # @param [Block] block A code block to run upon the event.

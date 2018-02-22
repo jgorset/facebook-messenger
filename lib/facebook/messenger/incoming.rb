@@ -13,11 +13,12 @@ require 'facebook/messenger/incoming/payment'
 module Facebook
   module Messenger
     #
-    # Module Incoming The Incoming module parses and abstracts incoming requests from Facebook Messenger.
+    # Module Incoming parses and abstracts incoming requests from Messenger.
     #
     module Incoming
       #
-      # @return [Hash] Hash containing facebook messenger events and its event handler classes.
+      # @return [Hash] Hash containing facebook messenger events and its event
+      #   handler classes.
       EVENTS = {
         'message' => Message,
         'delivery' => Delivery,
@@ -31,11 +32,13 @@ module Facebook
         'payment' => Payment
       }.freeze
 
-      # Parse the given payload and create new object of class related to event in payload.
+      # Parse the given payload and create new object of class related
+      #   to event in payload.
       #
       # @see https://developers.facebook.com/docs/messenger-platform/webhook-reference
       #
-      # @raise [Facebook::Messenger::Incoming::UnknownPayload] if event is not registered in EVENTS constant
+      # @raise [Facebook::Messenger::Incoming::UnknownPayload] if event is not
+      #   registered in EVENTS constant
       #
       # @param [Hash] payload A Hash describing a payload from Facebook.
       #

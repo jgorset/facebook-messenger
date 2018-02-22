@@ -31,7 +31,8 @@ module Facebook
       #
       # Function to convert the error into string.
       #
-      # @example Error_Object.to_s #=> "Invalid OAuth access token. (subcode: 1234567)"
+      # @example
+      #   Error_Object.to_s #=> "Invalid OAuth access token. (subcode: 1234567)"
       #
       # @return [String] String describing the error message
       #

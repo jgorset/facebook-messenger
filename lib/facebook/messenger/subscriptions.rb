@@ -3,7 +3,8 @@ require 'httparty'
 module Facebook
   module Messenger
     #
-    # Module Subscriptions handles subscribing and unsubscribing Applications to Pages.
+    # Module Subscriptions handles subscribing and unsubscribing Applications
+    #   to Pages.
     #
     module Subscriptions
       include HTTParty
@@ -18,9 +19,11 @@ module Facebook
       # Function subscribe the facebook app to page.
       # @see https://developers.facebook.com/docs/graph-api/reference/page/subscribed_apps
       #
-      # @raise [Facebook::Messenger::Subscriptions::Error] if there is any error in the response of subscribed_apps request.
+      # @raise [Facebook::Messenger::Subscriptions::Error] if there is any error
+      #   in the response of subscribed_apps request.
       #
-      # @param [String] access_token Access token of page to which bot has to subscribe.
+      # @param [String] access_token Access token of page to which bot has
+      #   to subscribe.
       #
       # @return [Boolean] TRUE
       #
@@ -38,9 +41,11 @@ module Facebook
       # Function unsubscribe the app from facebook page.
       # @see https://developers.facebook.com/docs/graph-api/reference/page/subscribed_apps
       #
-      # @raise [Facebook::Messenger::Subscriptions::Error] if there is any error in the response of subscribed_apps request.
+      # @raise [Facebook::Messenger::Subscriptions::Error] if there is any error
+      #   in the response of subscribed_apps request.
       #
-      # @param [String] access_token Access token of page from which app has to unsubscribe.
+      # @param [String] access_token Access token of page from which app has
+      #   to unsubscribe.
       #
       # @return [Boolean] TRUE
       #
@@ -57,7 +62,8 @@ module Facebook
       #
       # If there is any error in response, raise error.
       #
-      # @raise [Facebook::Messenger::Subscriptions::Error] If there is error in response.
+      # @raise [Facebook::Messenger::Subscriptions::Error] If there is error
+      #   in response.
       #
       # @param [Hash] response Response from facebook.
       #

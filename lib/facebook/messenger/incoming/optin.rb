@@ -11,7 +11,8 @@ module Facebook
         include Facebook::Messenger::Incoming::Common
 
         #
-        # Function returns 'data-ref' attribute that was defined with the entry point.
+        # Function returns 'data-ref' attribute that was defined
+        #   with the entry point.
         #
         # @return [String] data-ref attribute.
         #

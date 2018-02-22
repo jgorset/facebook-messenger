@@ -26,7 +26,7 @@ module Facebook
         @request = Rack::Request.new(env)
         @response = Rack::Response.new
 
-        if @request.get?        # Verify the endpoint for verification request.
+        if @request.get?
           verify
         elsif @request.post?
           receive
@@ -41,7 +41,8 @@ module Facebook
       private
 
       #
-      # Function validates the verification request which is sent by Facebook to validate the entered endpoint.
+      # Function validates the verification request which is sent by Facebook
+      #   to validate the entered endpoint.
       # @see https://developers.facebook.com/docs/graph-api/webhooks#callback
       #
       def verify
@@ -72,8 +73,8 @@ module Facebook
       #
       def check_integrity
         # If app secret is not found in environment, return.
-        # So for the security purpose always add provision in configuration provider to return app secret.
-        # @see Facebook::Messenger::Configuration::Providers:Environment#app_secret_for
+        # So for the security purpose always add provision in
+        #   configuration provider to return app secret.
         return unless app_secret_for(parsed_body['entry'][0]['id'])
 
         unless signature.start_with?('sha1='.freeze)

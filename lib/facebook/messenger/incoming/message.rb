@@ -2,7 +2,7 @@ module Facebook
   module Messenger
     module Incoming
       #
-      # The Message class represents an incoming Facebook Messenger message event.
+      # Message class represents an incoming Facebook Messenger message event.
       # @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages
       #
       class Message
@@ -14,7 +14,8 @@ module Facebook
 
         #
         # Function returns unique id of message
-        # @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages Info about received message format.
+        # @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages
+        #   Info about received message format.
         #
         # @return [String] Unique id of message.
         #
@@ -46,7 +47,8 @@ module Facebook
 
         #
         # Function returns array containing attachment data
-        # @see https://developers.facebook.com/docs/messenger-platform/send-messages#sending_attachments More info about attachments.
+        # @see https://developers.facebook.com/docs/messenger-platform/send-messages#sending_attachments
+        #   More info about attachments.
         #
         # @return [Array] Attachment data.
         #
@@ -55,9 +57,10 @@ module Facebook
         end
 
         #
-        # If facebook messenger built-in NLP is enabled, message will contain 'nlp' key in response.
-        # This gives the NLP information about message.
-        # @see https://developers.facebook.com/docs/messenger-platform/built-in-nlp More information about built-in NLP.
+        # If facebook messenger built-in NLP is enabled, message will
+        #   contain 'nlp' key in response.
+        # @see https://developers.facebook.com/docs/messenger-platform/built-in-nlp
+        #   More information about built-in NLP.
         #
         #
         # @return [Hash] NLP information about message.
@@ -76,7 +79,9 @@ module Facebook
         end
 
         #
-        # This meta programming defines function for every attachment type to check whether the attachment in message is of defined type or not.
+        # This meta programming defines function for
+        #   every attachment type to check whether the attachment
+        #   in message is of defined type or not.
         #
         ATTACHMENT_TYPES.each do |attachment_type|
           define_method "#{attachment_type}_attachment?" do
@@ -123,7 +128,8 @@ module Facebook
 
         #
         # Get the payload of quick reply.
-        # @see https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies More info about quick reply.
+        # @see https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies
+        #   More info about quick reply.
         #
         # @return [String] Payload string.
         #
@@ -141,7 +147,8 @@ module Facebook
         #
         # @param [String] attachment_type Attachment type
         #
-        # @return [Boolean] If type of attachment in message and provided attachment type are same then return true else false.
+        # @return [Boolean] If type of attachment in message
+        #   and provided attachment type are same then return true else false.
         #
         def attachment_type?(attachment_type)
           !attachments.nil? && attachments.first['type'] == attachment_type

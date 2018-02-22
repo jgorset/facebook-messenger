@@ -19,7 +19,8 @@ module Facebook
       #
       # Set the messenger profile.
       #
-      # @raise [Facebook::Messenger::Profile::Error] if there is any error in response.
+      # @raise [Facebook::Messenger::Profile::Error] if there is any error
+      #   in response.
       #
       # @param [Hash] settings Hash defining the profile settings.
       # @param [String] access_token  Access token of facebook page.
@@ -39,7 +40,8 @@ module Facebook
       #
       # Unset the messenger profile.
       #
-      # @raise [Facebook::Messenger::Profile::Error] if there is any error in response.
+      # @raise [Facebook::Messenger::Profile::Error] if there is any error
+      #   in response.
       #
       # @param [Hash] settings Hash defining the profile settings.
       # @param [String] access_token  Access token of facebook page.
@@ -59,7 +61,8 @@ module Facebook
       #
       # Function raise error if response has error key.
       #
-      # @raise [Facebook::Messenger::Profile::Error] if error is present in response.
+      # @raise [Facebook::Messenger::Profile::Error] if error is present
+      #   in response.
       #
       # @param [Hash] response Response hash from facebook.
       #

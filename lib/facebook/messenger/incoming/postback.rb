@@ -1,7 +1,8 @@
 module Facebook
   module Messenger
     module Incoming
-      # The Postback class represents an incoming Facebook Messenger postback events.
+      # The Postback class represents an incoming Facebook Messenger
+      #   postback events.
       # @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messaging_postbacks
       class Postback
         include Facebook::Messenger::Incoming::Common
