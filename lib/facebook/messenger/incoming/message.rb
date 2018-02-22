@@ -2,7 +2,8 @@ module Facebook
   module Messenger
     module Incoming
       #
-      # The Message class represents an incoming Facebook Messenger message.
+      # The Message class represents an incoming Facebook Messenger message event.
+      # @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages
       #
       class Message
         include Facebook::Messenger::Incoming::Common

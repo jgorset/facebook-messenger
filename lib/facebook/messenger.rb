@@ -23,6 +23,8 @@ module Facebook
       @config = config
     end
 
+    # Set the default configuration provider.
+    # User can set different configuration provider.
     configure do |config|
       config.provider = Configuration::Providers::Environment.new
     end
