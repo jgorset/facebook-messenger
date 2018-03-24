@@ -11,7 +11,7 @@ module Facebook
       include HTTParty
 
       # Define base_uri for HTTParty.
-      base_uri 'https://graph.facebook.com/v2.6/me'
+      base_uri 'https://graph.facebook.com/v2.9/me'
 
       #
       # @return [Array] Array containing the supported webhook events.
