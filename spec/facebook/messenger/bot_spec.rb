@@ -114,7 +114,7 @@ describe Facebook::Messenger::Bot do
           .and_return(policy_enforcement)
 
         expect(Facebook::Messenger::Bot).to receive(:trigger)
-          .with(:'policy_enforcement', policy_enforcement)
+          .with(:policy_enforcement, policy_enforcement)
 
         subject.receive({})
       end
