@@ -103,6 +103,22 @@ describe Facebook::Messenger::Bot do
         subject.receive({})
       end
     end
+
+    context 'with a policy-violation' do
+      let(:policy_enforcement) do
+        Facebook::Messenger::Incoming::PolicyEnforcement.new({})
+      end
+
+      it 'triggers a :policy_enforcement' do
+        expect(Facebook::Messenger::Incoming).to receive(:parse)
+          .and_return(policy_enforcement)
+
+        expect(Facebook::Messenger::Bot).to receive(:trigger)
+          .with(:policy_enforcement, policy_enforcement)
+
+        subject.receive({})
+      end
+    end
   end
 
   describe '.trigger' do
