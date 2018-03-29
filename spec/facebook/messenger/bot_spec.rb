@@ -109,12 +109,12 @@ describe Facebook::Messenger::Bot do
         Facebook::Messenger::Incoming::PolicyEnforcement.new({})
       end
 
-      it 'triggers a :policy-enforcement' do
+      it 'triggers a :policy_enforcement' do
         expect(Facebook::Messenger::Incoming).to receive(:parse)
           .and_return(policy_enforcement)
 
         expect(Facebook::Messenger::Bot).to receive(:trigger)
-          .with(:'policy-enforcement', policy_enforcement)
+          .with(:'policy_enforcement', policy_enforcement)
 
         subject.receive({})
       end

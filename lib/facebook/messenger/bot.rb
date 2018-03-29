@@ -20,7 +20,7 @@ module Facebook
         referral
         message_echo
         payment
-        policy-enforcement
+        policy_enforcement
       ].freeze
 
       class << self

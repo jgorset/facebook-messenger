@@ -9,11 +9,11 @@ module Facebook
         include Facebook::Messenger::Incoming::Common
 
         def action
-          @messaging['policy-enforcement']['action']
+          @messaging['policy_enforcement']['action']
         end
 
         def reason
-          @messaging['policy-enforcement']['reason']
+          @messaging['policy_enforcement']['reason']
         end
       end
     end

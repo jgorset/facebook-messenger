@@ -27,7 +27,7 @@ module Facebook
         'message_echo' => MessageEcho,
         'message_request' => MessageRequest,
         'payment' => Payment,
-        'policy-enforcement' => PolicyEnforcement
+        'policy_enforcement' => PolicyEnforcement
       }.freeze
 
       # Parse the given payload.

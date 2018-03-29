@@ -315,7 +315,7 @@ Facebook::Messenger::Profile.set({
 See Facebook's documentation on [Messaging Policy Enforcement](https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messaging_policy_enforcement)
 
 ```
-Bot.on :'policy-enforcement' do |referral|
+Bot.on :'policy_enforcement' do |referral|
   referral.action # => 'block'
   referral.reason # => "The bot violated our Platform Policies (https://developers.facebook.com/policy/#messengerplatform). Common violations include sending out excessive spammy messages or being non-functional."
 end

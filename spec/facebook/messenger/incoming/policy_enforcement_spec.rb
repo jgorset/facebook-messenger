@@ -10,7 +10,7 @@ describe Facebook::Messenger::Incoming::PolicyEnforcement do
         'id' => '3'
       },
       'timestamp' => 145_776_419_762_7,
-      'policy-enforcement' => {
+      'policy_enforcement' => {
         'action' => 'block',
         'reason' => <<-REASON
           The bot violated our Platform Policies
@@ -22,7 +22,7 @@ describe Facebook::Messenger::Incoming::PolicyEnforcement do
     }
   end
 
-  let(:policy_enforcement) { payload['policy-enforcement'] }
+  let(:policy_enforcement) { payload['policy_enforcement'] }
 
   subject { described_class.new(payload) }
 
