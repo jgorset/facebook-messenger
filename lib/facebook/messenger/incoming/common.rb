@@ -39,6 +39,19 @@ module Facebook
         end
 
         #
+        # If the user responds to your message, the appropriate event
+        # (messages, messaging_postbacks, etc.) will be sent to your webhook,
+        # with a prior_message object appended. The prior_message object
+        # includes the source of the message the user is responding to, as well
+        # as the user_ref used for the original message send.
+        #
+        # @return [Hash] The 'prior_message' hash.
+        #
+        def prior_message
+          @messaging['prior_message']
+        end
+
+        #
         # Function return timestamp when message is sent.
         #
         #
