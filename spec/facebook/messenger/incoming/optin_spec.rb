@@ -11,7 +11,8 @@ describe Facebook::Messenger::Incoming::Optin do
       },
       'timestamp' => 145_776_419_762_7,
       'optin' => {
-        'ref' => 'PASS_THROUGH_PARAM'
+        'ref' => 'PASS_THROUGH_PARAM',
+        'user_ref' => 'UNIQUE_REF_PARAM'
       }
     }
   end
@@ -45,6 +46,12 @@ describe Facebook::Messenger::Incoming::Optin do
   describe '.ref' do
     it 'returns the data-ref defined with the entry point' do
       expect(subject.ref).to eq(payload['optin']['ref'])
+    end
+  end
+
+  describe '.user_ref' do
+    it 'returns the user_ref defined with the entry point' do
+      expect(subject.user_ref).to eq(payload['optin']['user_ref'])
     end
   end
 end

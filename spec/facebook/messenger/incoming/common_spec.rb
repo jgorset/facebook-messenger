@@ -28,6 +28,10 @@ describe Dummy do
             'url' => 'https://www.example.com/1.jpg'
           }
         }]
+      },
+      'prior_message' => {
+        'source' => 'checkbox_plugin',
+        'identifier' => '903dac41-0976-467f-805e-ed58dc23a783'
       }
     }
   end
@@ -43,6 +47,12 @@ describe Dummy do
   describe '.recipient' do
     it 'returns the recipient' do
       expect(subject.recipient).to eq(payload['recipient'])
+    end
+  end
+
+  describe '.prior_message' do
+    it 'returns the message' do
+      expect(subject.prior_message).to eq(payload['prior_message'])
     end
   end
 
@@ -109,7 +119,7 @@ describe Dummy do
   describe '.reply' do
     let(:access_token) { 'access_token' }
 
-    it 'replies to the sender' do
+    it 'replies to the sender with the default message type' do
       expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
         .with(subject.recipient)
         .and_return(access_token)
@@ -117,7 +127,8 @@ describe Dummy do
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
                 recipient: subject.sender,
-                message: { text: 'Hello, human' }
+                message: { text: 'Hello, human' },
+                message_type: Facebook::Messenger::Bot::MessageType::RESPONSE
               }, access_token: access_token)
 
       subject.reply(text: 'Hello, human')

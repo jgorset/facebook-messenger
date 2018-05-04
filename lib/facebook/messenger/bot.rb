@@ -1,14 +1,20 @@
 require 'facebook/messenger/bot/error_parser'
 require 'facebook/messenger/bot/exceptions'
+require 'facebook/messenger/bot/message_type'
 
 module Facebook
   module Messenger
-    # The Bot module sends and receives messages.
+    #
+    # Module Bot provides functionality to sends and receives messages.
+    #
     module Bot
       include HTTParty
 
-      base_uri 'https://graph.facebook.com/v2.6/me'
+      # Define base_uri for HTTParty.
+      base_uri 'https://graph.facebook.com/v2.9/me'
 
+      #
+      # @return [Array] Array containing the supported webhook events.
       EVENTS = %i[
         message
         delivery
@@ -18,14 +24,19 @@ module Facebook
         account_linking
         referral
         message_echo
+        payment
+        policy_enforcement
       ].freeze
 
       class << self
         # Deliver a message with the given payload.
+        # @see https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
         #
-        # message - A Hash describing the recipient and the message*.
+        # @raise [Facebook::Messenger::Bot::SendError] if there is any error
+        #   in response while sending message.
         #
-        # * https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
+        # @param [Hash] message A Hash describing the recipient and the message.
+        # @param [String] access_token Access token.
         #
         # Returns a String describing the message ID if the message was sent,
         # or raises an exception if it was not.
@@ -44,8 +55,12 @@ module Facebook
 
         # Register a hook for the given event.
         #
-        # event - A String describing a Messenger event.
-        # block - A code block to run upon the event.
+        # @raise [ArgumentError] if received event is not registered.
+        #
+        # @param [String] event A String describing a Messenger event.
+        # @param [Block] block A code block to run upon the event.
+        #
+        # @return Save event and its block in hooks.
         def on(event, &block)
           unless EVENTS.include? event
             raise ArgumentError,
@@ -58,9 +73,12 @@ module Facebook
 
         # Receive a given message from Messenger.
         #
-        # payload - A Hash describing the message.
+        # @see https://developers.facebook.com/docs/messenger-platform/webhook-reference
         #
-        # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
+        # @param [Hash] payload A Hash describing the message.
+        #
+        # @return pass event and object of callback class to trigger function.
+        #
         def receive(payload)
           callback = Facebook::Messenger::Incoming.parse(payload)
           event = Facebook::Messenger::Incoming::EVENTS.invert[callback.class]
@@ -68,26 +86,41 @@ module Facebook
         end
 
         # Trigger the hook for the given event.
+        # Fetch callback for event from hooks and call it.
         #
-        # event - A String describing a Messenger event.
-        # args - Arguments to pass to the hook.
+        # @raise [KeyError] if hook is not registered for event
+        #
+        # @param [String] event A String describing a Messenger event.
+        # @param [Object] args Arguments to pass to the hook.
         def trigger(event, *args)
           hooks.fetch(event).call(*args)
         rescue KeyError
           $stderr.puts "Ignoring #{event} (no hook registered)"
         end
 
+        #
         # Return a Hash of hooks.
+        #
+        # @return [Hash] Hash of hooks.
+        #
         def hooks
           @hooks ||= {}
         end
 
+        #
         # Deregister all hooks.
+        #
+        # @return [Hash] Assign empty hash to hooks and return it.
+        #
         def unhook
           @hooks = {}
         end
 
+        #
         # Default HTTParty options.
+        #
+        # @return [Hash] Default HTTParty options.
+        #
         def default_options
           super.merge(
             read_timeout: 300,

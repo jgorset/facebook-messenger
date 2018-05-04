@@ -46,7 +46,8 @@ Bot.deliver({
   },
   message: {
     text: 'Human?'
-  }
+  },
+  message_type: Facebook::Messenger::Bot::MessageType::UPDATE
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
 
@@ -174,6 +175,17 @@ Bot.on :message_echo do |message_echo|
 end
 ```
 
+##### Record accepted message requests
+
+You can keep track of message requests accepted by the human:
+
+```ruby
+Bot.on :message_request do |message_request|
+  message_request.accept? # => true
+
+  # Log or store in your storage method of choice (skynet, obviously)
+end
+```
 
 #### Send to Facebook
 
@@ -265,7 +277,7 @@ Facebook::Messenger::Profile.set({
           type: 'nested',
           call_to_actions: [
             {
-              title: 'What's a chatbot?',
+              title: 'What is a chatbot?',
               type: 'postback',
               payload: 'EXTERMINATE'
             },
@@ -296,6 +308,19 @@ Facebook::Messenger::Profile.set({
   ]
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
+
+
+#### Handle a Facebook Policy Violation
+
+See Facebook's documentation on [Messaging Policy Enforcement](https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messaging_policy_enforcement)
+
+```
+Bot.on :'policy_enforcement' do |referral|
+  referral.action # => 'block'
+  referral.reason # => "The bot violated our Platform Policies (https://developers.facebook.com/policy/#messengerplatform). Common violations include sending out excessive spammy messages or being non-functional."
+end
+```
+
 
 ## Configuration
 
@@ -394,6 +419,8 @@ require 'facebook/messenger'
 require_relative 'bot'
 
 run Facebook::Messenger::Server
+
+# or Facebook::Messenger::ServerNoError for dev
 ```
 
 ```
