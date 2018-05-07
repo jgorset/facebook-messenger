@@ -47,7 +47,7 @@ Bot.deliver({
   message: {
     text: 'Human?'
   },
-  message_type: Facebook::Messenger::Bot::MessageType::UPDATE
+  message_type: Facebook::Messenger::Bot::MessagingType::UPDATE
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
 
@@ -334,14 +334,14 @@ Bot.deliver({
   message: {
     text: 'Human?'
   },
-  message_type: Facebook::Messenger::Bot::MessageType::UPDATE
+  message_type: Facebook::Messenger::Bot::MessagingType::UPDATE
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
 
 ##### MESSAGE_TAG
 See Facebook's documentation on [Message Tags](https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags)
 
-When sending a message with messaging_type: MESSAGE_TAG (Facebook::Messenger::Bot::MessageType::MESSAGE_TAG) you must ensure you add a tag: parameter
+When sending a message with messaging_type: MESSAGE_TAG (Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG) you must ensure you add a tag: parameter
 
 ```ruby
 Bot.deliver({
@@ -351,7 +351,7 @@ Bot.deliver({
   message: {
     text: 'Human?'
   },
-  message_type: Facebook::Messenger::Bot::MessageType::MESSAGE_TAG
+  message_type: Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG
   tag: Facebook::Messenger::Bot::Tag::NON_PROMOTIONAL_SUBSCRIPTION
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
