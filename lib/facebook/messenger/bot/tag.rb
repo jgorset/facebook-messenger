@@ -2,7 +2,7 @@ module Facebook
   module Messenger
     module Bot
       # Supported tags.
-      # Note: A tag is required when sending messages with the 
+      # Note: A tag is required when sending messages with the
       # message type `MESSAGE_TAG`.
       module Tag
         COMMUNITY_ALERT               = 'COMMUNITY_ALERT'.freeze
