@@ -47,7 +47,7 @@ Bot.deliver({
   message: {
     text: 'Human?'
   },
-  message_type: Facebook::Messenger::Bot::MessageType::UPDATE
+  messaging_type: Facebook::Messenger::Bot::MessageType::UPDATE
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
 
