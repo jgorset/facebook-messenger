@@ -8,6 +8,7 @@
 [![Dependency Status](https://img.shields.io/gemnasium/hyperoslo/facebook-messenger.svg?style=flat)](https://gemnasium.com/hyperoslo/facebook-messenger)
 [![Code Climate](https://img.shields.io/codeclimate/github/hyperoslo/facebook-messenger.svg?style=flat)](https://codeclimate.com/github/hyperoslo/facebook-messenger)
 [![Coverage Status](https://img.shields.io/coveralls/hyperoslo/facebook-messenger.svg?style=flat)](https://coveralls.io/r/hyperoslo/facebook-messenger)
+[![Documentation Coverage](http://inch-ci.org/github/jgorset/facebook-messenger.svg?branch=master)](http://inch-ci.org/github/jgorset/facebook-messenger)
 
 ## Installation
 
