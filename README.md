@@ -47,7 +47,7 @@ Bot.deliver({
   message: {
     text: 'Human?'
   },
-  messaging_type: Facebook::Messenger::Bot::MessageType::UPDATE
+  message_type: Facebook::Messenger::Bot::MessagingType::UPDATE
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
 
@@ -314,13 +314,47 @@ Facebook::Messenger::Profile.set({
 
 See Facebook's documentation on [Messaging Policy Enforcement](https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messaging_policy_enforcement)
 
-```
+```ruby
 Bot.on :'policy_enforcement' do |referral|
   referral.action # => 'block'
   referral.reason # => "The bot violated our Platform Policies (https://developers.facebook.com/policy/#messengerplatform). Common violations include sending out excessive spammy messages or being non-functional."
 end
 ```
+#### messaging_type
+##### Sending Messages
+See Facebook's documentation on [Sending Messages](https://developers.facebook.com/docs/messenger-platform/send-messages#standard_messaging)
 
+As of May 7th 2018 all messages are required to include a messaging_type
+
+```ruby
+Bot.deliver({
+  recipient: {
+    id: '45123'
+  },
+  message: {
+    text: 'Human?'
+  },
+  message_type: Facebook::Messenger::Bot::MessagingType::UPDATE
+}, access_token: ENV['ACCESS_TOKEN'])
+```
+
+##### MESSAGE_TAG
+See Facebook's documentation on [Message Tags](https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags)
+
+When sending a message with messaging_type: MESSAGE_TAG (Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG) you must ensure you add a tag: parameter
+
+```ruby
+Bot.deliver({
+  recipient: {
+    id: '45123'
+  },
+  message: {
+    text: 'Human?'
+  },
+  message_type: Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG
+  tag: Facebook::Messenger::Bot::Tag::NON_PROMOTIONAL_SUBSCRIPTION
+}, access_token: ENV['ACCESS_TOKEN'])
+```
 
 ## Configuration
 
