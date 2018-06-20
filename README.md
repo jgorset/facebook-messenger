@@ -518,8 +518,63 @@ config.paths.add File.join('app', 'bot'), glob: File.join('**', '*.rb')
 config.autoload_paths += Dir[Rails.root.join('app', 'bot', '*')]
 ```
 
+
+### Test it...
+
+##### ...locally
 To test your locally running bot, you can use [ngrok]. This will create a secure
 tunnel to localhost so that Facebook can reach the webhook.
+
+##### ... with RSpec
+
+In order to test that behaviour when a new event from Facebook is registered, you can use the gem's `trigger` method. This method accepts as its first argument the type of event that it will receive, and can then be followed by other arguments that mock objects received from Messenger. Using Ruby's [Struct](https://ruby-doc.org/core-2.5.0/Struct.html) class can be very useful for creating these mock objects.
+
+In this case, subscribing to Messenger events has been extracted into a `Listener` class.   
+```ruby
+# app/bot/listener.rb
+require 'facebook/messenger'
+
+include Facebook::Messenger
+
+class Listener
+  Facebook::Messenger::Subscriptions.subscribe(access_token: ENV["FB_ACCESS_TOKEN"])
+
+  Bot.on :message do |message|
+    Bot.deliver({
+      recipient: message.sender,
+      message: {
+        text: 'Uploading your message to skynet.'
+      }
+    }, access_token: ENV['FB_ACCESS_TOKEN'])
+  end
+end
+```
+Its respective test file then ensures that the `Bot` object receives a call to `deliver`. This is just a basic test, but check out the [RSpec docs](http://rspec.info/) for more information on testing with RSpec.
+```ruby
+require 'rails_helper'
+
+RSpec.describe Listener do
+  FakeMessage = Struct.new(:sender, :recipient, :timestamp, :message)
+
+  describe 'Bot#on(message)' do
+    it 'responds with a message' do
+      expect(Bot).to receive(:deliver)
+      Bot.trigger(:message, fake_message)
+    end
+  end
+
+  private
+
+  def fake_message
+    sender = {"id"=>"1234"}
+    recipient = {"id"=>"5678"}
+    timestamp = 1528049653543
+    message = {"text"=>"Hello, world"}
+    FakeMessage.new(sender, recipient, timestamp, message)
+  end
+end
+```
+
 
 ## Development
 
