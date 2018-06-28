@@ -9,12 +9,17 @@ require 'facebook/messenger/incoming/read'
 require 'facebook/messenger/incoming/account_linking'
 require 'facebook/messenger/incoming/referral'
 require 'facebook/messenger/incoming/payment'
+require 'facebook/messenger/incoming/policy_enforcement'
 
 module Facebook
   module Messenger
-    # The Incoming module parses and abstracts incoming requests from
-    # Facebook Messenger.
+    #
+    # Module Incoming parses and abstracts incoming requests from Messenger.
+    #
     module Incoming
+      #
+      # @return [Hash] Hash containing facebook messenger events and its event
+      #   handler classes.
       EVENTS = {
         'message' => Message,
         'delivery' => Delivery,
@@ -25,14 +30,20 @@ module Facebook
         'referral' => Referral,
         'message_echo' => MessageEcho,
         'message_request' => MessageRequest,
-        'payment' => Payment
+        'payment' => Payment,
+        'policy_enforcement' => PolicyEnforcement
       }.freeze
 
-      # Parse the given payload.
+      # Parse the given payload and create new object of class related
+      #   to event in payload.
       #
-      # payload - A Hash describing a payload from Facebook.
+      # @see https://developers.facebook.com/docs/messenger-platform/webhook-reference
       #
-      # * https://developers.facebook.com/docs/messenger-platform/webhook-reference
+      # @raise [Facebook::Messenger::Incoming::UnknownPayload] if event is not
+      #   registered in EVENTS constant
+      #
+      # @param [Hash] payload A Hash describing a payload from Facebook.
+      #
       def self.parse(payload)
         return MessageEcho.new(payload) if payload_is_echo?(payload)
 
@@ -43,10 +54,20 @@ module Facebook
         raise UnknownPayload, payload
       end
 
+      #
+      # Check if event is echo.
+      #
+      # @param [Hash] payload Request payload from facebook.
+      #
+      # @return [Boolean] If event is echo return true else false.
+      #
       def self.payload_is_echo?(payload)
         payload.key?('message') && payload['message']['is_echo'] == true
       end
 
+      #
+      # Class UnknownPayload provides errors related to incoming messages.
+      #
       class UnknownPayload < Facebook::Messenger::Error; end
     end
   end

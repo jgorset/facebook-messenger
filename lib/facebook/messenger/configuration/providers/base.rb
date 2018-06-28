@@ -2,8 +2,10 @@ module Facebook
   module Messenger
     class Configuration
       module Providers
-        # This is the base configuration provider. It raises errors so that you
-        # get nice ones.
+        # This is the base configuration provider.
+        #   User can overwrite this class to customize the environment variables
+        #   Be sure to implement all the functions as it raises
+        #   NotImplementedError errors.
         class Base
           def valid_verify_token?(*)
             raise NotImplementedError

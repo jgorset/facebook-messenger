@@ -4,10 +4,11 @@
 
 
 [![Gem Version](https://img.shields.io/gem/v/facebook-messenger.svg?style=flat)](https://rubygems.org/gems/facebook-messenger)
-[![Build Status](https://img.shields.io/travis/jgorset/facebook-messenger.svg?style=flat)](https://travis-ci.org/jgorset/facebook-messenger)
-[![Dependency Status](https://img.shields.io/gemnasium/jgorset/facebook-messenger.svg?style=flat)](https://gemnasium.com/jgorset/facebook-messenger)
-[![Code Climate](https://img.shields.io/codeclimate/github/jgorset/facebook-messenger.svg?style=flat)](https://codeclimate.com/github/jgorset/facebook-messenger)
-[![Coverage Status](https://img.shields.io/coveralls/jgorset/facebook-messenger.svg?style=flat)](https://coveralls.io/r/jgorset/facebook-messenger)
+[![Build Status](https://img.shields.io/travis/hyperoslo/facebook-messenger.svg?style=flat)](https://travis-ci.org/jgorset/facebook-messenger)
+[![Dependency Status](https://img.shields.io/gemnasium/hyperoslo/facebook-messenger.svg?style=flat)](https://gemnasium.com/jgorset/facebook-messenger)
+[![Code Climate](https://img.shields.io/codeclimate/github/hyperoslo/facebook-messenger.svg?style=flat)](https://codeclimate.com/github/jgorset/facebook-messenger)
+[![Coverage Status](https://img.shields.io/coveralls/hyperoslo/facebook-messenger.svg?style=flat)](https://coveralls.io/r/jgorset/facebook-messenger)
+[![Documentation Coverage](http://inch-ci.org/github/jgorset/facebook-messenger.svg?branch=master)](http://inch-ci.org/github/jgorset/facebook-messenger)
 
 ## Installation
 
@@ -47,7 +48,7 @@ Bot.deliver({
   message: {
     text: 'Human?'
   },
-  message_type: Facebook::Messenger::Bot::MessageType::UPDATE
+  message_type: Facebook::Messenger::Bot::MessagingType::UPDATE
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
 
@@ -309,6 +310,53 @@ Facebook::Messenger::Profile.set({
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
 
+
+#### Handle a Facebook Policy Violation
+
+See Facebook's documentation on [Messaging Policy Enforcement](https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messaging_policy_enforcement)
+
+```ruby
+Bot.on :'policy_enforcement' do |referral|
+  referral.action # => 'block'
+  referral.reason # => "The bot violated our Platform Policies (https://developers.facebook.com/policy/#messengerplatform). Common violations include sending out excessive spammy messages or being non-functional."
+end
+```
+#### messaging_type
+##### Sending Messages
+See Facebook's documentation on [Sending Messages](https://developers.facebook.com/docs/messenger-platform/send-messages#standard_messaging)
+
+As of May 7th 2018 all messages are required to include a messaging_type
+
+```ruby
+Bot.deliver({
+  recipient: {
+    id: '45123'
+  },
+  message: {
+    text: 'Human?'
+  },
+  message_type: Facebook::Messenger::Bot::MessagingType::UPDATE
+}, access_token: ENV['ACCESS_TOKEN'])
+```
+
+##### MESSAGE_TAG
+See Facebook's documentation on [Message Tags](https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags)
+
+When sending a message with messaging_type: MESSAGE_TAG (Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG) you must ensure you add a tag: parameter
+
+```ruby
+Bot.deliver({
+  recipient: {
+    id: '45123'
+  },
+  message: {
+    text: 'Human?'
+  },
+  message_type: Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG
+  tag: Facebook::Messenger::Bot::Tag::NON_PROMOTIONAL_SUBSCRIPTION
+}, access_token: ENV['ACCESS_TOKEN'])
+```
+
 ## Configuration
 
 ### Create an Application on Facebook
@@ -470,8 +518,63 @@ config.paths.add File.join('app', 'bot'), glob: File.join('**', '*.rb')
 config.autoload_paths += Dir[Rails.root.join('app', 'bot', '*')]
 ```
 
+
+### Test it...
+
+##### ...locally
 To test your locally running bot, you can use [ngrok]. This will create a secure
 tunnel to localhost so that Facebook can reach the webhook.
+
+##### ... with RSpec
+
+In order to test that behaviour when a new event from Facebook is registered, you can use the gem's `trigger` method. This method accepts as its first argument the type of event that it will receive, and can then be followed by other arguments that mock objects received from Messenger. Using Ruby's [Struct](https://ruby-doc.org/core-2.5.0/Struct.html) class can be very useful for creating these mock objects.
+
+In this case, subscribing to Messenger events has been extracted into a `Listener` class.   
+```ruby
+# app/bot/listener.rb
+require 'facebook/messenger'
+
+include Facebook::Messenger
+
+class Listener
+  Facebook::Messenger::Subscriptions.subscribe(access_token: ENV["FB_ACCESS_TOKEN"])
+
+  Bot.on :message do |message|
+    Bot.deliver({
+      recipient: message.sender,
+      message: {
+        text: 'Uploading your message to skynet.'
+      }
+    }, access_token: ENV['FB_ACCESS_TOKEN'])
+  end
+end
+```
+Its respective test file then ensures that the `Bot` object receives a call to `deliver`. This is just a basic test, but check out the [RSpec docs](http://rspec.info/) for more information on testing with RSpec.
+```ruby
+require 'rails_helper'
+
+RSpec.describe Listener do
+  FakeMessage = Struct.new(:sender, :recipient, :timestamp, :message)
+
+  describe 'Bot#on(message)' do
+    it 'responds with a message' do
+      expect(Bot).to receive(:deliver)
+      Bot.trigger(:message, fake_message)
+    end
+  end
+
+  private
+
+  def fake_message
+    sender = {"id"=>"1234"}
+    recipient = {"id"=>"5678"}
+    timestamp = 1528049653543
+    message = {"text"=>"Hello, world"}
+    FakeMessage.new(sender, recipient, timestamp, message)
+  end
+end
+```
+
 
 ## Development
 

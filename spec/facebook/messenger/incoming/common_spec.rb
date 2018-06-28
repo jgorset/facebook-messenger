@@ -28,6 +28,10 @@ describe Dummy do
             'url' => 'https://www.example.com/1.jpg'
           }
         }]
+      },
+      'prior_message' => {
+        'source' => 'checkbox_plugin',
+        'identifier' => '903dac41-0976-467f-805e-ed58dc23a783'
       }
     }
   end
@@ -43,6 +47,12 @@ describe Dummy do
   describe '.recipient' do
     it 'returns the recipient' do
       expect(subject.recipient).to eq(payload['recipient'])
+    end
+  end
+
+  describe '.prior_message' do
+    it 'returns the message' do
+      expect(subject.prior_message).to eq(payload['prior_message'])
     end
   end
 
