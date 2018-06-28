@@ -1,5 +1,21 @@
 # Change Log
 
+## [1.1.0] - 2018-06-28
+
+### Added
+- Support for Rack 1.4.5 or newer (was 1.6.4).
+- `Incoming::Optin#user_ref`.
+- Support for message requests.
+- Support for Facebook's built-in NLP with `Incoming::Message#nlp`.
+- Support for payments with `Incoming::Payment`.
+- Support for handover.
+- Support for message types and tags.
+- Support for prior message.
+- Support for Graph API v2.9.
+
+### Changed
+- Error codes now include subcodes
+
 ## [1.0.0] - 2017-05-31
 
 ### Added
