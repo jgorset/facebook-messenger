@@ -1,13 +1,13 @@
 <p align="center">
-  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/conversation_with_logo.gif">
+  <img src="https://rawgit.com/jgorset/facebook-messenger/master/docs/conversation_with_logo.gif">
 </p>
 
 
 [![Gem Version](https://img.shields.io/gem/v/facebook-messenger.svg?style=flat)](https://rubygems.org/gems/facebook-messenger)
-[![Build Status](https://img.shields.io/travis/hyperoslo/facebook-messenger.svg?style=flat)](https://travis-ci.org/hyperoslo/facebook-messenger)
-[![Dependency Status](https://img.shields.io/gemnasium/hyperoslo/facebook-messenger.svg?style=flat)](https://gemnasium.com/hyperoslo/facebook-messenger)
-[![Code Climate](https://img.shields.io/codeclimate/github/hyperoslo/facebook-messenger.svg?style=flat)](https://codeclimate.com/github/hyperoslo/facebook-messenger)
-[![Coverage Status](https://img.shields.io/coveralls/hyperoslo/facebook-messenger.svg?style=flat)](https://coveralls.io/r/hyperoslo/facebook-messenger)
+[![Build Status](https://img.shields.io/travis/hyperoslo/facebook-messenger.svg?style=flat)](https://travis-ci.org/jgorset/facebook-messenger)
+[![Dependency Status](https://img.shields.io/gemnasium/hyperoslo/facebook-messenger.svg?style=flat)](https://gemnasium.com/jgorset/facebook-messenger)
+[![Code Climate](https://img.shields.io/codeclimate/github/hyperoslo/facebook-messenger.svg?style=flat)](https://codeclimate.com/github/jgorset/facebook-messenger)
+[![Coverage Status](https://img.shields.io/coveralls/hyperoslo/facebook-messenger.svg?style=flat)](https://coveralls.io/r/jgorset/facebook-messenger)
 [![Documentation Coverage](http://inch-ci.org/github/jgorset/facebook-messenger.svg?branch=master)](http://inch-ci.org/github/jgorset/facebook-messenger)
 
 ## Installation
@@ -297,7 +297,7 @@ Facebook::Messenger::Profile.set({
         {
           type: 'web_url',
           title: 'Get some help',
-          url: 'https://github.com/hyperoslo/facebook-messenger',
+          url: 'https://github.com/jgorset/facebook-messenger',
           webview_height_ratio: 'full'
         }
       ]
@@ -591,7 +591,7 @@ commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.or
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at
-https://github.com/hyperoslo/facebook-messenger.
+https://github.com/jgorset/facebook-messenger.
 
 ## Projects using Facebook Messenger
 
