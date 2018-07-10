@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.1.1] - 2018-07-10
+
+### Fixed
+- Fixed a bug that caused messaging types and tags to not be required.
+
 ## [1.1.0] - 2018-06-28
 
 ### Added
