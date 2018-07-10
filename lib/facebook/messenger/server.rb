@@ -78,7 +78,7 @@ module Facebook
         return unless app_secret_for(parsed_body['entry'][0]['id'])
 
         unless signature.start_with?('sha1='.freeze)
-          $stderr.puts(X_HUB_SIGNATURE_MISSING_WARNING)
+          warn X_HUB_SIGNATURE_MISSING_WARNING
 
           raise BadRequestError, 'Error getting integrity signature'.freeze
         end
@@ -108,7 +108,7 @@ module Facebook
       # @return [String] A string describing its signature.
       #
       def signature_for(string)
-        format('sha1=%s'.freeze, generate_hmac(string))
+        format('sha1=%<string>s'.freeze, string: generate_hmac(string))
       end
 
       # Generate a HMAC signature for the given content.

@@ -97,7 +97,7 @@ module Facebook
         def trigger(event, *args)
           hooks.fetch(event).call(*args)
         rescue KeyError
-          $stderr.puts "Ignoring #{event} (no hook registered)"
+          warn "Ignoring #{event} (no hook registered)"
         end
 
         #
