@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.1.2] - 2018-12-06
+
+### Added
+- Support for Graph API 3.2 in `Subscriptions`.
+
 ## [1.1.1] - 2018-07-10
 
 ### Fixed
