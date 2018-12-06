@@ -27,10 +27,10 @@ module Facebook
       #
       # @return [Boolean] TRUE
       #
-      def subscribe(access_token:, subscription_fields: [])
+      def subscribe(access_token:, subscribed_fields: [])
         response = post '/subscribed_apps', query: {
           access_token: access_token,
-          subscription_fields: subscription_fields
+          subscribed_fields: subscribed_fields
         }
 
         raise_errors(response)

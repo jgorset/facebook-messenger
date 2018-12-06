@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Facebook::Messenger::Subscriptions do
   let(:access_token) { 'access token' }
-  let(:subscr_fields) { %w[feed mention name] }
+  let(:subscribed_fields) { %w[feed mention name] }
 
   let(:subscribed_apps_url) do
     Facebook::Messenger::Subscriptions.base_uri + '/subscribed_apps'
@@ -18,7 +18,7 @@ describe Facebook::Messenger::Subscriptions do
         stub_request(:post, subscribed_apps_url)
           .with(query: {
                   access_token: access_token,
-                  subscription_fields: subscr_fields
+                  subscribed_fields: subscribed_fields
                 })
           .to_return(
             body: JSON.dump('success' => true),
@@ -28,8 +28,12 @@ describe Facebook::Messenger::Subscriptions do
       end
 
       it 'returns true' do
-        expect(subject.subscribe(access_token: access_token,
-                                 subscription_fields: subscr_fields)).to be true
+        args = {
+          access_token: access_token,
+          subscribed_fields: subscribed_fields
+        }
+
+        expect(subject.subscribe(args)).to be true
       end
     end
 
@@ -40,7 +44,7 @@ describe Facebook::Messenger::Subscriptions do
         stub_request(:post, subscribed_apps_url)
           .with(query: {
                   access_token: access_token,
-                  subscription_fields: subscr_fields
+                  subscribed_fields: subscribed_fields
                 })
           .to_return(
             body: JSON.dump(
@@ -59,7 +63,7 @@ describe Facebook::Messenger::Subscriptions do
       it 'raises an error' do
         expect do
           subject.subscribe(access_token: access_token,
-                            subscription_fields: subscr_fields)
+                            subscribed_fields: subscribed_fields)
         end.to raise_error(
           Facebook::Messenger::Subscriptions::Error, error_message
         )
