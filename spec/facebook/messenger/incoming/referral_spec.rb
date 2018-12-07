@@ -13,7 +13,8 @@ describe Facebook::Messenger::Incoming::Referral do
       'referral' => {
         'ref' => 'my-ref-value',
         'source' => 'SHORTLINK',
-        'type' => 'OPEN_THREAD'
+        'type' => 'OPEN_THREAD',
+        'ad_id' => 'ad-id'
       }
     }
   end
@@ -55,6 +56,12 @@ describe Facebook::Messenger::Incoming::Referral do
 
     it 'returns the type value' do
       expect(subject.referral.type).to eq(payload['referral']['type'])
+    end
+  end
+
+  describe '.ad_id' do
+    it 'returns the ad_id value' do
+      expect(subject.referral.ad_id).to eq(payload['referral']['ad_id'])
     end
   end
 
