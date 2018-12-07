@@ -27,6 +27,11 @@ module Facebook
           def type
             @referral['type']
           end
+
+          # Return String of ad id.
+          def ad_id
+            @referral['ad_id'] if @referral.key?('ad_id')
+          end
         end
 
         def referral
