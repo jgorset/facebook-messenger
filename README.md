@@ -432,7 +432,10 @@ Once you've configured your bot, subscribe it to the Page to get messages
 from Facebook:
 
 ```ruby
-Facebook::Messenger::Subscriptions.subscribe(access_token: access_token)
+Facebook::Messenger::Subscriptions.subscribe(
+  access_token: access_token,
+  subscribed_fields: %w[feed mention name]
+)
 ```
 
 You only need to subscribe your page once. As long as your bot works and
@@ -536,7 +539,10 @@ require 'facebook/messenger'
 include Facebook::Messenger
 
 class Listener
-  Facebook::Messenger::Subscriptions.subscribe(access_token: ENV["FB_ACCESS_TOKEN"])
+  Facebook::Messenger::Subscriptions.subscribe(
+    access_token: ENV["FB_ACCESS_TOKEN"],
+    subscribed_fields: %w[feed mention name]
+  )
 
   Bot.on :message do |message|
     Bot.deliver({
