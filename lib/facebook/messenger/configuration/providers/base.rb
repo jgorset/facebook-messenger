@@ -13,7 +13,7 @@ module Facebook
 
           # A default caching implentation of generating the app_secret_proof
           # for a given page_id
-          def app_secret_proof_for(page_id)
+          def app_secret_proof_for(page_id = nil)
             app_secret = app_secret_for(page_id)
             access_token = access_token_for(page_id)
             @cached_app_secret_proof ||= {}

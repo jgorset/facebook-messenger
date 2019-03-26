@@ -48,7 +48,12 @@ Bot.deliver({
     text: 'Human?'
   },
   message_type: Facebook::Messenger::Bot::MessagingType::UPDATE
-}, access_token: ENV['ACCESS_TOKEN'])
+}, access_token: ENV['ACCESS_TOKEN'], app_secret_proof: app_secret_proof)
+```
+NOTE: for a provider you can get the `app_secret_proof` (from the credential_provider, which will cache it for you) like so:
+```
+credential_provider = Facebook::Messenger::Configuration::Providers::Environment.new
+app_secret_proof = credential_provider.app_secret_proof_for(page_id)
 ```
 
 ##### Messages with images
