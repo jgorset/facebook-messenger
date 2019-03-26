@@ -213,7 +213,9 @@ describe Facebook::Messenger::Bot do
       end
 
       it 'sends a message' do
-        result = subject.deliver(payload, access_token: access_token, app_secret_proof: app_secret_proof)
+        result = subject.deliver(payload,
+                                 access_token: access_token,
+                                 app_secret_proof: app_secret_proof)
         expect(result).to eq({ recipient_id: recipient_id,
                                message_id: message_id }.to_json)
       end

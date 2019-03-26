@@ -70,9 +70,11 @@ describe Dummy do
       expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
         .with(subject.recipient)
         .and_return(access_token)
-      expect(Facebook::Messenger.config.provider).to receive(:app_secret_proof_for)
-        .with(subject.recipient)
-        .and_return(app_secret_proof)
+      expect(Facebook::Messenger.config.provider).to(
+        receive(:app_secret_proof_for)
+          .with(subject.recipient)
+          .and_return(app_secret_proof)
+      )
 
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
@@ -92,9 +94,11 @@ describe Dummy do
       expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
         .with(subject.recipient)
         .and_return(access_token)
-      expect(Facebook::Messenger.config.provider).to receive(:app_secret_proof_for)
-        .with(subject.recipient)
-        .and_return(app_secret_proof)
+      expect(Facebook::Messenger.config.provider).to(
+        receive(:app_secret_proof_for)
+          .with(subject.recipient)
+          .and_return(app_secret_proof)
+      )
 
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
@@ -114,9 +118,11 @@ describe Dummy do
       expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
         .with(subject.recipient)
         .and_return(access_token)
-      expect(Facebook::Messenger.config.provider).to receive(:app_secret_proof_for)
-        .with(subject.recipient)
-        .and_return(app_secret_proof)
+      expect(Facebook::Messenger.config.provider).to(
+        receive(:app_secret_proof_for)
+          .with(subject.recipient)
+          .and_return(app_secret_proof)
+      )
 
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
@@ -136,9 +142,11 @@ describe Dummy do
       expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
         .with(subject.recipient)
         .and_return(access_token)
-      expect(Facebook::Messenger.config.provider).to receive(:app_secret_proof_for)
-        .with(subject.recipient)
-        .and_return(app_secret_proof)
+      expect(Facebook::Messenger.config.provider).to(
+        receive(:app_secret_proof_for)
+          .with(subject.recipient)
+          .and_return(app_secret_proof)
+      )
 
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
