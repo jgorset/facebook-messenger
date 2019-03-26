@@ -4,6 +4,7 @@ describe Facebook::Messenger::Bot do
   let(:verify_token) { 'verify token' }
   let(:app_secret) { 'app secret' }
   let(:access_token) { 'access token' }
+  let(:app_secret_proof) { 'app_secret_proof' }
 
   before do
     ENV['ACCESS_TOKEN'] = access_token
@@ -163,14 +164,26 @@ describe Facebook::Messenger::Bot do
           query: { access_token: access_token },
           body: payload,
           headers: { 'Content-Type' => 'application/json' }
-        )
-        .to_return(
+        ).to_return(
           body: JSON.dump(hash),
           headers: default_graph_api_response_headers
         )
     end
 
-    context 'when all is well' do
+    def stub_request_to_return_with_proof(hash)
+      stub_request(:post, messages_url)
+        .with(
+          query: { access_token: access_token,
+                   appsecret_proof: app_secret_proof },
+          body: payload,
+          headers: { 'Content-Type' => 'application/json' }
+        ).to_return(
+          body: JSON.dump(hash),
+          headers: default_graph_api_response_headers
+        )
+    end
+
+    context 'when all is well without an appsecret_proof' do
       let(:recipient_id) { '1008372609250235' }
       let(:message_id) { 'mid.1456970487936:c34767dfe57ee6e339' }
 
@@ -183,6 +196,24 @@ describe Facebook::Messenger::Bot do
 
       it 'sends a message' do
         result = subject.deliver(payload, access_token: access_token)
+        expect(result).to eq({ recipient_id: recipient_id,
+                               message_id: message_id }.to_json)
+      end
+    end
+
+    context 'when all is well with an appsecret_proof' do
+      let(:recipient_id) { '1008372609250235' }
+      let(:message_id) { 'mid.1456970487936:c34767dfe57ee6e339' }
+
+      before do
+        stub_request_to_return_with_proof(
+          recipient_id: recipient_id,
+          message_id: message_id
+        )
+      end
+
+      it 'sends a message' do
+        result = subject.deliver(payload, access_token: access_token, app_secret_proof: app_secret_proof)
         expect(result).to eq({ recipient_id: recipient_id,
                                message_id: message_id }.to_json)
       end
