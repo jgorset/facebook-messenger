@@ -1,3 +1,5 @@
+require 'facebook/messenger/configuration/helpers'
+
 module Facebook
   module Messenger
     class Configuration
@@ -7,6 +9,18 @@ module Facebook
         #   Be sure to implement all the functions as it raises
         #   NotImplementedError errors.
         class Base
+          include Facebook::Messenger::Configuration::Helpers
+
+          # A default caching implentation of generating the app_secret_proof
+          # for a given page_id
+          def app_secret_proof_for(page_id)
+            app_secret = app_secret_for(page_id)
+            access_token = access_token_for(page_id)
+            @cached_app_secret_proof ||= {}
+            @cached_app_secret_proof[[app_secret, access_token]] =
+              calculate_app_secret_proof(app_secret, access_token)
+          end
+
           def valid_verify_token?(*)
             raise NotImplementedError
           end

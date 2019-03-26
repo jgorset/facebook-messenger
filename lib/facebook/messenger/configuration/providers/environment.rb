@@ -1,9 +1,11 @@
+require 'facebook/messenger/configuration/providers/base'
+
 module Facebook
   module Messenger
     class Configuration
       module Providers
         # The default configuration provider for environment variables.
-        class Environment
+        class Environment < Base
           def valid_verify_token?(verify_token)
             verify_token == ENV['VERIFY_TOKEN']
           end
