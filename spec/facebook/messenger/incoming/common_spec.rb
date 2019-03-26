@@ -64,17 +64,21 @@ describe Dummy do
 
   describe '.typing_on' do
     let(:access_token) { 'access_token' }
+    let(:app_secret_proof) { 'app_secret_proof' }
 
     it 'sends a typing indicator to the sender' do
       expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
         .with(subject.recipient)
         .and_return(access_token)
+      expect(Facebook::Messenger.config.provider).to receive(:app_secret_proof_for)
+        .with(subject.recipient)
+        .and_return(app_secret_proof)
 
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
                 recipient: subject.sender,
                 sender_action: 'typing_on'
-              }, access_token: access_token)
+              }, access_token: access_token, app_secret_proof: app_secret_proof)
 
       subject.typing_on
     end
@@ -82,17 +86,21 @@ describe Dummy do
 
   describe '.typing_off' do
     let(:access_token) { 'access_token' }
+    let(:app_secret_proof) { 'app_secret_proof' }
 
     it 'sends a typing off indicator to the sender' do
       expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
         .with(subject.recipient)
         .and_return(access_token)
+      expect(Facebook::Messenger.config.provider).to receive(:app_secret_proof_for)
+        .with(subject.recipient)
+        .and_return(app_secret_proof)
 
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
                 recipient: subject.sender,
                 sender_action: 'typing_off'
-              }, access_token: access_token)
+              }, access_token: access_token, app_secret_proof: app_secret_proof)
 
       subject.typing_off
     end
@@ -100,17 +108,21 @@ describe Dummy do
 
   describe '.mark_seen' do
     let(:access_token) { 'access_token' }
+    let(:app_secret_proof) { 'app_secret_proof' }
 
     it 'sends a typing off indicator to the sender' do
       expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
         .with(subject.recipient)
         .and_return(access_token)
+      expect(Facebook::Messenger.config.provider).to receive(:app_secret_proof_for)
+        .with(subject.recipient)
+        .and_return(app_secret_proof)
 
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
                 recipient: subject.sender,
                 sender_action: 'mark_seen'
-              }, access_token: access_token)
+              }, access_token: access_token, app_secret_proof: app_secret_proof)
 
       subject.mark_seen
     end
@@ -118,18 +130,22 @@ describe Dummy do
 
   describe '.reply' do
     let(:access_token) { 'access_token' }
+    let(:app_secret_proof) { 'app_secret_proof' }
 
     it 'replies to the sender with the default message type' do
       expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
         .with(subject.recipient)
         .and_return(access_token)
+      expect(Facebook::Messenger.config.provider).to receive(:app_secret_proof_for)
+        .with(subject.recipient)
+        .and_return(app_secret_proof)
 
       expect(Facebook::Messenger::Bot).to receive(:deliver)
         .with({
                 recipient: subject.sender,
                 message: { text: 'Hello, human' },
                 message_type: Facebook::Messenger::Bot::MessageType::RESPONSE
-              }, access_token: access_token)
+              }, access_token: access_token, app_secret_proof: app_secret_proof)
 
       subject.reply(text: 'Hello, human')
     end
