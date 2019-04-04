@@ -22,6 +22,10 @@ module Facebook
           def access_token_for(*)
             ENV['ACCESS_TOKEN']
           end
+
+          def fetch_app_secret_proof_enabled?
+            ENV['APP_SECRET_PROOF_ENABLED'] == 'true'.freeze
+          end
         end
       end
     end
