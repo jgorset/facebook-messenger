@@ -74,9 +74,7 @@ module Facebook
             sender_action: 'typing_on'
           }
 
-          Facebook::Messenger::Bot.deliver(payload,
-                                           access_token: access_token,
-                                           app_secret_proof: app_secret_proof)
+          deliver_payload(payload)
         end
 
         #
@@ -92,9 +90,7 @@ module Facebook
             sender_action: 'typing_off'
           }
 
-          Facebook::Messenger::Bot.deliver(payload,
-                                           access_token: access_token,
-                                           app_secret_proof: app_secret_proof)
+          deliver_payload(payload)
         end
 
         #
@@ -110,9 +106,7 @@ module Facebook
             sender_action: 'mark_seen'
           }
 
-          Facebook::Messenger::Bot.deliver(payload,
-                                           access_token: access_token,
-                                           app_secret_proof: app_secret_proof)
+          deliver_payload(payload)
         end
 
         #
@@ -129,9 +123,7 @@ module Facebook
             message_type: Facebook::Messenger::Bot::MessageType::RESPONSE
           }
 
-          Facebook::Messenger::Bot.deliver(payload,
-                                           access_token: access_token,
-                                           app_secret_proof: app_secret_proof)
+          deliver_payload(payload)
         end
 
         #
@@ -145,6 +137,14 @@ module Facebook
 
         def app_secret_proof
           Facebook::Messenger.config.provider.app_secret_proof_for(recipient)
+        end
+
+        private
+
+        def deliver_payload(payload)
+          Facebook::Messenger::Bot.deliver(payload,
+                                           access_token: access_token,
+                                           app_secret_proof: app_secret_proof)
         end
       end
     end

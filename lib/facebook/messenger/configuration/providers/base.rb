@@ -1,4 +1,4 @@
-require 'facebook/messenger/configuration/helpers'
+require 'facebook/messenger/configuration/app_secret_proof_calculator'
 
 module Facebook
   module Messenger
@@ -9,8 +9,6 @@ module Facebook
         #   Be sure to implement all the functions as it raises
         #   NotImplementedError errors.
         class Base
-          include Facebook::Messenger::Configuration::Helpers
-
           # A default caching implentation of generating the app_secret_proof
           # for a given page_id
           def app_secret_proof_for(page_id = nil)
@@ -34,6 +32,13 @@ module Facebook
           end
 
           private
+
+          def calculate_app_secret_proof(app_secret, access_token)
+            Facebook::Messenger::Configuration::AppSecretProofCalculator.call(
+              app_secret,
+              access_token
+            )
+          end
 
           def memoized_app_secret_proofs
             @memoized_app_secret_proofs ||= {}

@@ -61,14 +61,16 @@ describe Facebook::Messenger::Configuration::Providers::Environment do
     before { ENV['APP_SECRET_PROOF_ENABLED'] = 'true' }
 
     it 'calculates the app_secret_proof' do
-      expect_any_instance_of(Facebook::Messenger::Configuration::Helpers)
+      expect(Facebook::Messenger::Configuration::AppSecretProofCalculator)
         .to(
-          receive(:calculate_app_secret_proof)
+          receive(:call)
             .once
             .with(app_secret, access_token)
             .and_return(app_secret_proof)
         )
       expect(subject.app_secret_proof_for(page_id)).to eq(app_secret_proof)
+      # call twice to test that we have cached correctly so we don't
+      # call calculate_app_secret_proof twice
       expect(subject.app_secret_proof_for(page_id)).to eq(app_secret_proof)
     end
   end
