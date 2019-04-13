@@ -1,9 +1,11 @@
+require 'facebook/messenger/configuration/providers/base'
+
 module Facebook
   module Messenger
     class Configuration
       module Providers
         # The default configuration provider for environment variables.
-        class Environment
+        class Environment < Base
           def valid_verify_token?(verify_token)
             verify_token == ENV['VERIFY_TOKEN']
           end
@@ -19,6 +21,10 @@ module Facebook
           # Return String of page access token.
           def access_token_for(*)
             ENV['ACCESS_TOKEN']
+          end
+
+          def fetch_app_secret_proof_enabled?
+            ENV['APP_SECRET_PROOF_ENABLED'] == 'true'.freeze
           end
         end
       end

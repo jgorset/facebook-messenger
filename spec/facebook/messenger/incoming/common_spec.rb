@@ -62,76 +62,72 @@ describe Dummy do
     end
   end
 
-  describe '.typing_on' do
+  describe 'responding to message' do
     let(:access_token) { 'access_token' }
-
-    it 'sends a typing indicator to the sender' do
-      expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
-        .with(subject.recipient)
-        .and_return(access_token)
-
-      expect(Facebook::Messenger::Bot).to receive(:deliver)
-        .with({
-                recipient: subject.sender,
-                sender_action: 'typing_on'
-              }, access_token: access_token)
-
-      subject.typing_on
+    let(:app_secret_proof) { 'app_secret_proof' }
+    before do
+      allow(Facebook::Messenger.config.provider).to(
+        receive(:access_token_for)
+          .with(subject.recipient).and_return(access_token)
+      )
+      allow(Facebook::Messenger.config.provider).to(
+        receive(:app_secret_proof_for)
+          .with(subject.recipient).and_return(app_secret_proof)
+      )
     end
-  end
+    shared_examples_for 'payload delivery' do |delivery_method|
+      shared_examples_for 'request execution' do
+        it 'delivers the payload' do
+          expect(Facebook::Messenger::Bot).to receive(:deliver)
+            .with(
+              payload,
+              access_token: access_token,
+              app_secret_proof: app_secret_proof
+            )
+          subject.public_send(delivery_method)
+        end
+      end
 
-  describe '.typing_off' do
-    let(:access_token) { 'access_token' }
-
-    it 'sends a typing off indicator to the sender' do
-      expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
-        .with(subject.recipient)
-        .and_return(access_token)
-
-      expect(Facebook::Messenger::Bot).to receive(:deliver)
-        .with({
-                recipient: subject.sender,
-                sender_action: 'typing_off'
-              }, access_token: access_token)
-
-      subject.typing_off
-    end
-  end
-
-  describe '.mark_seen' do
-    let(:access_token) { 'access_token' }
-
-    it 'sends a typing off indicator to the sender' do
-      expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
-        .with(subject.recipient)
-        .and_return(access_token)
-
-      expect(Facebook::Messenger::Bot).to receive(:deliver)
-        .with({
-                recipient: subject.sender,
-                sender_action: 'mark_seen'
-              }, access_token: access_token)
-
-      subject.mark_seen
-    end
-  end
-
-  describe '.reply' do
-    let(:access_token) { 'access_token' }
-
-    it 'replies to the sender with the default message type' do
-      expect(Facebook::Messenger.config.provider).to receive(:access_token_for)
-        .with(subject.recipient)
-        .and_return(access_token)
-
-      expect(Facebook::Messenger::Bot).to receive(:deliver)
-        .with({
-                recipient: subject.sender,
-                message: { text: 'Hello, human' },
-                message_type: Facebook::Messenger::Bot::MessageType::RESPONSE
-              }, access_token: access_token)
-
-      subject.reply(text: 'Hello, human')
+      context 'when app secret proof enabled' do
+        include_examples 'request execution'
+      end
+      context 'when app secret proof disabled' do
+        let(:app_secret_proof) { nil }
+        include_examples 'request execution'
+      end
+      it_behaves_like 'payload delivery', :typing_on do
+        let(:payload) do
+          {
+            recipient: subject.sender,
+            sender_action: 'typing_on'
+          }
+        end
+      end
+      it_behaves_like 'payload delivery', :typing_off do
+        let(:payload) do
+          {
+            recipient: subject.sender,
+            sender_action: 'typing_off'
+          }
+        end
+      end
+      it_behaves_like 'payload delivery', :mark_seen do
+        let(:payload) do
+          {
+            recipient: subject.sender,
+            sender_action: 'mark_seen'
+          }
+        end
+      end
+      it_behaves_like 'payload_delivery', :reply do
+        let(:payload) do
+          {
+            recipient: subject.sender,
+            message: { text: 'Hello, human' },
+            message_type: Facebook::Messenger::Bot::MessageType::RESPONSE
+          }
+        end
+      end
     end
   end
 end

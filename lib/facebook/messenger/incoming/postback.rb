@@ -15,6 +15,7 @@ module Facebook
         # Return hash containing the referral information of user.
         def referral
           return if @messaging['postback']['referral'].nil?
+
           @referral ||= Referral::Referral.new(
             @messaging['postback']['referral']
           )
