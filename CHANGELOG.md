@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.2.0] - 2019-04-13
+
+### Added
+- Upgraded to Graph API 3.2 for everything
+- Support for appsecret_proof
+
 ## [1.1.2] - 2018-12-06
 
 ### Added
