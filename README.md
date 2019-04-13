@@ -51,12 +51,17 @@ Bot.deliver({
 }, access_token: ENV['ACCESS_TOKEN'], app_secret_proof: app_secret_proof
 )
 ```
-NOTE: for a provider you can get the `app_secret_proof` (from the credential_provider, which will cache it for you) like so:
+
+NOTE: `app_secret_proof` is an optional parameter to [secure your requests](https://developers.facebook.com/docs/graph-api/securing-requests/),
+and you can generate it from your configuration provider like so:
+
+```ruby
+configuration_provider = Facebook::Messenger::Configuration::Providers.Environment.new
+app_secret_proof = configuration_provider.app_secret_proof_for(page_id)
 ```
-credential_provider = Facebook::Messenger::Configuration::Providers::Environment.new
-app_secret_proof = credential_provider.app_secret_proof_for(page_id)
-```
-For methods like `reply` below and all instance methods, the `app_secret_proof` will be calculated if you set the environment variable `APP_SECRET_PROOF_ENABLED` to `true`
+
+For the methods you'll usually use (like `reply` and `typing_on`), the app secret proof will be set and sent
+automatically if you set the environment variable `APP_SECRET_PROOF_ENABLED` to `true`.
 
 ##### Messages with images
 
