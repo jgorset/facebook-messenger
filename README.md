@@ -4,9 +4,10 @@
 
 
 [![Gem Version](https://img.shields.io/gem/v/facebook-messenger.svg?style=flat)](https://rubygems.org/gems/facebook-messenger)
-[![Build Status](https://img.shields.io/travis/hyperoslo/facebook-messenger.svg?style=flat)](https://travis-ci.org/jgorset/facebook-messenger)
-[![Code Climate](https://img.shields.io/codeclimate/github/hyperoslo/facebook-messenger.svg?style=flat)](https://codeclimate.com/github/jgorset/facebook-messenger)
-[![Coverage Status](https://img.shields.io/coveralls/hyperoslo/facebook-messenger.svg?style=flat)](https://coveralls.io/r/jgorset/facebook-messenger)
+[![Gem Downloads](https://img.shields.io/gem/dt/facebook-messenger.svg)](https://rubygems.org/gems/facebook-messenger)
+[![Build Status](https://img.shields.io/travis/jgorset/facebook-messenger.svg?style=flat)](https://travis-ci.org/jgorset/facebook-messenger)
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/jgorset/facebook-messenger.svg)](https://codeclimate.com/github/jgorset/facebook-messenger)
+[![Coverage Status](https://img.shields.io/coveralls/jgorset/facebook-messenger.svg?style=flat)](https://coveralls.io/r/jgorset/facebook-messenger)
 [![Documentation Coverage](http://inch-ci.org/github/jgorset/facebook-messenger.svg?branch=master)](http://inch-ci.org/github/jgorset/facebook-messenger)
 
 ## Installation
