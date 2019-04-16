@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.3.0] - 2019-04-16
+
+### Added
+- Support for PassThreadControl
+
 ## [1.2.0] - 2019-04-13
 
 ### Added
