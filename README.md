@@ -245,6 +245,17 @@ Bot.on :referral do |referral|
 end
 ```
 
+#### Pass thread control
+
+Another bot can pass a human to you:
+
+```ruby
+Bot.on :pass_thread_control do |pass_thread_control|
+  pass_thread_control.new_owner_app_id # => '123456789'
+  pass_thread_control.metadata # => 'Additional content that the caller wants to set'
+end
+```
+
 #### Change messenger profile
 
 You can greet new humans to entice them into talking to you, in different locales:
