@@ -28,7 +28,10 @@ module Facebook
         end
 
         def context
-          game_play.slice('context_id', 'context_type')
+          {
+            context_id: game_play['context_id'],
+            context_type: game_play['context_type']
+          }
         end
       end
     end

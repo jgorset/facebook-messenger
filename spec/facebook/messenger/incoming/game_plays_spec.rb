@@ -79,7 +79,11 @@ describe Facebook::Messenger::Incoming::GamePlay do
 
   describe '.context' do
     it 'returns the social context information' do
-      expected = payload['game_play'].slice('context_id', 'context_type')
+      expected = {
+        context_id: payload['game_play']['context_id'],
+        context_type: payload['game_play']['context_type']
+      }
+
       expect(subject.context).to eq(expected)
     end
   end
