@@ -29,6 +29,7 @@ module Facebook
         payment
         policy_enforcement
         pass_thread_control
+        game_play
       ].freeze
 
       class << self

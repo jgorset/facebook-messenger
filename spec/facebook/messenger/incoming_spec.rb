@@ -163,5 +163,33 @@ describe Facebook::Messenger::Incoming do
         )
       end
     end
+
+    context 'when the payload is a game_play' do
+      let :payload do
+        {
+          'sender' => {
+            'id' => '3'
+          },
+          'recipient' => {
+            'id' => '3'
+          },
+          'timestamp' => 145_776_419_762_7,
+          'game_play' => {
+            'game_id' => '<GAME-APP-ID>',
+            'player_id' => '<PLAYER-ID>',
+            'context_type' => '<CONTEXT-TYPE:SOLO|THREAD>',
+            'context_id' => '<CONTEXT-ID>', # If a Messenger Thread context
+            'score' => 100, # If a classic score based game
+            'payload' => '<PAYLOAD>' # If a rich game
+          }
+        }
+      end
+
+      it 'returns an Incoming::GamePlay' do
+        expect(subject.parse(payload)).to be_a(
+          Facebook::Messenger::Incoming::GamePlay
+        )
+      end
+    end
   end
 end

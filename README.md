@@ -200,6 +200,23 @@ Bot.on :message_request do |message_request|
 end
 ```
 
+##### Record instant game progress
+
+You can keep track of instant game progress:
+
+```ruby
+Bot.on :game_play do |game_play|
+  game_play.sender    # => { 'id' => '1008372609250235' }
+  game_play.recipient # => { 'id' => '2015573629214912' }
+  game_play.sent_at   # => 2016-04-22 21:30:36 +0200
+  game_play.game      # => "<GAME-APP-ID>"
+  game_play.player    # => "<PLAYER-ID>"
+  game_play.context   # => { 'context_type' => "<CONTEXT-TYPE:SOLO|THREAD>", 'context_id' => "<CONTEXT-ID>" }
+  game_play.score     # => 100
+  game_play.payload   # => "<PAYLOAD>"
+end
+```
+
 #### Send to Facebook
 
 When the human clicks the [Send to Messenger button][send-to-messenger-plugin]
