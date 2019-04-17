@@ -202,7 +202,7 @@ end
 
 ##### Record instant game progress
 
-You can keep track of instant game progress with listening to `messaging_game_plays` webhook.
+You can keep track of instant game progress:
 
 ```ruby
 Bot.on :game_play do |game_play|
