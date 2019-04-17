@@ -120,6 +120,22 @@ describe Facebook::Messenger::Bot do
         subject.receive({})
       end
     end
+
+    context 'with a game played' do
+      let(:game_play) do
+        Facebook::Messenger::Incoming::GamePlay.new({})
+      end
+
+      it 'triggers a :game_play' do
+        expect(Facebook::Messenger::Incoming).to receive(:parse)
+          .and_return(game_play)
+
+        expect(Facebook::Messenger::Bot).to receive(:trigger)
+          .with(:game_play, game_play)
+
+        subject.receive({})
+      end
+    end
   end
 
   describe '.trigger' do
