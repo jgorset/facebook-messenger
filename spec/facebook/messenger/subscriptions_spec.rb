@@ -16,13 +16,14 @@ describe Facebook::Messenger::Subscriptions do
     context 'with a successful response' do
       before do
         stub_request(:post, subscribed_apps_url)
-          .with(query: {
+          .with(headers: { 'Content-Type' => 'application/json' },
+                body: {
                   access_token: access_token,
                   subscribed_fields: subscribed_fields
-                })
+                }.to_json)
           .to_return(
             body: JSON.dump('success' => true),
-            status: 200,
+            status: 400,
             headers: default_graph_api_response_headers
           )
       end
@@ -42,10 +43,11 @@ describe Facebook::Messenger::Subscriptions do
 
       before do
         stub_request(:post, subscribed_apps_url)
-          .with(query: {
+          .with(headers: { 'Content-Type' => 'application/json' },
+                body: {
                   access_token: access_token,
                   subscribed_fields: subscribed_fields
-                })
+                }.to_json)
           .to_return(
             body: JSON.dump(
               'error' => {
@@ -55,7 +57,7 @@ describe Facebook::Messenger::Subscriptions do
                 'fbtrace_id' => 'Hlssg2aiVlN'
               }
             ),
-            status: 200,
+            status: 400,
             headers: default_graph_api_response_headers
           )
       end
