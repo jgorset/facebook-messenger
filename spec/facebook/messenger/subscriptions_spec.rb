@@ -23,7 +23,7 @@ describe Facebook::Messenger::Subscriptions do
                 }.to_json)
           .to_return(
             body: JSON.dump('success' => true),
-            status: 400,
+            status: 200,
             headers: default_graph_api_response_headers
           )
       end
