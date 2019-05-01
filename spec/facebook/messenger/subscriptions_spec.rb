@@ -57,7 +57,7 @@ describe Facebook::Messenger::Subscriptions do
                 'fbtrace_id' => 'Hlssg2aiVlN'
               }
             ),
-            status: 400,
+            status: 200,
             headers: default_graph_api_response_headers
           )
       end
