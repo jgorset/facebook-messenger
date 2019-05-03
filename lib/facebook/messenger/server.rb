@@ -23,6 +23,8 @@ module Facebook
 
       # Rack handler for request.
       def call(env)
+        @body = nil
+        @parsed_body = nil
         @request = Rack::Request.new(env)
         @response = Rack::Response.new
 
