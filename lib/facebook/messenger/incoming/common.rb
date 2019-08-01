@@ -18,6 +18,7 @@ module Facebook
 
         #
         # Function return PSID of sender.
+        #
         # @see https://developers.facebook.com/docs/messenger-platform/identity
         #   Info about PSID.
         # @see https://developers.facebook.com/docs/messenger-platform/webhook#format
@@ -30,7 +31,7 @@ module Facebook
         end
 
         #
-        # Function return the page of id from which the message is arrived.
+        # Function return id of the page from which the message has arrived.
         #
         # @return [String] Facebook page id.
         #
@@ -53,7 +54,6 @@ module Facebook
 
         #
         # Function return timestamp when message is sent.
-        #
         #
         # @return [Object] Message time sent.
         #
