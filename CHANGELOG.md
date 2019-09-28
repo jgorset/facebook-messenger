@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.4.1] - 2019-09-28
+
+### Fixed
+- Fixed a reference to Graph API 2.9 in `Profile`.
+
 ## [1.4.0] - 2019-04-17
 
 ### Added
