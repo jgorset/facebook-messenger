@@ -57,7 +57,7 @@ NOTE: `app_secret_proof` is an optional parameter to [secure your requests](http
 and you can generate it from your configuration provider like so:
 
 ```ruby
-configuration_provider = Facebook::Messenger::Configuration::Providers.Environment.new
+configuration_provider = Facebook::Messenger::Configuration::Providers::Environment.new
 app_secret_proof = configuration_provider.app_secret_proof_for(page_id)
 ```
 
