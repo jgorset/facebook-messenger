@@ -137,17 +137,17 @@ describe Facebook::Messenger::Bot do
       end
     end
 
-    context 'with a :message_reaction' do
-      let(:message_reaction) do
+    context 'with a :reaction' do
+      let(:reaction) do
         Facebook::Messenger::Incoming::MessageReaction.new({})
       end
 
       it 'triggers a :delivery' do
         expect(Facebook::Messenger::Incoming).to receive(:parse)
-          .and_return(message_reaction)
+          .and_return(reaction)
 
         expect(Facebook::Messenger::Bot).to receive(:trigger)
-          .with(:reaction, message_reaction)
+          .with(:reaction, reaction)
 
         subject.receive({})
       end

@@ -72,7 +72,7 @@ Bot.on :delivery do |delivery|
   puts "Delivered message(s) #{delivery.ids}"
 end
 
-Bot.on :message_reaction do |message|
+Bot.on :reaction do |message|
   message.emoji # => "👍"
   message.action # => "react"
   message.reaction # => "like"
