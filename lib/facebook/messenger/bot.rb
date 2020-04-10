@@ -30,6 +30,7 @@ module Facebook
         policy_enforcement
         pass_thread_control
         game_play
+        message_reaction
       ].freeze
 
       class << self
