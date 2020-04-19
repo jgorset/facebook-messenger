@@ -133,6 +133,20 @@ end
 
 *See Facebook's [documentation][message-documentation] for all message options.*
 
+##### Reactions
+
+Humans have feelings, and they can react to your messages. You can pretend to understand:
+
+```ruby
+Bot.on :reaction do |message|
+  message.emoji # => "👍"
+  message.action # => "react"
+  message.reaction # => "like"
+
+  message.reply(text: 'Your feelings have been registered')
+end
+```
+
 ##### Typing indicator
 
 Show the human you are preparing a message for them:
