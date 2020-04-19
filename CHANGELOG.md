@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.5.0] - 2020-04-19
+
+### Added
+- Support for message reactions
+
 ## [1.4.1] - 2019-09-28
 
 ### Fixed
