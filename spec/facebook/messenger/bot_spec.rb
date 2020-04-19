@@ -136,6 +136,22 @@ describe Facebook::Messenger::Bot do
         subject.receive({})
       end
     end
+
+    context 'with a :reaction' do
+      let(:reaction) do
+        Facebook::Messenger::Incoming::MessageReaction.new({})
+      end
+
+      it 'triggers a :delivery' do
+        expect(Facebook::Messenger::Incoming).to receive(:parse)
+          .and_return(reaction)
+
+        expect(Facebook::Messenger::Bot).to receive(:trigger)
+          .with(:reaction, reaction)
+
+        subject.receive({})
+      end
+    end
   end
 
   describe '.trigger' do
