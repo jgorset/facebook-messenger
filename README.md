@@ -481,6 +481,8 @@ Facebook::Messenger.configure do |config|
 end
 ```
 
+You can get the current configuration provider with `Facebook::Messenger.config.provider`.
+
 ### Subscribe your Application to a Page
 
 Once you've configured your bot, subscribe it to the Page to get messages
