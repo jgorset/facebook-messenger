@@ -48,7 +48,7 @@ Bot.deliver({
   message: {
     text: 'Human?'
   },
-  message_type: Facebook::Messenger::Bot::MessagingType::UPDATE
+  messaging_type: Facebook::Messenger::Bot::MessagingType::UPDATE
 }, access_token: ENV['ACCESS_TOKEN'], app_secret_proof: app_secret_proof
 )
 ```
@@ -389,7 +389,7 @@ Bot.deliver({
   message: {
     text: 'Human?'
   },
-  message_type: Facebook::Messenger::Bot::MessagingType::UPDATE
+  messaging_type: Facebook::Messenger::Bot::MessagingType::UPDATE
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
 
@@ -406,7 +406,7 @@ Bot.deliver({
   message: {
     text: 'Human?'
   },
-  message_type: Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG
+  messaging_type: Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG
   tag: Facebook::Messenger::Bot::Tag::NON_PROMOTIONAL_SUBSCRIPTION
 }, access_token: ENV['ACCESS_TOKEN'])
 ```
