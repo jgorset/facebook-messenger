@@ -1,5 +1,18 @@
 # Change Log
 
+## [2.0.1] - 2020-07-31
+
+### Changed
+- App secret proof is no longer optional
+
+## [2.0.0] - 2020-07-31
+
+### Changed
+- Bot.deliver now accepts `page_id` instead of `access_token` and `app_secret_proof`
+
+### Added
+- Support for message reactions
+
 ## [1.5.0] - 2020-04-19
 
 ### Added
