@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://rawgit.com/jgorset/facebook-messenger/master/docs/conversation_with_logo.gif">
+  <img src="https://rawgit.com/jgorset/facebook-messenger/master/docs/conversation.gif">
 </p>
 
 
