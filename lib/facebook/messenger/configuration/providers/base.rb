@@ -12,8 +12,6 @@ module Facebook
           # A default caching implentation of generating the app_secret_proof
           # for a given page_id
           def app_secret_proof_for(page_id = nil)
-            return unless fetch_app_secret_proof_enabled?
-
             memo_key = [app_secret_for(page_id), access_token_for(page_id)]
             memoized_app_secret_proofs[memo_key] ||=
               calculate_app_secret_proof(*memo_key)
@@ -42,10 +40,6 @@ module Facebook
 
           def memoized_app_secret_proofs
             @memoized_app_secret_proofs ||= {}
-          end
-
-          def fetch_app_secret_proof_enabled?
-            false
           end
         end
       end

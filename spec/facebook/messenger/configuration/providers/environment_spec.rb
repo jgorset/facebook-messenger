@@ -40,16 +40,7 @@ describe Facebook::Messenger::Configuration::Providers::Environment do
     it { is_expected.to eq(access_token) }
   end
 
-  describe '.app_secret_proof_for with app_secret_proof_disabled' do
-    let(:page_id) { '123' }
-
-    subject { described_class.new.app_secret_proof_for(page_id) }
-    before { ENV['APP_SECRET_PROOF_ENABLED'] = 'false' }
-
-    it { is_expected.to eq(nil) }
-  end
-
-  describe '.app_secret_proof_for with app_secret_proof enabled' do
+  describe '.app_secret_proof_for' do
     let(:page_id) { '123' }
     let(:access_token) { 'ABC' }
     let(:app_secret) { 'ABsecret' }
@@ -58,7 +49,6 @@ describe Facebook::Messenger::Configuration::Providers::Environment do
     subject { described_class.new }
     before { ENV['ACCESS_TOKEN'] = access_token }
     before { ENV['APP_SECRET'] = app_secret }
-    before { ENV['APP_SECRET_PROOF_ENABLED'] = 'true' }
 
     it 'calculates the app_secret_proof' do
       expect(Facebook::Messenger::Configuration::AppSecretProofCalculator)

@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 describe Facebook::Messenger::Bot do
+  let(:config) { Facebook::Messenger.config }
   let(:page_id) { '123456' }
   let(:verify_token) { 'verify token' }
   let(:app_secret) { 'app secret' }
   let(:access_token) { 'access token' }
-  let(:app_secret_proof) { 'app_secret_proof' }
+  let(:app_secret_proof) { config.provider.app_secret_proof_for }
 
   before do
     ENV['ACCESS_TOKEN'] = access_token
@@ -193,18 +194,6 @@ describe Facebook::Messenger::Bot do
     def stub_request_to_return(hash)
       stub_request(:post, messages_url)
         .with(
-          query: { access_token: access_token },
-          body: payload,
-          headers: { 'Content-Type' => 'application/json' }
-        ).to_return(
-          body: JSON.dump(hash),
-          headers: default_graph_api_response_headers
-        )
-    end
-
-    def stub_request_to_return_with_proof(hash)
-      stub_request(:post, messages_url)
-        .with(
           query: { access_token: access_token,
                    appsecret_proof: app_secret_proof },
           body: payload,
@@ -215,35 +204,14 @@ describe Facebook::Messenger::Bot do
         )
     end
 
-    context 'when all is well without an appsecret_proof' do
-      let(:recipient_id) { '1008372609250235' }
-      let(:message_id) { 'mid.1456970487936:c34767dfe57ee6e339' }
-
-      before do
-        stub_request_to_return(
-          recipient_id: recipient_id,
-          message_id: message_id
-        )
-      end
-
-      it 'sends a message' do
-        result = subject.deliver(payload, page_id: page_id)
-        expect(result).to eq({ recipient_id: recipient_id,
-                               message_id: message_id }.to_json)
-      end
-    end
-
-    context 'when all is well with an appsecret_proof' do
-      let(:app_secret_proof) do
-        'a4de5246286838d0cb6a214dade38b0238cdff007a0be96241214da5b3e78e53'
-      end
+    context 'when all is well' do
       let(:recipient_id) { '1008372609250235' }
       let(:message_id) { 'mid.1456970487936:c34767dfe57ee6e339' }
 
       before do
         ENV['APP_SECRET_PROOF_ENABLED'] = 'true'
 
-        stub_request_to_return_with_proof(
+        stub_request_to_return(
           recipient_id: recipient_id,
           message_id: message_id
         )
