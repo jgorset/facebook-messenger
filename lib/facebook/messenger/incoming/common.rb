@@ -74,7 +74,7 @@ module Facebook
             sender_action: 'typing_on'
           }
 
-          deliver_payload(payload)
+          Facebook::Messenger::Bot.deliver(payload, page_id: recipient['id'])
         end
 
         #
@@ -90,7 +90,7 @@ module Facebook
             sender_action: 'typing_off'
           }
 
-          deliver_payload(payload)
+          Facebook::Messenger::Bot.deliver(payload, page_id: recipient['id'])
         end
 
         #
@@ -106,7 +106,7 @@ module Facebook
             sender_action: 'mark_seen'
           }
 
-          deliver_payload(payload)
+          Facebook::Messenger::Bot.deliver(payload, page_id: recipient['id'])
         end
 
         #
@@ -123,28 +123,7 @@ module Facebook
             message_type: Facebook::Messenger::Bot::MessageType::RESPONSE
           }
 
-          deliver_payload(payload)
-        end
-
-        #
-        # Function returns the configured access token.
-        #
-        # @return [String] Access token.
-        #
-        def access_token
-          Facebook::Messenger.config.provider.access_token_for(recipient)
-        end
-
-        def app_secret_proof
-          Facebook::Messenger.config.provider.app_secret_proof_for(recipient)
-        end
-
-        private
-
-        def deliver_payload(payload)
-          Facebook::Messenger::Bot.deliver(payload,
-                                           access_token: access_token,
-                                           app_secret_proof: app_secret_proof)
+          Facebook::Messenger::Bot.deliver(payload, page_id: recipient['id'])
         end
       end
     end

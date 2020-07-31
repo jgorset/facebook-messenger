@@ -273,6 +273,7 @@ describe Facebook::Messenger::Incoming::Message do
       )
     end
   end
+
   describe '.app_id' do
     it 'returns the app_id from which the message was sent' do
       expect(subject.app_id).to eq(payload['message']['app_id'])
