@@ -117,7 +117,7 @@ describe Dummy do
             },
             page_id: page_id
           )
-        subject.reply({ text: 'Hello, human' })
+        subject.reply(text: 'Hello, human')
       end
     end
   end

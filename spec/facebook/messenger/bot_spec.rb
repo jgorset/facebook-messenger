@@ -66,7 +66,7 @@ describe Facebook::Messenger::Bot do
     context 'with a postback' do
       let(:postback) { Facebook::Messenger::Incoming::Postback.new({}) }
 
-      it 'triggers a :delivery' do
+      it 'triggers a :postback' do
         expect(Facebook::Messenger::Incoming).to receive(:parse)
           .and_return(postback)
 
@@ -80,7 +80,7 @@ describe Facebook::Messenger::Bot do
     context 'with an optin' do
       let(:optin) { Facebook::Messenger::Incoming::Optin.new({}) }
 
-      it 'triggers a :delivery' do
+      it 'triggers an :optin' do
         expect(Facebook::Messenger::Incoming).to receive(:parse)
           .and_return(optin)
 
@@ -142,7 +142,7 @@ describe Facebook::Messenger::Bot do
         Facebook::Messenger::Incoming::MessageReaction.new({})
       end
 
-      it 'triggers a :delivery' do
+      it 'triggers a :reaction' do
         expect(Facebook::Messenger::Incoming).to receive(:parse)
           .and_return(reaction)
 
@@ -234,7 +234,9 @@ describe Facebook::Messenger::Bot do
     end
 
     context 'when all is well with an appsecret_proof' do
-      let(:app_secret_proof) { 'a4de5246286838d0cb6a214dade38b0238cdff007a0be96241214da5b3e78e53' }
+      let(:app_secret_proof) do
+        'a4de5246286838d0cb6a214dade38b0238cdff007a0be96241214da5b3e78e53'
+      end
       let(:recipient_id) { '1008372609250235' }
       let(:message_id) { 'mid.1456970487936:c34767dfe57ee6e339' }
 
