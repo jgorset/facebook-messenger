@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'httparty', '~> 0.13', '>= 0.13.7'
   spec.add_runtime_dependency 'rack', '>= 1.4.5'
 
-  spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'bundler', '~> 2.1.4'
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'rack-test', '~> 0.6.3'
