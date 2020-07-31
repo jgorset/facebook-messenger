@@ -44,26 +44,14 @@ end
 ```ruby
 Bot.deliver({
   recipient: {
-    id: '45123'
+    id: YOUR_RECIPIENT_ID
   },
   message: {
     text: 'Human?'
   },
   messaging_type: Facebook::Messenger::Bot::MessagingType::UPDATE
-}, access_token: ENV['ACCESS_TOKEN'], app_secret_proof: app_secret_proof
-)
+}, page_id: YOUR_PAGE_ID)
 ```
-
-NOTE: `app_secret_proof` is an optional parameter to [secure your requests](https://developers.facebook.com/docs/graph-api/securing-requests/),
-and you can generate it from your configuration provider like so:
-
-```ruby
-configuration_provider = Facebook::Messenger::Configuration::Providers::Environment.new
-app_secret_proof = configuration_provider.app_secret_proof_for(page_id)
-```
-
-For the methods you'll usually use (like `reply` and `typing_on`), the app secret proof will be set and sent
-automatically if you set the environment variable `APP_SECRET_PROOF_ENABLED` to `true`.
 
 ##### Messages with images
 
@@ -305,7 +293,7 @@ Facebook::Messenger::Profile.set({
       text: 'Bienvenue dans le bot du Wagon !'
     }
   ]
-}, access_token: ENV['ACCESS_TOKEN'])
+}, page_id: YOUR_PAGE_ID)
 ```
 
 You can define the action to trigger when new humans click on the Get
@@ -316,7 +304,7 @@ Facebook::Messenger::Profile.set({
   get_started: {
     payload: 'GET_STARTED_PAYLOAD'
   }
-}, access_token: ENV['ACCESS_TOKEN'])
+}, page_id: YOUR_PAGE_ID) 
 ```
 
 You can show a persistent menu to humans.
@@ -362,9 +350,8 @@ Facebook::Messenger::Profile.set({
       composer_input_disabled: false
     }
   ]
-}, access_token: ENV['ACCESS_TOKEN'])
+}, page_id: YOUR_PAGE_ID)
 ```
-
 
 #### Handle a Facebook Policy Violation
 
@@ -376,8 +363,11 @@ Bot.on :'policy_enforcement' do |referral|
   referral.reason # => "The bot violated our Platform Policies (https://developers.facebook.com/policy/#messengerplatform). Common violations include sending out excessive spammy messages or being non-functional."
 end
 ```
+
 #### messaging_type
+
 ##### Sending Messages
+
 See Facebook's documentation on [Sending Messages](https://developers.facebook.com/docs/messenger-platform/send-messages#standard_messaging)
 
 As of May 7th 2018 all messages are required to include a messaging_type
@@ -391,10 +381,11 @@ Bot.deliver({
     text: 'Human?'
   },
   messaging_type: Facebook::Messenger::Bot::MessagingType::UPDATE
-}, access_token: ENV['ACCESS_TOKEN'])
+}, page_id: YOUR_PAGE_ID)
 ```
 
 ##### MESSAGE_TAG
+
 See Facebook's documentation on [Message Tags](https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags)
 
 When sending a message with messaging_type: MESSAGE_TAG (Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG) you must ensure you add a tag: parameter
@@ -409,7 +400,7 @@ Bot.deliver({
   },
   messaging_type: Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG
   tag: Facebook::Messenger::Bot::Tag::NON_PROMOTIONAL_SUBSCRIPTION
-}, access_token: ENV['ACCESS_TOKEN'])
+}, page_id: YOUR_PAGE_ID) 
 ```
 
 ## Configuration
@@ -582,6 +573,7 @@ config.autoload_paths += Dir[Rails.root.join('app', 'bot', '*')]
 ### Test it...
 
 ##### ...locally
+
 To test your locally running bot, you can use [ngrok]. This will create a secure
 tunnel to localhost so that Facebook can reach the webhook.
 
@@ -589,7 +581,8 @@ tunnel to localhost so that Facebook can reach the webhook.
 
 In order to test that behaviour when a new event from Facebook is registered, you can use the gem's `trigger` method. This method accepts as its first argument the type of event that it will receive, and can then be followed by other arguments that mock objects received from Messenger. Using Ruby's [Struct](https://ruby-doc.org/core-2.5.0/Struct.html) class can be very useful for creating these mock objects.
 
-In this case, subscribing to Messenger events has been extracted into a `Listener` class.   
+In this case, subscribing to Messenger events has been extracted into a `Listener` class.
+
 ```ruby
 # app/bot/listener.rb
 require 'facebook/messenger'
@@ -598,7 +591,7 @@ include Facebook::Messenger
 
 class Listener
   Facebook::Messenger::Subscriptions.subscribe(
-    access_token: ENV["FB_ACCESS_TOKEN"],
+    access_token: ENV['ACCESS_TOKEN'],
     subscribed_fields: %w[feed mention name]
   )
 
@@ -608,11 +601,13 @@ class Listener
       message: {
         text: 'Uploading your message to skynet.'
       }
-    }, access_token: ENV['FB_ACCESS_TOKEN'])
+    }, access_token: ENV['ACCESS_TOKEN'])
   end
 end
 ```
+
 Its respective test file then ensures that the `Bot` object receives a call to `deliver`. This is just a basic test, but check out the [RSpec docs](http://rspec.info/) for more information on testing with RSpec.
+
 ```ruby
 require 'rails_helper'
 
@@ -637,7 +632,6 @@ RSpec.describe Listener do
   end
 end
 ```
-
 
 ## Development
 
