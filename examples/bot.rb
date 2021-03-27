@@ -1,8 +1,6 @@
 require 'facebook/messenger'
 
-include Facebook::Messenger
-
-Bot.on :message do |message|
+Facebook::Messenger::Bot.on :message do |message|
   puts "Received '#{message.inspect}' from #{message.sender}"
 
   case message.text
@@ -55,7 +53,7 @@ Bot.on :message do |message|
   end
 end
 
-Bot.on :postback do |postback|
+Facebook::Messenger::Bot.on :postback do |postback|
   case postback.payload
   when 'HUMAN_LIKED'
     text = 'That makes bot happy!'
@@ -68,11 +66,11 @@ Bot.on :postback do |postback|
   )
 end
 
-Bot.on :delivery do |delivery|
+Facebook::Messenger::Bot.on :delivery do |delivery|
   puts "Delivered message(s) #{delivery.ids}"
 end
 
-Bot.on :reaction do |message|
+Facebook::Messenger::Bot.on :reaction do |message|
   message.emoji # => "👍"
   message.action # => "react"
   message.reaction # => "like"
