@@ -3,13 +3,16 @@ module Facebook
     module Incoming
       module Messaging
         # The Read class represents the user reading a delivered message.
+        # @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/message-reads
         class Read
           include Facebook::Messenger::Incoming::Messaging::Common
 
+          # Return time object when message is read by user.
           def at
             Time.at(@messaging['read']['watermark'] / 1000)
           end
 
+          # Return Integer defining the sequence number of message.
           def seq
             @messaging['read']['seq']
           end

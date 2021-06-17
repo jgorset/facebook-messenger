@@ -3,6 +3,7 @@ module Facebook
     module Incoming
       module Messaging
         # The Delivery class represents the receipt of a delivered message.
+        # @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/message-deliveries
         class Delivery
           include Facebook::Messenger::Incoming::Messaging::Common
 

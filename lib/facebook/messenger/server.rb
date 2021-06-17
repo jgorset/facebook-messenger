@@ -12,13 +12,16 @@ module Facebook
       some time, check your app's secret token.
     HEREDOC
 
+    #
     # This module holds the server that processes incoming messages from the
     # Facebook Messenger Platform.
+    #
     class Server
       def self.call(env)
         new.call(env)
       end
 
+      # Rack handler for request.
       def call(env)
         @request = Rack::Request.new(env)
         @response = Rack::Response.new
@@ -34,8 +37,14 @@ module Facebook
         @response.finish
       end
 
+      # @private
       private
 
+      #
+      # Function validates the verification request which is sent by Facebook
+      #   to validate the entered endpoint.
+      # @see https://developers.facebook.com/docs/graph-api/webhooks#callback
+      #
       def verify
         if valid_verify_token?(@request.params['hub.verify_token'])
           @response.write @request.params['hub.challenge']
@@ -44,6 +53,10 @@ module Facebook
         end
       end
 
+      #
+      # Function handles the webhook events.
+      # @raise BadRequestError if the request is tampered.
+      #
       def receive
         check_integrity
 
@@ -52,16 +65,20 @@ module Facebook
         respond_with_error(error)
       end
 
+      #
       # Check the integrity of the request.
+      # @see https://developers.facebook.com/docs/messenger-platform/webhook#security
       #
-      # Raises BadRequestError if the request has been tampered with.
+      # @raise BadRequestError if the request has been tampered with.
       #
-      # Returns nothing.
       def check_integrity
+        # If app secret is not found in environment, return.
+        # So for the security purpose always add provision in
+        #   configuration provider to return app secret.
         return unless app_secret_for(parsed_body['entry'][0]['id'])
 
         unless signature.start_with?('sha1='.freeze)
-          $stderr.puts(X_HUB_SIGNATURE_MISSING_WARNING)
+          warn X_HUB_SIGNATURE_MISSING_WARNING
 
           raise BadRequestError, 'Error getting integrity signature'.freeze
         end
@@ -75,19 +92,23 @@ module Facebook
         @request.env['HTTP_X_HUB_SIGNATURE'.freeze].to_s
       end
 
+      #
       # Verify that the signature given in the X-Hub-Signature header matches
       # that of the body.
       #
-      # Returns a Boolean.
+      # @return [Boolean] true if request is valid else false.
+      #
       def valid_signature?
         Rack::Utils.secure_compare(signature, signature_for(body))
       end
 
+      #
       # Sign the given string.
       #
-      # Returns a String describing its signature.
+      # @return [String] A string describing its signature.
+      #
       def signature_for(string)
-        format('sha1=%s'.freeze, generate_hmac(string))
+        format('sha1=%<string>s'.freeze, string: generate_hmac(string))
       end
 
       # Generate a HMAC signature for the given content.
@@ -115,36 +136,44 @@ module Facebook
         @body ||= @request.body.read
       end
 
+      #
       # Returns a Hash describing the parsed request body.
+      # @raise JSON::ParserError if body hash is not valid.
+      #
+      # @return [JSON] Parsed body hash.
+      #
       def parsed_body
         @parsed_body ||= JSON.parse(body)
       rescue JSON::ParserError
         raise BadRequestError, 'Error parsing request body format'
       end
 
+      #
+      # Function hand over the webhook event to handlers.
+      #
+      # @param [Hash] events Parsed body hash in webhook event.
+      #
       def trigger(events)
         # Facebook may batch several items in the 'entry' array during
         # periods of high load.
         events['entry'.freeze].each do |entry|
-          messaging = Array(entry['messaging'.freeze])
-          changes = Array(entry['changes'.freeze])
-
           # If the application has subscribed to webhooks other than Messenger,
-          # 'messaging' or 'changes' won't be available and it is not relevant to us.
-          next if messaging.empty? && changes.empty?
+          # 'messaging' won't be available and it is not relevant to us.
+          next unless entry['messaging'.freeze]
 
-          # Facebook may batch several items in the 'messaging' or 'changes' array during
+          # Facebook may batch several items in the 'messaging' array during
           # periods of high load.
-          messaging.each do |messaging|
+          entry['messaging'.freeze].each do |messaging|
             Facebook::Messenger::Bot.receive(messaging)
-          end
-
-          changes.each do |changes|
-            Facebook::Messenger::Bot.receive(changes)
           end
         end
       end
 
+      #
+      # If received request is tampered, sent 400 code in response.
+      #
+      # @param [Object] error Error object.
+      #
       def respond_with_error(error)
         @response.status = 400
         @response.write(error.message)

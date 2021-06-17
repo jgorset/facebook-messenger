@@ -73,15 +73,15 @@ module Facebook
           end
 
           def internal_error?(error_code)
-            INTERNAL_ERROR_CODES.keys.include? error_code
+            INTERNAL_ERROR_CODES.key? error_code
           end
 
           def access_token_error?(error_code)
-            ACCESS_TOKEN_ERROR_CODES.keys.include? error_code
+            ACCESS_TOKEN_ERROR_CODES.key? error_code
           end
 
           def account_linking_error?(error_code)
-            ACCOUNT_LINKING_ERROR_CODES.keys.include? error_code
+            ACCOUNT_LINKING_ERROR_CODES.key? error_code
           end
 
           def limit_error?(error_code, error_subcode)

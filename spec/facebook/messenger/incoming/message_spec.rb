@@ -24,7 +24,26 @@ describe Facebook::Messenger::Incoming::Message do
           'payload' => {
             'url' => 'https://www.example.com/1.jpg'
           }
-        }]
+        }],
+        'nlp' => {
+          'entities' => {
+            'datetime' => [
+              {
+                'confidence' => 0.97249440664957,
+                'values' => ['...'],
+                'value' => '2017-05-10T14:00:00.000-07:00',
+                'grain' => 'hour',
+                'type' => 'value'
+              }
+            ],
+            'greetings' => [
+              {
+                'confidence' => 1,
+                'value' => 'true'
+              }
+            ]
+          }
+        }
       }
     }
   end
@@ -174,6 +193,12 @@ describe Facebook::Messenger::Incoming::Message do
     end
   end
 
+  describe '.nlp' do
+    it 'returns the message NLP entities' do
+      expect(subject.nlp).to eq(payload['message']['nlp'])
+    end
+  end
+
   describe '.attachments' do
     it 'returns the message attachments' do
       expect(subject.attachments).to eq(payload['message']['attachments'])
@@ -248,6 +273,7 @@ describe Facebook::Messenger::Incoming::Message do
       )
     end
   end
+
   describe '.app_id' do
     it 'returns the app_id from which the message was sent' do
       expect(subject.app_id).to eq(payload['message']['app_id'])

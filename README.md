@@ -1,13 +1,14 @@
 <p align="center">
-  <img src="https://rawgit.com/hyperoslo/facebook-messenger/master/docs/conversation_with_logo.gif">
+  <img src="https://github.com/jgorset/facebook-messenger/blob/master/docs/conversation.gif?raw=true">
 </p>
 
 
 [![Gem Version](https://img.shields.io/gem/v/facebook-messenger.svg?style=flat)](https://rubygems.org/gems/facebook-messenger)
-[![Build Status](https://img.shields.io/travis/hyperoslo/facebook-messenger.svg?style=flat)](https://travis-ci.org/hyperoslo/facebook-messenger)
-[![Dependency Status](https://img.shields.io/gemnasium/hyperoslo/facebook-messenger.svg?style=flat)](https://gemnasium.com/hyperoslo/facebook-messenger)
-[![Code Climate](https://img.shields.io/codeclimate/github/hyperoslo/facebook-messenger.svg?style=flat)](https://codeclimate.com/github/hyperoslo/facebook-messenger)
-[![Coverage Status](https://img.shields.io/coveralls/hyperoslo/facebook-messenger.svg?style=flat)](https://coveralls.io/r/hyperoslo/facebook-messenger)
+[![Gem Downloads](https://img.shields.io/gem/dt/facebook-messenger.svg)](https://rubygems.org/gems/facebook-messenger)
+[![Build Status](https://img.shields.io/travis/jgorset/facebook-messenger.svg?style=flat)](https://travis-ci.org/jgorset/facebook-messenger)
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/jgorset/facebook-messenger.svg)](https://codeclimate.com/github/jgorset/facebook-messenger)
+[![Coverage Status](https://coveralls.io/repos/github/jgorset/facebook-messenger/badge.svg?branch=master)](https://coveralls.io/github/jgorset/facebook-messenger?branch=master)
+[![Documentation Coverage](http://inch-ci.org/github/jgorset/facebook-messenger.svg?branch=master)](http://inch-ci.org/github/jgorset/facebook-messenger)
 
 ## Installation
 
@@ -23,11 +24,10 @@ You can reply to messages sent by the human:
 # bot.rb
 require 'facebook/messenger'
 
-include Facebook::Messenger
-
-Bot.on :message do |message|
+Facebook::Messenger::Bot.on :message do |message|
   message.id          # => 'mid.1457764197618:41d102a3e1ae206a38'
   message.sender      # => { 'id' => '1008372609250235' }
+  message.recipient   # => { 'id' => '2015573629214912' }
   message.seq         # => 73
   message.sent_at     # => 2016-04-22 21:30:36 +0200
   message.text        # => 'Hello, bot!'
@@ -40,14 +40,15 @@ end
 ... or even send the human messages out of the blue:
 
 ```ruby
-Bot.deliver({
+Facebook::Messenger::Bot.deliver({
   recipient: {
-    id: '45123'
+    id: YOUR_RECIPIENT_ID
   },
   message: {
     text: 'Human?'
-  }
-}, access_token: ENV['ACCESS_TOKEN'])
+  },
+  messaging_type: Facebook::Messenger::Bot::MessagingType::UPDATE
+}, page_id: YOUR_PAGE_ID)
 ```
 
 ##### Messages with images
@@ -119,6 +120,20 @@ end
 
 *See Facebook's [documentation][message-documentation] for all message options.*
 
+##### Reactions
+
+Humans have feelings, and they can react to your messages. You can pretend to understand:
+
+```ruby
+Bot.on :reaction do |message|
+  message.emoji # => "👍"
+  message.action # => "react"
+  message.reaction # => "like"
+
+  message.reply(text: 'Your feelings have been registered')
+end
+```
+
 ##### Typing indicator
 
 Show the human you are preparing a message for them:
@@ -162,7 +177,7 @@ end
 You can keep track of messages sent to the human:
 
 ```ruby
-Bot.on :message_echo do |message_echo|
+Facebook::Messenger::Bot.on :message_echo do |message_echo|
   message_echo.id          # => 'mid.1457764197618:41d102a3e1ae206a38'
   message_echo.sender      # => { 'id' => '1008372609250235' }
   message_echo.seq         # => 73
@@ -174,6 +189,34 @@ Bot.on :message_echo do |message_echo|
 end
 ```
 
+##### Record accepted message requests
+
+You can keep track of message requests accepted by the human:
+
+```ruby
+Bot.on :message_request do |message_request|
+  message_request.accept? # => true
+
+  # Log or store in your storage method of choice (skynet, obviously)
+end
+```
+
+##### Record instant game progress
+
+You can keep track of instant game progress:
+
+```ruby
+Bot.on :game_play do |game_play|
+  game_play.sender    # => { 'id' => '1008372609250235' }
+  game_play.recipient # => { 'id' => '2015573629214912' }
+  game_play.sent_at   # => 2016-04-22 21:30:36 +0200
+  game_play.game      # => "<GAME-APP-ID>"
+  game_play.player    # => "<PLAYER-ID>"
+  game_play.context   # => { 'context_type' => "<CONTEXT-TYPE:SOLO|THREAD>", 'context_id' => "<CONTEXT-ID>" }
+  game_play.score     # => 100
+  game_play.payload   # => "<PAYLOAD>"
+end
+```
 
 #### Send to Facebook
 
@@ -213,11 +256,22 @@ When the human follows a m.me link with a ref parameter like http://m.me/mybot?r
 you will receive a `referral` event.
 
 ```ruby
-Bot.on :referral do |referral|
+Facebook::Messenger::Bot.on :referral do |referral|
   referral.sender    # => { 'id' => '1008372609250235' }
   referral.recipient # => { 'id' => '2015573629214912' }
   referral.sent_at   # => 2016-04-22 21:30:36 +0200
   referral.ref       # => 'MYPARAM'
+end
+```
+
+#### Pass thread control
+
+Another bot can pass a human to you:
+
+```ruby
+Facebook::Messenger::Bot.on :pass_thread_control do |pass_thread_control|
+  pass_thread_control.new_owner_app_id # => '123456789'
+  pass_thread_control.metadata # => 'Additional content that the caller wants to set'
 end
 ```
 
@@ -237,7 +291,7 @@ Facebook::Messenger::Profile.set({
       text: 'Bienvenue dans le bot du Wagon !'
     }
   ]
-}, access_token: ENV['ACCESS_TOKEN'])
+}, page_id: YOUR_PAGE_ID)
 ```
 
 You can define the action to trigger when new humans click on the Get
@@ -248,7 +302,7 @@ Facebook::Messenger::Profile.set({
   get_started: {
     payload: 'GET_STARTED_PAYLOAD'
   }
-}, access_token: ENV['ACCESS_TOKEN'])
+}, page_id: YOUR_PAGE_ID) 
 ```
 
 You can show a persistent menu to humans.
@@ -265,7 +319,7 @@ Facebook::Messenger::Profile.set({
           type: 'nested',
           call_to_actions: [
             {
-              title: 'What's a chatbot?',
+              title: 'What is a chatbot?',
               type: 'postback',
               payload: 'EXTERMINATE'
             },
@@ -284,7 +338,7 @@ Facebook::Messenger::Profile.set({
         {
           type: 'web_url',
           title: 'Get some help',
-          url: 'https://github.com/hyperoslo/facebook-messenger',
+          url: 'https://github.com/jgorset/facebook-messenger',
           webview_height_ratio: 'full'
         }
       ]
@@ -294,7 +348,57 @@ Facebook::Messenger::Profile.set({
       composer_input_disabled: false
     }
   ]
-}, access_token: ENV['ACCESS_TOKEN'])
+}, page_id: YOUR_PAGE_ID)
+```
+
+#### Handle a Facebook Policy Violation
+
+See Facebook's documentation on [Messaging Policy Enforcement](https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messaging_policy_enforcement)
+
+```ruby
+Facebook::Messenger::Bot.on :'policy_enforcement' do |referral|
+  referral.action # => 'block'
+  referral.reason # => "The bot violated our Platform Policies (https://developers.facebook.com/policy/#messengerplatform). Common violations include sending out excessive spammy messages or being non-functional."
+end
+```
+
+#### messaging_type
+
+##### Sending Messages
+
+See Facebook's documentation on [Sending Messages](https://developers.facebook.com/docs/messenger-platform/send-messages#standard_messaging)
+
+As of May 7th 2018 all messages are required to include a messaging_type
+
+```ruby
+Facebook::Messenger::Bot.deliver({
+  recipient: {
+    id: '45123'
+  },
+  message: {
+    text: 'Human?'
+  },
+  messaging_type: Facebook::Messenger::Bot::MessagingType::UPDATE
+}, page_id: YOUR_PAGE_ID)
+```
+
+##### MESSAGE_TAG
+
+See Facebook's documentation on [Message Tags](https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags)
+
+When sending a message with messaging_type: MESSAGE_TAG (Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG) you must ensure you add a tag: parameter
+
+```ruby
+Facebook::Messenger::Bot.deliver({
+  recipient: {
+    id: '45123'
+  },
+  message: {
+    text: 'Human?'
+  },
+  messaging_type: Facebook::Messenger::Bot::MessagingType::MESSAGE_TAG
+  tag: Facebook::Messenger::Bot::Tag::NON_PROMOTIONAL_SUBSCRIPTION
+}, page_id: YOUR_PAGE_ID) 
 ```
 
 ## Configuration
@@ -367,13 +471,18 @@ Facebook::Messenger.configure do |config|
 end
 ```
 
+You can get the current configuration provider with `Facebook::Messenger.config.provider`.
+
 ### Subscribe your Application to a Page
 
 Once you've configured your bot, subscribe it to the Page to get messages
 from Facebook:
 
 ```ruby
-Facebook::Messenger::Subscriptions.subscribe(access_token: access_token)
+Facebook::Messenger::Subscriptions.subscribe(
+  access_token: access_token,
+  subscribed_fields: %w[feed mention name]
+)
 ```
 
 You only need to subscribe your page once. As long as your bot works and
@@ -394,6 +503,8 @@ require 'facebook/messenger'
 require_relative 'bot'
 
 run Facebook::Messenger::Server
+
+# or Facebook::Messenger::ServerNoError for dev
 ```
 
 ```
@@ -423,7 +534,7 @@ We suggest that you put your bot code in `app/bot`.
 
 include Facebook::Messenger
 
-Bot.on :message do |message|
+Faceboook::Messenger::Bot.on :message do |message|
   message.reply(text: 'Hello, human!')
 end
 ```
@@ -456,8 +567,69 @@ config.paths.add File.join('app', 'bot'), glob: File.join('**', '*.rb')
 config.autoload_paths += Dir[Rails.root.join('app', 'bot', '*')]
 ```
 
+
+### Test it...
+
+##### ...locally
+
 To test your locally running bot, you can use [ngrok]. This will create a secure
 tunnel to localhost so that Facebook can reach the webhook.
+
+##### ... with RSpec
+
+In order to test that behaviour when a new event from Facebook is registered, you can use the gem's `trigger` method. This method accepts as its first argument the type of event that it will receive, and can then be followed by other arguments that mock objects received from Messenger. Using Ruby's [Struct](https://ruby-doc.org/core-2.5.0/Struct.html) class can be very useful for creating these mock objects.
+
+In this case, subscribing to Messenger events has been extracted into a `Listener` class.
+
+```ruby
+# app/bot/listener.rb
+require 'facebook/messenger'
+
+include Facebook::Messenger
+
+class Listener
+  Facebook::Messenger::Subscriptions.subscribe(
+    access_token: ENV['ACCESS_TOKEN'],
+    subscribed_fields: %w[feed mention name]
+  )
+
+  Bot.on :message do |message|
+    Bot.deliver({
+      recipient: message.sender,
+      message: {
+        text: 'Uploading your message to skynet.'
+      }
+    }, access_token: ENV['ACCESS_TOKEN'])
+  end
+end
+```
+
+Its respective test file then ensures that the `Bot` object receives a call to `deliver`. This is just a basic test, but check out the [RSpec docs](http://rspec.info/) for more information on testing with RSpec.
+
+```ruby
+require 'rails_helper'
+
+RSpec.describe Listener do
+  FakeMessage = Struct.new(:sender, :recipient, :timestamp, :message)
+
+  describe 'Bot#on(message)' do
+    it 'responds with a message' do
+      expect(Bot).to receive(:deliver)
+      Bot.trigger(:message, fake_message)
+    end
+  end
+
+  private
+
+  def fake_message
+    sender = {"id"=>"1234"}
+    recipient = {"id"=>"5678"}
+    timestamp = 1528049653543
+    message = {"text"=>"Hello, world"}
+    FakeMessage.new(sender, recipient, timestamp, message)
+  end
+end
+```
 
 ## Development
 
@@ -474,7 +646,7 @@ commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.or
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at
-https://github.com/hyperoslo/facebook-messenger.
+https://github.com/jgorset/facebook-messenger.
 
 ## Projects using Facebook Messenger
 

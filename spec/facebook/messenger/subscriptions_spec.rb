@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Facebook::Messenger::Subscriptions do
   let(:access_token) { 'access token' }
+  let(:subscribed_fields) { %w[feed mention name] }
 
   let(:subscribed_apps_url) do
     Facebook::Messenger::Subscriptions.base_uri + '/subscribed_apps'
@@ -15,7 +16,11 @@ describe Facebook::Messenger::Subscriptions do
     context 'with a successful response' do
       before do
         stub_request(:post, subscribed_apps_url)
-          .with(query: { access_token: access_token })
+          .with(headers: { 'Content-Type' => 'application/json' },
+                body: {
+                  access_token: access_token,
+                  subscribed_fields: subscribed_fields
+                }.to_json)
           .to_return(
             body: JSON.dump('success' => true),
             status: 200,
@@ -24,7 +29,12 @@ describe Facebook::Messenger::Subscriptions do
       end
 
       it 'returns true' do
-        expect(subject.subscribe(access_token: access_token)).to be true
+        args = {
+          access_token: access_token,
+          subscribed_fields: subscribed_fields
+        }
+
+        expect(subject.subscribe(args)).to be true
       end
     end
 
@@ -33,7 +43,11 @@ describe Facebook::Messenger::Subscriptions do
 
       before do
         stub_request(:post, subscribed_apps_url)
-          .with(query: { access_token: access_token })
+          .with(headers: { 'Content-Type' => 'application/json' },
+                body: {
+                  access_token: access_token,
+                  subscribed_fields: subscribed_fields
+                }.to_json)
           .to_return(
             body: JSON.dump(
               'error' => {
@@ -50,7 +64,8 @@ describe Facebook::Messenger::Subscriptions do
 
       it 'raises an error' do
         expect do
-          subject.subscribe(access_token: access_token)
+          subject.subscribe(access_token: access_token,
+                            subscribed_fields: subscribed_fields)
         end.to raise_error(
           Facebook::Messenger::Subscriptions::Error, error_message
         )

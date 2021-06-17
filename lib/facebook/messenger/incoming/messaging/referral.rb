@@ -2,9 +2,9 @@ module Facebook
   module Messenger
     module Incoming
       module Messaging
-        # The Referral class represents an incoming Facebook Messenger referral.
+        # Referral class represents an incoming Facebook Messenger referral event.
         #
-        # https://developers.facebook.com/docs/messenger-platform/referral-params
+        # @see https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messaging_referrals
         class Referral
           include Facebook::Messenger::Incoming::Messaging::Common
 
@@ -14,16 +14,24 @@ module Facebook
               @referral = referral
             end
 
+            # Return String of ref data set in referrer.
             def ref
               @referral['ref']
             end
 
+            # Return String of referral source.
             def source
               @referral['source']
             end
 
+            # Return String of referral type.
             def type
               @referral['type']
+            end
+
+            # Return String of ad id.
+            def ad_id
+              @referral['ad_id'] if @referral.key?('ad_id')
             end
           end
 

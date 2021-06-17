@@ -39,4 +39,29 @@ describe Facebook::Messenger::Configuration::Providers::Environment do
 
     it { is_expected.to eq(access_token) }
   end
+
+  describe '.app_secret_proof_for' do
+    let(:page_id) { '123' }
+    let(:access_token) { 'ABC' }
+    let(:app_secret) { 'ABsecret' }
+    let(:app_secret_proof) { 'proof' }
+
+    subject { described_class.new }
+    before { ENV['ACCESS_TOKEN'] = access_token }
+    before { ENV['APP_SECRET'] = app_secret }
+
+    it 'calculates the app_secret_proof' do
+      expect(Facebook::Messenger::Configuration::AppSecretProofCalculator)
+        .to(
+          receive(:call)
+            .once
+            .with(app_secret, access_token)
+            .and_return(app_secret_proof)
+        )
+      expect(subject.app_secret_proof_for(page_id)).to eq(app_secret_proof)
+      # call twice to test that we have cached correctly so we don't
+      # call calculate_app_secret_proof twice
+      expect(subject.app_secret_proof_for(page_id)).to eq(app_secret_proof)
+    end
+  end
 end
