@@ -153,18 +153,34 @@ module Facebook
       #
       # @param [Hash] events Parsed body hash in webhook event.
       #
+      #
+      # From Messanger
+      # {"object"=>"page", "entry"=>[{"id"=>"383797635461484", "time"=>1545920435011, "messaging"=>[{"sender"=>{"id"=>"2082333815123543"}, "recipient"=>{"id"=>"383797635461484"}, "timestamp"=>1545919826000, "message"=>{"mid"=>"lUPg321g3_P8TjjDC42-M6NNHKKIlrHcS9LyQirKytz5aRu21OGAgzqXzPFE03Un-kd96imvF5YAQlwT45hPZw", "seq"=>95144, "text"=>"test"}}]}]}
+      # From Update Feed
+      # {"entry"=>[{"changes"=>[{"field"=>"feed", "value"=>{"from"=>{"id"=>"383797635461484", "name"=>"Cuk"}, "item"=>"status", "post_id"=>"383797635461484_509921402849106", "verb"=>"add", "published"=>1, "created_time"=>1545920060, "message"=>"Hello"}}], "id"=>"383797635461484", "time"=>1545920061}], "object"=>"page"}
+      # {"entry"=>[{"changes"=>[{"field"=>"feed", "value"=>{"from"=>{"id"=>"383797635461484", "name"=>"Cuk"}, "item"=>"status", "post_id"=>"383797635461484_509922592848987", "verb"=>"add", "published"=>1, "created_time"=>1545920243, "message"=>"My name luay"}}], "id"=>"383797635461484", "time"=>1545920244}], "object"=>"page"}
+      # From Comment Feed
+      # {"entry"=>[{"changes"=>[{"field"=>"feed", "value"=>{"from"=>{"id"=>"383797635461484", "name"=>"Cuk"}, "item"=>"comment", "comment_id"=>"509922592848987_509922852848961", "post_id"=>"383797635461484_509922592848987", "verb"=>"add", "parent_id"=>"383797635461484_509922592848987", "created_time"=>1545920296, "post"=>{"type"=>"status", "updated_time"=>"2018-12-27T14:18:16+0000", "promotion_status"=>"ineligible", "permalink_url"=>"https://www.facebook.com/permalink.php?story_fbid=509922592848987&id=383797635461484", "id"=>"383797635461484_509922592848987", "status_type"=>"mobile_status_update", "is_published"=>true}, "message"=>"test"}}], "id"=>"383797635461484", "time"=>1545920297}], "object"=>"page"}
+
       def trigger(events)
         # Facebook may batch several items in the 'entry' array during
         # periods of high load.
         events['entry'.freeze].each do |entry|
+          next if (!entry['messaging'.freeze] && !entry['changes'.freeze])
+
           # If the application has subscribed to webhooks other than Messenger,
           # 'messaging' won't be available and it is not relevant to us.
-          next unless entry['messaging'.freeze]
-
-          # Facebook may batch several items in the 'messaging' array during
-          # periods of high load.
-          entry['messaging'.freeze].each do |messaging|
-            Facebook::Messenger::Bot.receive(messaging)
+          if entry['messaging'.freeze]
+            # Facebook may batch several items in the 'messaging' array during
+            # periods of high load.
+            entry['messaging'.freeze].each do |messaging|
+              Facebook::Messenger::Bot.receive(messaging)
+            end
+          elsif entry['changes'.freeze]
+            entry['changes'.freeze].each do |changes|
+              next if Facebook::Messenger.config.fallback_library.blank? && !Facebook::Messenger.config.fallback_library.is_a?(Class)
+              Facebook::Messenger.config.fallback_library.new(changes)
+            end
           end
         end
       end

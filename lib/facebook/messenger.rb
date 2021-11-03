@@ -27,6 +27,7 @@ module Facebook
     # Developer can set different configuration provider.
     configure do |config|
       config.provider = Configuration::Providers::Environment.new
+      config.fallback_library = nil
     end
   end
 end
