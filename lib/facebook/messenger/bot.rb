@@ -45,7 +45,7 @@ module Facebook
         #
         # Returns a String describing the message ID if the message was sent,
         # or raises an exception if it was not.
-        def deliver(message, page_id:)
+        def deliver(message, page_id:, return_response: false)
           access_token = config.provider.access_token_for(page_id)
           app_secret_proof = config.provider.app_secret_proof_for(page_id)
 
@@ -58,6 +58,8 @@ module Facebook
                           query: query
 
           Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          return response if return_response
 
           response.body
         end

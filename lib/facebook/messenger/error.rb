@@ -12,6 +12,8 @@ module Facebook
       attr_reader :user_title
       attr_reader :user_msg
       attr_reader :fbtrace_id
+      attr_reader :buc_usage
+      attr_reader :app_usage
 
       #
       # Constructor function.
@@ -26,6 +28,8 @@ module Facebook
         @user_title = error['error_user_title']
         @user_msg = error['error_user_msg']
         @fbtrace_id = error['fbtrace_id']
+        @buc_usage = error['buc-usage']
+        @app_usage = error['app-usage']
       end
 
       #
