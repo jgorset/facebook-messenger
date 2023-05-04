@@ -13,6 +13,8 @@ require 'facebook/messenger/incoming/policy_enforcement'
 require 'facebook/messenger/incoming/pass_thread_control'
 require 'facebook/messenger/incoming/game_play'
 require 'facebook/messenger/incoming/message_reaction'
+require 'facebook/messenger/incoming/feed_common'
+require 'facebook/messenger/incoming/feed'
 
 module Facebook
   module Messenger
@@ -37,7 +39,8 @@ module Facebook
         'policy_enforcement' => PolicyEnforcement,
         'pass_thread_control' => PassThreadControl,
         'game_play' => GamePlay,
-        'reaction' => MessageReaction
+        'reaction' => MessageReaction,
+        'feed' => Feed,
       }.freeze
 
       # Parse the given payload and create new object of class related
@@ -54,7 +57,7 @@ module Facebook
         return MessageEcho.new(payload) if payload_is_echo?(payload)
 
         EVENTS.each do |event, klass|
-          return klass.new(payload) if payload.key?(event)
+          return klass.new(payload) if payload.key?(event) || payload['field'] == event
         end
 
         raise UnknownPayload, payload

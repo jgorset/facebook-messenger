@@ -29,12 +29,7 @@ describe Facebook::Messenger::Subscriptions do
       end
 
       it 'returns true' do
-        args = {
-          access_token: access_token,
-          subscribed_fields: subscribed_fields
-        }
-
-        expect(subject.subscribe(args)).to be true
+        expect(subject.subscribe(access_token: access_token,subscribed_fields: subscribed_fields)).to be true
       end
     end
 
