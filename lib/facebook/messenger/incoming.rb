@@ -15,6 +15,7 @@ require 'facebook/messenger/incoming/game_play'
 require 'facebook/messenger/incoming/message_reaction'
 require 'facebook/messenger/incoming/feed_common'
 require 'facebook/messenger/incoming/feed'
+require 'facebook/messenger/incoming/leadgen'
 
 module Facebook
   module Messenger
@@ -41,6 +42,7 @@ module Facebook
         'game_play' => GamePlay,
         'reaction' => MessageReaction,
         'feed' => Feed,
+        'leadgen' => Leadgen,
       }.freeze
 
       # Parse the given payload and create new object of class related

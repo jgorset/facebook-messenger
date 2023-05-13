@@ -32,6 +32,7 @@ module Facebook
         game_play
         reaction
         feed
+        leadgen
       ].freeze
 
       class << self
