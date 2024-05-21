@@ -144,8 +144,8 @@ module Facebook
       #
       def parsed_body
         @parsed_body ||= JSON.parse(body)
-      rescue JSON::ParserError
-        raise BadRequestError, 'Error parsing request body format'
+      rescue JSON::ParserError => error
+        raise BadRequestError, error
       end
 
       #
@@ -170,6 +170,13 @@ module Facebook
               Facebook::Messenger::Bot.receive(change)
             end
           end
+          # d99d
+          if entry['standby'.freeze]
+            entry['standby'.freeze].each do |messaging|
+              Facebook::Messenger::Bot.receive(messaging)
+            end
+          end
+          # .
         end
       end
 
