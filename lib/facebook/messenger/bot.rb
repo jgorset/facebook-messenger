@@ -13,7 +13,7 @@ module Facebook
       include HTTParty
 
       # Define base_uri for HTTParty.
-      base_uri 'https://graph.facebook.com/v3.2'
+      base_uri 'https://graph.facebook.com/v20.0'
 
       #
       # @return [Array] Array containing the supported webhook events.
@@ -65,7 +65,7 @@ module Facebook
         end
 
         # Reply to a Facebook comment.
-        # @see https://developers.facebook.com/docs/graph-api/reference/v3.2/object/comments
+        # @see https://developers.facebook.com/docs/graph-api/reference/v20.0/object/comments
         #
         # @raise [Facebook::Messenger::Bot::SendError] if there is any error
         #   in response while sending the comment.
