@@ -10,7 +10,7 @@ module Facebook
       include HTTParty
 
       # Define base_uri for HTTParty.
-      base_uri 'https://graph.facebook.com/v3.2/me'
+      base_uri 'https://graph.facebook.com/v20.0/me'
 
       format :json
 
