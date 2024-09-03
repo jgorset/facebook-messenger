@@ -13,7 +13,7 @@ module Facebook
       include HTTParty
 
       # Define base_uri for HTTParty.
-      base_uri 'https://graph.facebook.com/v3.2/me'
+      base_uri 'https://graph.facebook.com/v20.0'
 
       #
       # @return [Array] Array containing the supported webhook events.
@@ -31,6 +31,8 @@ module Facebook
         pass_thread_control
         game_play
         reaction
+        feed
+        leadgen
       ].freeze
 
       class << self
@@ -52,7 +54,35 @@ module Facebook
           query = { access_token: access_token }
           query[:appsecret_proof] = app_secret_proof if app_secret_proof
 
-          response = post '/messages',
+          response = post '/me/messages',
+                          body: JSON.dump(message),
+                          format: :json,
+                          query: query
+
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          response.body
+        end
+
+        # Reply to a Facebook comment.
+        # @see https://developers.facebook.com/docs/graph-api/reference/v20.0/object/comments
+        #
+        # @raise [Facebook::Messenger::Bot::SendError] if there is any error
+        #   in response while sending the comment.
+        #
+        # @param [Hash] comment The comment payload
+        # @param [String] page_id The page ID to send the comment from
+        #
+        # Returns a Hash describing the API response if the comment was sent,
+        # or raises an exception if it was not.
+        def reply_to_comment(comment_id, message, page_id:)
+          access_token = config.provider.access_token_for(page_id)
+          app_secret_proof = config.provider.app_secret_proof_for(page_id)
+
+          query = { access_token: access_token }
+          query[:appsecret_proof] = app_secret_proof if app_secret_proof
+
+          response = post "/#{comment_id}/comments",
                           body: JSON.dump(message),
                           format: :json,
                           query: query

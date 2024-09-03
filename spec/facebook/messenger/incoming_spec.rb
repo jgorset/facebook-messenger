@@ -16,6 +16,32 @@ describe Facebook::Messenger::Incoming do
       end
     end
 
+    context 'when the payload is a post' do
+      let :payload do
+        JSON.parse({
+          "value": {
+            "from": {
+              "id": "100518329516574",
+              "name": "Vit Service"
+            },
+            "message": "post 7",
+            "post_id": "100518329516574_193994006819374",
+            "created_time": 1682932701,
+            "item": "status",
+            "published": 1,
+            "verb": "add"
+          },
+          "field": "feed"
+        }.to_json)
+      end
+
+      it 'returns an Incoming::Feed' do
+        expect(subject.parse(payload)).to be_a(
+          Facebook::Messenger::Incoming::Feed
+        )
+      end
+    end
+
     context 'when the payload is a message' do
       let :payload do
         {

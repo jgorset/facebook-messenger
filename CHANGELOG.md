@@ -1,5 +1,20 @@
 # Change Log
 
+## [2.1.2] - 2024-07-18
+
+### Changed
+- Updated to Graph API v20.0
+
+### Added
+- New method for sending comments in Bot module
+
+## [2.0.2] - 2024-03-20
+
+### Added
+- Support for feed events
+- Support for leadgen events
+- Standby entry for fb messenger
+
 ## [2.0.1] - 2020-07-31
 
 ### Changed
