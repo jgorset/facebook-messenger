@@ -45,6 +45,9 @@ module Facebook
             error_code = error['code']
             error_subcode = error['error_subcode']
 
+            error.merge!('app-usage' => response.headers['x-app-usage'],
+                         'buc-usage' => response.headers['x-business-use-case-usage'])
+
             raise_code_only_error(error_code, error) if error_subcode.nil?
 
             raise_code_subcode_error(error_code, error_subcode, error)
