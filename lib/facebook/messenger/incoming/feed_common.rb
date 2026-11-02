@@ -9,7 +9,7 @@ module Facebook
         end
 
         def item
-          @change['item']
+          @change['value']['item']
         end
       end
     end
