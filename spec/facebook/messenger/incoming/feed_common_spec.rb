@@ -25,7 +25,7 @@ describe Dummy2 do
 
   describe '.item' do
     it 'returns the item' do
-      expect(subject.item).to eq(payload['item'])
+      expect(subject.item).to eq('status')
     end
   end
 
