@@ -227,6 +227,16 @@ describe Facebook::Messenger::Bot do
         expect(result).to eq({ recipient_id: recipient_id,
                                message_id: message_id }.to_json)
       end
+
+      context 'with option `return_response`' do
+        it 'sends a message and return response' do
+          response = subject.deliver(payload, page_id: page_id, return_response: true)
+
+          expect(response.body).to eq({ recipient_id: recipient_id,
+                                        message_id: message_id }.to_json)
+          expect(response.headers).to eq(default_graph_api_response_headers)
+        end
+      end
     end
 
     context 'when Facebook had an internal server error' do
