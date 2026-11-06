@@ -102,6 +102,44 @@ describe Facebook::Messenger::Server do
       end
     end
 
+    context 'with feed changes from several pages' do
+      let :payload do
+        JSON.generate(
+          object: 'page',
+          entry: [
+            {
+              id: '111',
+              time: 1_762_423_201,
+              changes: [
+                { field: 'feed',
+                  value: { item: 'comment', verb: 'add', comment_id: '1_2' } }
+              ]
+            },
+            {
+              id: '222',
+              time: 1_762_423_202,
+              changes: [
+                { field: 'feed',
+                  value: { item: 'comment', verb: 'add', comment_id: '3_4' } }
+              ]
+            }
+          ]
+        )
+      end
+
+      it 'passes the page id of each entry to the hook' do
+        feeds = []
+        allow(Facebook::Messenger::Bot).to receive(:trigger) do |_, feed|
+          feeds << feed
+        end
+
+        post '/', payload
+
+        expect(feeds.map(&:page_id)).to eq(%w[111 222])
+        expect(feeds.map(&:comment_id)).to eq(%w[1_2 3_4])
+      end
+    end
+
     context 'with invalid JSON' do
       let(:payload) { 'invalid:json' }
 
