@@ -34,4 +34,41 @@ describe Facebook::Messenger::Incoming::Feed do
     end
   end
 
+  describe '.page_id' do
+    it 'returns nil when the change has no entry' do
+      expect(subject.page_id).to be_nil
+    end
+  end
+
+  context 'with a comment change' do
+    let :payload do
+      JSON.parse({
+        value: {
+          from: { id: '24018572657841976', name: 'Jane Doe' },
+          message: 'How much does it cost?',
+          post_id: '399731066566356_1234567890',
+          comment_id: '1234567890_987654321',
+          parent_id: '399731066566356_1234567890',
+          created_time: 1_762_423_200,
+          item: 'comment',
+          verb: 'add'
+        },
+        field: 'feed',
+        entry: { id: '399731066566356', time: 1_762_423_201 }
+      }.to_json)
+    end
+
+    it 'returns the page id from the entry' do
+      expect(subject.page_id).to eq('399731066566356')
+    end
+
+    it 'returns the comment fields' do
+      expect(subject.verb).to eq('add')
+      expect(subject.post_id).to eq('399731066566356_1234567890')
+      expect(subject.comment_id).to eq('1234567890_987654321')
+      expect(subject.parent_id).to eq('399731066566356_1234567890')
+      expect(subject.from).to eq('id' => '24018572657841976',
+                                 'name' => 'Jane Doe')
+    end
+  end
 end

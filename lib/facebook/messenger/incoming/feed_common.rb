@@ -11,6 +11,11 @@ module Facebook
         def item
           @change['value']['item']
         end
+
+        # The id of the page the change happened on (the webhook entry id).
+        def page_id
+          @change.dig('entry', 'id')
+        end
       end
     end
   end

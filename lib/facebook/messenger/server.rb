@@ -166,8 +166,13 @@ module Facebook
             end
           end
           if entry['changes'.freeze]
+            # Changes don't carry the id of the object (e.g. the page) they
+            # belong to, so pass the entry's id and time along with them.
+            entry_info = { 'id' => entry['id'], 'time' => entry['time'] }
             entry['changes'.freeze].each do |change|
-              Facebook::Messenger::Bot.receive(change)
+              Facebook::Messenger::Bot.receive(
+                change.merge('entry'.freeze => entry_info)
+              )
             end
           end
           # d99d
