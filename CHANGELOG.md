@@ -1,12 +1,17 @@
 # Change Log
 
-## [Unreleased]
+## [2.2.0] - 2026-11-15
 
 ### Added
 - `Incoming::Feed#page_id` (and `Leadgen#page_id`) returning the id of the page
   the change belongs to, so multi-page apps can call
   `Bot.reply_to_comment(..., page_id: feed.page_id)`
 - `Incoming::Feed#verb`, `#post_id`, `#comment_id`, `#parent_id` and `#from`
+
+### Fixed
+- `FeedCommon#item` reading the wrong key
+- Invalid JSON webhook requests respond with "Error parsing request body format"
+  again instead of the JSON parser's error message
 
 ## [2.1.2] - 2024-07-18
 
