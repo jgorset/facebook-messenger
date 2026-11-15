@@ -176,7 +176,7 @@ describe Facebook::Messenger::Bot do
 
   describe '.deliver' do
     let(:messages_url) do
-      Facebook::Messenger::Bot.base_uri + '/messages'
+      Facebook::Messenger::Bot.base_uri + '/me/messages'
     end
 
     let(:payload) do
